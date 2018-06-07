@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    testImplementation 'com.android.support.test:runner:1.0.2'
 
     //Espresso
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -45,9 +45,12 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    //ExoPlayer dependecies
-    implementation 'com.google.android.exoplayer:exoplayer:r2.5.1'
+    //Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.mock.PostMockData;
 
 public class LoginMapsActivity extends AppCompatActivity {
 
@@ -13,7 +14,9 @@ public class LoginMapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_maps);
 
-        Intent intent = new Intent(this, RestaurantsMapActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, RestaurantsMapActivity.class);
+        //startActivity(intent);
+
+        PostMockData.postMockData();
     }
 }
