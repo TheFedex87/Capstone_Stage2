@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TakeMyOrder</string>
     <string name="title_activity_restaurants">Map</string>
+
+    <string name="content_description_map">Find all restaurants</string>
+    <string name="content_description_login">Login</string>
 </resources>

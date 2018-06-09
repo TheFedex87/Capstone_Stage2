@@ -26,6 +26,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.android.support.test:runner:1.0.2'
 
+    implementation "com.android.support:design:27.1.1"
+
     //Espresso
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
@@ -48,6 +50,9 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.1'

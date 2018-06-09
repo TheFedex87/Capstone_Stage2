@@ -15,8 +15,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ui.LoginMapsActivity">
+        android:theme="@style/AppTheme"
+        android:name=".application.TakeMyOrderApplication">
+        <activity android:name=".ui.activities.LoginMapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +37,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.RestaurantsMapActivity"
+            android:name=".ui.activities.RestaurantsMapActivity"
             android:label="@string/title_activity_restaurants" />
     </application>
 

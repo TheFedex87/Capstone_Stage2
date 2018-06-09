@@ -1,5 +1,9 @@
-package com.udacity.thefedex87.takemyorder.ui;
+package com.udacity.thefedex87.takemyorder.ui.activities;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -11,10 +15,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.model.Restaurant;
+
+import java.util.List;
 
 public class RestaurantsMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private List<Restaurant> restaurantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +32,11 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY)) {
+            restaurantList = intent.getParcelableArrayListExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY);
+        }
     }
 
 
@@ -41,9 +54,25 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(43.364505, 12.235914);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
+
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        mMap.setMyLocationEnabled(true);
+
+        for (Restaurant restaurant : restaurantList) {
+            LatLng restaurantPlace = new LatLng(restaurant.getLat(), restaurant.getLng());
+            mMap.addMarker(new MarkerOptions().position(restaurantPlace).title(restaurant.getName()));
+
+        }
 
     }
 }
