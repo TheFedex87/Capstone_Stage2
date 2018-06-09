@@ -10,6 +10,7 @@ public class Food {
     String name;
     String description;
     List<Ingredient> ingredients;
+    double price;
 
     public String getName() {
         return name;
@@ -33,5 +34,13 @@ public class Food {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

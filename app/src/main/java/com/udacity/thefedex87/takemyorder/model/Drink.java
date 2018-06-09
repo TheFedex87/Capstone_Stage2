@@ -12,7 +12,9 @@ public class Drink {
     }
 
     String name;
+    double price;
     SIZES size;
+
 
     public String getName() {
         return name;
@@ -28,5 +30,13 @@ public class Drink {
 
     public void setSize(SIZES size) {
         this.size = size;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
