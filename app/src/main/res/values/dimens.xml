@@ -5,7 +5,7 @@
     <!--Restaurant Details-->
     <dimen name="restaurant_detail_photo_height">500dp</dimen>
     <dimen name="detail_content_intent_start">48dp</dimen>
-    <dimen name="detail_photo_indicator_height">20dp</dimen>
+    <dimen name="detail_photo_indicator_margin_bottom">4dp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>

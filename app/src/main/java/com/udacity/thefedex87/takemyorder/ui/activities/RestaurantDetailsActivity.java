@@ -18,6 +18,9 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.GooglePlaceResultModel;
 import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantPhotoModel;
 import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
@@ -66,8 +69,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
-
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(RestaurantsMapActivity.PLACE_ID_KEY)){
             final String placeId = intent.getStringExtra(RestaurantsMapActivity.PLACE_ID_KEY);
@@ -77,7 +78,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             if (GOOGLE_PLACES_API_KEY != "") {
                 TakeMyOrderApplication.appComponent().inject(this);
 
-                ApplicationModule applicationModule = new ApplicationModule(context);
+                final ApplicationModule applicationModule = new ApplicationModule(context);
 
                 final GooglePlacesApiInterface googlePlacesApiInterface = DaggerNetworkComponent.builder().applicationModule(applicationModule).build().getGooglePlacesApiInterface();
 
@@ -96,13 +97,34 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                                     photos.add(photoUrl);
                                 }
 
-                                RestaurantPhotoAdapter adapter = new RestaurantPhotoAdapter(photos, context);
+                                UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                                        .applicationModule(applicationModule)
+                                        .userInterfaceModule(new UserInterfaceModule(photos))
+                                        .build();
+
+                                RestaurantPhotoAdapter adapter = userInterfaceComponent.getRestaurantPhotoAdapter();
                                 photoPager.setAdapter(adapter);
 
-                                PhotoIndicatorContainerAdapter indicatorAdapter = new PhotoIndicatorContainerAdapter(context, photos.size());
+                                final PhotoIndicatorContainerAdapter indicatorAdapter = userInterfaceComponent.getPhotoIndicatorContainerAdapter();
                                 photoIndicatorContainer.setAdapter(indicatorAdapter);
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-                                photoIndicatorContainer.setLayoutManager(linearLayoutManager);
+                                photoIndicatorContainer.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+
+                                photoPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                                    @Override
+                                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                                        indicatorAdapter.setActivePhoto(position);
+                                    }
+
+                                    @Override
+                                    public void onPageSelected(int position) {
+
+                                    }
+
+                                    @Override
+                                    public void onPageScrollStateChanged(int state) {
+
+                                    }
+                                });
                             }
 
                             @Override

@@ -29,6 +29,11 @@ public class PhotoIndicatorContainerAdapter extends RecyclerView.Adapter<PhotoIn
         this.numberOfPhoto = numberOfPhoto;
     }
 
+    public void setActivePhoto(int activePhoto){
+        this.activePhoto = activePhoto;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public PhotoIndicatorContainerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
