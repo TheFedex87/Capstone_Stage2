@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue("string", "GOOGLE_MAPS_API_KEY", GOOGLE_MAPS_API_KEY)
+        resValue("string", "GOOGLE_PLACES_API_KEY", GOOGLE_PLACES_API_KEY)
     }
     buildTypes {
         release {
@@ -57,5 +59,6 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.1'
 }
+
 
 apply plugin: 'com.google.gms.google-services'

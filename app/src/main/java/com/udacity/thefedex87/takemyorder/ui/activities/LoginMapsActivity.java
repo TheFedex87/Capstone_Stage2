@@ -1,9 +1,7 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.model.Restaurant;
-import com.udacity.thefedex87.takemyorder.retrofit.LocationsApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +40,6 @@ public class LoginMapsActivity extends AppCompatActivity {
     @Inject
     Context context;
 
-    private LocationsApiInterface locationsApiInterface;
-
     private ApplicationModule applicationModule;
     private NetworkComponent networkComponent;
 
@@ -61,8 +56,6 @@ public class LoginMapsActivity extends AppCompatActivity {
         applicationModule = new ApplicationModule(context);
 
         networkComponent = DaggerNetworkComponent.builder().applicationModule(applicationModule).build();
-
-        locationsApiInterface = networkComponent.getLocationsApiInterface();
 
         initUi();
 

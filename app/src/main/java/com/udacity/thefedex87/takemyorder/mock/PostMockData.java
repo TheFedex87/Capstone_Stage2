@@ -974,9 +974,10 @@ public final class PostMockData {
     private static List<Restaurant> getRestaurantsMockedList(){
         List<Restaurant> restaurants = new ArrayList<>();
         Restaurant r = new Restaurant();
-        r.setName("Enjoy Food");
-        r.setLat(43.340191);
-        r.setLng(12.294784);
+        r.setName("Mencuccio");
+        r.setLat(43.366700);
+        r.setLng(12.237358);
+        r.setPlaceId("ChIJO1U5XOENLBMRegbF2LxJGTY");
         restaurants.add(r);
 
         r = new Restaurant();

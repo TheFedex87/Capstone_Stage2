@@ -5,7 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
-import com.udacity.thefedex87.takemyorder.retrofit.LocationsApiInterface;
+import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
 
 import javax.inject.Singleton;
 
@@ -20,12 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class NetworkModule {
-    private final String BASE_URL = "https://takemyorder-8a08a.firebaseio.com";
+    private final String BASE_URL = "https://maps.googleapis.com";
 
     @Singleton
     @Provides
-    public LocationsApiInterface provideLocationsApiInterfaces(Retrofit retrofit){
-        return retrofit.create(LocationsApiInterface.class);
+    public GooglePlacesApiInterface provideGooglePlacesApiInterface(Retrofit retrofit){
+        return retrofit.create(GooglePlacesApiInterface.class);
     }
 
     @Singleton

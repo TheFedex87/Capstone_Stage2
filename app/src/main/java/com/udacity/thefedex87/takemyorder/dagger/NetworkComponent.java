@@ -1,7 +1,7 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
 import com.squareup.picasso.Picasso;
-import com.udacity.thefedex87.takemyorder.retrofit.LocationsApiInterface;
+import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
 
 import javax.inject.Singleton;
 
@@ -14,6 +14,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = {NetworkModule.class, ApplicationModule.class})
 public interface NetworkComponent {
-    LocationsApiInterface getLocationsApiInterface();
+    GooglePlacesApiInterface getGooglePlacesApiInterface();
     Picasso getPicasso();
 }

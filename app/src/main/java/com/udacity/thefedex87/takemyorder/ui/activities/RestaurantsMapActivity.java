@@ -13,16 +13,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.model.Restaurant;
 
 import java.util.List;
 
-public class RestaurantsMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class RestaurantsMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    public static final String PLACE_ID_KEY = "PLACE_ID_KEY";
 
     private GoogleMap mMap;
     private List<Restaurant> restaurantList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
         if (intent != null && intent.hasExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY)) {
             restaurantList = intent.getParcelableArrayListExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY);
         }
+
+
     }
 
 
@@ -53,8 +59,8 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-
+        if (getString(R.string.GOOGLE_PLACES_API_KEY) != null && getString(R.string.GOOGLE_PLACES_API_KEY) != "")
+            mMap.setOnMarkerClickListener(this);
 
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            // TODO: Consider calling
@@ -68,11 +74,30 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
 //        }
 //        mMap.setMyLocationEnabled(true);
 
+        int i = 0;
         for (Restaurant restaurant : restaurantList) {
             LatLng restaurantPlace = new LatLng(restaurant.getLat(), restaurant.getLng());
-            mMap.addMarker(new MarkerOptions().position(restaurantPlace).title(restaurant.getName()));
+            if (i == 0){
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restaurantPlace, 10));
+                i++;
+            }
 
+
+            mMap.addMarker(new MarkerOptions().position(restaurantPlace).title(restaurant.getName())).setTag(restaurant.getPlaceId());
         }
 
+
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(marker.getTag() == null || marker.getTag().toString() == "") return false;
+
+        Intent intent = new Intent(this, RestaurantInfoActivity.class);
+        intent.putExtra(PLACE_ID_KEY, marker.getTag().toString());
+        startActivity(intent);
+
+        return true;
     }
 }

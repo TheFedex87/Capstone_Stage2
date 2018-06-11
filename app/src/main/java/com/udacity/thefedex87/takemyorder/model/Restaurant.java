@@ -10,11 +10,8 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Restaurant implements Parcelable {
-    @SerializedName("name")
     private String name;
-    @SerializedName("lat")
     private double lat;
-    @SerializedName("lng")
     private double lng;
     private String placeId;
 
