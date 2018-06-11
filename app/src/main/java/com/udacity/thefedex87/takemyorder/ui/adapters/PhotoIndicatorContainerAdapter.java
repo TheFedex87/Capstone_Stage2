@@ -1,47 +1,66 @@
 package com.udacity.thefedex87.takemyorder.ui.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.udacity.thefedex87.takemyorder.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by federico.creti on 11/06/2018.
  */
 
-public class PhotoIndicatorContainerAdapter extends BaseAdapter {
-    private int activePhoto;
+public class PhotoIndicatorContainerAdapter extends RecyclerView.Adapter<PhotoIndicatorContainerAdapter.PhotoIndicatorContainerViewHolder> {
     private int numberOfPhoto;
     private Context context;
+    private int activePhoto = 0;
 
-    public PhotoIndicatorContainerAdapter(Context context, int activePhoto, int numberOfPhoto) {
+    public PhotoIndicatorContainerAdapter(Context context, int numberOfPhoto) {
         this.context = context;
         this.numberOfPhoto = numberOfPhoto;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public PhotoIndicatorContainerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View view = inflater.inflate(R.layout.photo_indicator, parent, false);
+        return new PhotoIndicatorContainerViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull PhotoIndicatorContainerViewHolder holder, int position) {
+        if (position != activePhoto){
+            holder.indicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.photo_indicator));
+        } else {
+            holder.indicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.photo_indicator_selected));
+        }
+    }
+
+    @Override
+    public int getItemCount() {
         return numberOfPhoto;
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
+    class PhotoIndicatorContainerViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.indicator) ImageView indicator;
+
+        public PhotoIndicatorContainerViewHolder(View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
+        }
     }
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = (LayoutInflater.from(context));
-        View newView = inflater.inflate(R.layout.photo_indicator, viewGroup, false);
-
-        return null;
-    }
 }

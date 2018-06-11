@@ -7,7 +7,10 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.LayoutDirection;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.GooglePlaceResultModel;
 import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantPhotoModel;
 import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
+import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 
 import java.util.ArrayList;
@@ -43,6 +47,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_container)
     CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.photo_indicator_container)
+    RecyclerView photoIndicatorContainer;
 
     @Inject
     Context context;
@@ -91,6 +98,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
                                 RestaurantPhotoAdapter adapter = new RestaurantPhotoAdapter(photos, context);
                                 photoPager.setAdapter(adapter);
+
+                                PhotoIndicatorContainerAdapter indicatorAdapter = new PhotoIndicatorContainerAdapter(context, photos.size());
+                                photoIndicatorContainer.setAdapter(indicatorAdapter);
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                                photoIndicatorContainer.setLayoutManager(linearLayoutManager);
                             }
 
                             @Override

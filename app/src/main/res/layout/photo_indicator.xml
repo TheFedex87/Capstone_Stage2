@@ -4,6 +4,6 @@
     android:id="@+id/indicator"
     android:layout_width="15dp"
     android:layout_height="15dp"
-    android:background="@color/black">
+    android:background="@drawable/photo_indicator">
 
 </ImageView>

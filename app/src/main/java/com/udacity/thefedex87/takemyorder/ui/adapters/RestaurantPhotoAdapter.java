@@ -25,8 +25,6 @@ public class RestaurantPhotoAdapter extends PagerAdapter {
     private List<String> photoUrls;
     private Context context;
 
-    private ListView photoIndicatorContainer;
-
     private NetworkComponent networkComponent;
 
     public RestaurantPhotoAdapter(@NonNull List<String> photoUrls, Context context){
@@ -53,10 +51,6 @@ public class RestaurantPhotoAdapter extends PagerAdapter {
 
         LayoutInflater inflater = (LayoutInflater.from(context));
         newView = inflater.inflate(R.layout.restaurant_image, container, false);
-
-//        photoIndicatorContainer = newView.findViewById(R.id.photo_indicator_container);
-//        PhotoIndicatorContainerAdapter adapter = new PhotoIndicatorContainerAdapter(context, getCount());
-//        photoIndicatorContainer.setAdapter(adapter);
 
         ImageView imageView = newView.findViewById(R.id.restaurant_image);
         networkComponent.getPicasso().load(photoUrls.get(position)).into(imageView);
