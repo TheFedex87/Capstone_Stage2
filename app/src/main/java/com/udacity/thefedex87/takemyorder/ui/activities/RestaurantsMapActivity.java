@@ -1,13 +1,9 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -94,7 +90,7 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
     public boolean onMarkerClick(Marker marker) {
         if(marker.getTag() == null || marker.getTag().toString() == "") return false;
 
-        Intent intent = new Intent(this, RestaurantInfoActivity.class);
+        Intent intent = new Intent(this, RestaurantDetailsActivity.class);
         intent.putExtra(PLACE_ID_KEY, marker.getTag().toString());
         startActivity(intent);
 

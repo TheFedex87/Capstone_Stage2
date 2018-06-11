@@ -38,9 +38,15 @@
 
         <activity
             android:name=".ui.activities.RestaurantsMapActivity"
-            android:label="@string/title_activity_restaurants" />
-        <activity android:name=".ui.activities.RestaurantInfoActivity"
-            android:launchMode="singleTop"></activity>
+            android:label="@string/title_activity_restaurants"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".ui.activities.RestaurantDetailsActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.RestaurantsMapActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/restaurant_detail_photo_height"
+        android:background="?colorPrimary"
+        android:elevation="@dimen/app_bar_elevation">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <FrameLayout
+                android:id="@+id/photo_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryLight">
+
+                <ListView
+                    android:id="@+id/photo_indicator_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/detail_photo_indicator_height"
+                    android:layout_gravity="center_horizontal"></ListView>
+
+                <!--suppress AndroidLintContentDescription -->
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/photo_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/restaurant_detail_photo_height"></android.support.v4.view.ViewPager>
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:contentInsetStart="@dimen/detail_content_intent_start"
+                app:layout_collapseMode="pin" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+    
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="sdfsfercfrferfef
+cfercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfefercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfefercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfefercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfefercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfefercfercfercfercferfe
+fccecfe
+f
+fce
+rcfrefcce
+cf
+erf
+e
+cf
+cefercfercfe" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
