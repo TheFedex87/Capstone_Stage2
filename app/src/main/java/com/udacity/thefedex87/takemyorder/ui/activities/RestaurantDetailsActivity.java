@@ -2,8 +2,10 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,6 +60,21 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.restaurant_address)
     TextView restaurantAddress;
+
+    @BindView(R.id.average_1)
+    ImageView average1;
+
+    @BindView(R.id.average_2)
+    ImageView average2;
+
+    @BindView(R.id.average_3)
+    ImageView average3;
+
+    @BindView(R.id.average_4)
+    ImageView average4;
+
+    @BindView(R.id.average_5)
+    ImageView average5;
 
     @Inject
     Context context;
@@ -132,6 +149,58 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                                 });
 
                                 restaurantAddress.setText(response.body().getGooglePlaceDetailsModel().getFormattedAddress());
+
+                                int i = 0;
+                                double rating = response.body().getGooglePlaceDetailsModel().getRating();
+                                int intRating = (int)rating;
+                                double decimalRating = rating - intRating;
+                                switch ((int)rating){
+                                    case 1:
+                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
+                                            average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
+                                        } else if(decimalRating > 0.75) {
+                                            average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        }
+                                        break;
+                                    case 2:
+                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
+                                            average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
+                                        } else if(decimalRating > 0.75) {
+                                            average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        }
+                                        break;
+                                    case 3:
+                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
+                                            average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
+                                        } else if(decimalRating > 0.75) {
+                                            average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        }
+                                        break;
+                                    case 4:
+                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
+                                            average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
+                                        } else if(decimalRating > 0.75) {
+                                            average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        }
+                                        break;
+                                    case 5:
+                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
+                                        break;
+                                }
                             }
 
                             @Override
