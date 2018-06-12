@@ -39,7 +39,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="@dimen/detail_photo_indicator_margin_bottom"/>
+                    android:layout_marginBottom="@dimen/detail_photo_indicator_margin_bottom"
+                    android:visibility="gone"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="@dimen/progress_bar_size"
+                    android:layout_height="@dimen/progress_bar_size"
+                    android:layout_gravity="center"/>
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
@@ -68,10 +75,20 @@
                 android:id="@+id/restaurant_address"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/restaurant_detail_address_font_size"
-                android:layout_marginStart="@dimen/restaurant_detail_margin_start"/>
+                android:textSize="@dimen/restaurant_detail_address_text_size"
+                android:layout_marginStart="@dimen/restaurant_detail_margin_start"
+                android:layout_marginTop="@dimen/restaurant_address_margin_top"
+                android:layout_marginBottom="@dimen/restaurant_address_margin_bottom"/>
 
-            <include layout="@layout/restaurant_average" />
+            <include layout="@layout/rating" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/reviews_margin_top">
+
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

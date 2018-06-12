@@ -10,7 +10,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/restaurant_average"/>
+        android:text="@string/restaurant_rating"
+        android:textSize="@dimen/review_rating_text_size"/>
 
     <ImageView
         android:id="@+id/average_1"

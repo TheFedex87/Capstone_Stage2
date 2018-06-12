@@ -6,16 +6,17 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 
+import com.squareup.picasso.Callback;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by federico.creti on 11/06/2018.
@@ -24,12 +25,14 @@ import java.util.List;
 public class RestaurantPhotoAdapter extends PagerAdapter {
     private List<String> photoUrls;
     private Context context;
+    private ImageLoadingState imageLoadState;
 
     private NetworkComponent networkComponent;
 
-    public RestaurantPhotoAdapter(@NonNull List<String> photoUrls, Context context){
+    public RestaurantPhotoAdapter(@NonNull List<String> photoUrls, ImageLoadingState imageLoadState, Context context){
         this.photoUrls = photoUrls;
         this.context = context;
+        this.imageLoadState = imageLoadState;
 
         networkComponent = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(context)).build();
     }
@@ -53,7 +56,21 @@ public class RestaurantPhotoAdapter extends PagerAdapter {
         newView = inflater.inflate(R.layout.restaurant_image, container, false);
 
         ImageView imageView = newView.findViewById(R.id.restaurant_image);
-        networkComponent.getPicasso().load(photoUrls.get(position)).into(imageView);
+
+        if (imageLoadState != null) imageLoadState.imageLoadStarting();
+        networkComponent.getPicasso().load(photoUrls.get(position)).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                Timber.d("Image loading completed");
+                if (imageLoadState != null) imageLoadState.imageLoadCompleted();
+            }
+
+            @Override
+            public void onError() {
+                Timber.e("Image loading error");
+                if (imageLoadState != null) imageLoadState.imageLoadCompleted();
+            }
+        });
 
         container.addView(newView);
 
@@ -63,5 +80,10 @@ public class RestaurantPhotoAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
+    }
+
+    public interface ImageLoadingState {
+        void imageLoadStarting();
+        void imageLoadCompleted();
     }
 }

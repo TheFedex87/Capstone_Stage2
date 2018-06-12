@@ -981,9 +981,10 @@ public final class PostMockData {
         restaurants.add(r);
 
         r = new Restaurant();
-        r.setName("MWP");
-        r.setLat(43.350438);
-        r.setLng(12.287428);
+        r.setName("Calico Jack");
+        r.setLat(43.300405);
+        r.setLng(12.341773);
+        r.setPlaceId("ChIJx59tgs4QLBMRiFDbJ70U4BQ");
         restaurants.add(r);
 
         r = new Restaurant();

@@ -4,13 +4,20 @@
 
     <!--Restaurant Details-->
     <dimen name="restaurant_detail_photo_height">500dp</dimen>
+    <dimen name="progress_bar_size">48dp</dimen>
     <dimen name="detail_content_intent_start">48dp</dimen>
     <dimen name="detail_photo_indicator_margin_bottom">4dp</dimen>
-    <dimen name="restaurant_detail_address_font_size">20sp</dimen>
+    <dimen name="restaurant_detail_address_text_size">22sp</dimen>
     <dimen name="restaurant_detail_margin_start">16dp</dimen>
     <dimen name="restaurant_detail_margin_top">8dp</dimen>
     <dimen name="average_dot_margin_start">3dp</dimen>
     <dimen name="average_dot_margin_end">3dp</dimen>
+    <dimen name="reviews_margin_top">10dp</dimen>
+    <dimen name="review_margin_bottom">10dp</dimen>
+    <dimen name="review_author_text_size">18sp</dimen>
+    <dimen name="review_rating_text_size">16sp</dimen>
+    <dimen name="restaurant_address_margin_top">15dp</dimen>
+    <dimen name="restaurant_address_margin_bottom">15dp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>

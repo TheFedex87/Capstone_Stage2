@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
 
 import javax.inject.Singleton;
 
@@ -18,6 +19,7 @@ import dagger.Component;
 public interface UserInterfaceComponent {
     PhotoIndicatorContainerAdapter getPhotoIndicatorContainerAdapter();
     RestaurantPhotoAdapter getRestaurantPhotoAdapter();
+    RestaurantReviewsAdapter getRestaurantReviewsAdapter();
 
     LinearLayoutManager getLinearLayoutManager();
 }

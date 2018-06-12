@@ -9,12 +9,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.LayoutDirection;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,8 @@ import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.Restauran
 import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
+import com.udacity.thefedex87.takemyorder.utils.UserInterfaceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
-public class RestaurantDetailsActivity extends AppCompatActivity {
+public class RestaurantDetailsActivity extends AppCompatActivity implements RestaurantPhotoAdapter.ImageLoadingState {
     private String GOOGLE_PLACES_API_KEY = "";
 
     @BindView(R.id.photo_pager)
@@ -75,6 +80,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.average_5)
     ImageView average5;
+
+    @BindView(R.id.reviews_container)
+    RecyclerView reviewsContainer;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
 
     @Inject
     Context context;
@@ -121,16 +132,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
                                 UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                                         .applicationModule(applicationModule)
-                                        .userInterfaceModule(new UserInterfaceModule(photos))
+                                        .userInterfaceModule(new UserInterfaceModule(photos, response
+                                                .body()
+                                                .getGooglePlaceDetailsModel()
+                                                .getReviews(),
+                                                RestaurantDetailsActivity.this))
                                         .build();
 
+                                //Setup Photo container
                                 RestaurantPhotoAdapter adapter = userInterfaceComponent.getRestaurantPhotoAdapter();
                                 photoPager.setAdapter(adapter);
+                                //////////////////////
 
+                                //Setup Photo Indicator
                                 final PhotoIndicatorContainerAdapter indicatorAdapter = userInterfaceComponent.getPhotoIndicatorContainerAdapter();
                                 photoIndicatorContainer.setAdapter(indicatorAdapter);
                                 photoIndicatorContainer.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
-
                                 photoPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                                     @Override
                                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -147,60 +164,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
                                     }
                                 });
+                                ///////////////////////
 
                                 restaurantAddress.setText(response.body().getGooglePlaceDetailsModel().getFormattedAddress());
 
-                                int i = 0;
-                                double rating = response.body().getGooglePlaceDetailsModel().getRating();
-                                int intRating = (int)rating;
-                                double decimalRating = rating - intRating;
-                                switch ((int)rating){
-                                    case 1:
-                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
-                                            average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
-                                        } else if(decimalRating > 0.75) {
-                                            average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        }
-                                        break;
-                                    case 2:
-                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
-                                            average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
-                                        } else if(decimalRating > 0.75) {
-                                            average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        }
-                                        break;
-                                    case 3:
-                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
-                                            average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
-                                        } else if(decimalRating > 0.75) {
-                                            average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        }
-                                        break;
-                                    case 4:
-                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        if(decimalRating >= 0.25 && decimalRating <= 0.75){
-                                            average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_half));
-                                        } else if(decimalRating > 0.75) {
-                                            average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        }
-                                        break;
-                                    case 5:
-                                        average1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average2.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average3.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average4.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        average5.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.average_full));
-                                        break;
-                                }
+                                //Setup restaurant rating
+                                UserInterfaceUtils.SetAverageDots(response.body().getGooglePlaceDetailsModel().getRating(),
+                                        average1, average2, average3, average4, average5, context);
+                                ///////////////////////////////////
+
+                                //Setup Reviews
+                                RestaurantReviewsAdapter restaurantReviewsAdapter = userInterfaceComponent.getRestaurantReviewsAdapter();
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                                reviewsContainer.setLayoutManager(linearLayoutManager);
+                                reviewsContainer.setAdapter(restaurantReviewsAdapter);
+
+                                ////////////////////////////////////
                             }
 
                             @Override
@@ -218,5 +197,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         } else{
             finish();
         }
+    }
+
+    @Override
+    public void imageLoadStarting() {
+
+    }
+
+    @Override
+    public void imageLoadCompleted() {
+        progressBar.setVisibility(View.GONE);
+        photoIndicatorContainer.setVisibility(View.VISIBLE);
     }
 }
