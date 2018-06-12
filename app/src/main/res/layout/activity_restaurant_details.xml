@@ -59,65 +59,20 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="sdfsfercfrferfef
-cfercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfefercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfefercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfefercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfefercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfefercfercfercfercferfe
-fccecfe
-f
-fce
-rcfrefcce
-cf
-erf
-e
-cf
-cefercfercfe" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/restaurant_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/restaurant_detail_address_font_size"
+                android:layout_marginStart="@dimen/restaurant_detail_margin_start"/>
+
+            <include layout="@layout/restaurant_average" />
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

@@ -11,7 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.LayoutDirection;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
@@ -53,6 +55,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.photo_indicator_container)
     RecyclerView photoIndicatorContainer;
+
+    @BindView(R.id.restaurant_address)
+    TextView restaurantAddress;
 
     @Inject
     Context context;
@@ -125,6 +130,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
                                     }
                                 });
+
+                                restaurantAddress.setText(response.body().getGooglePlaceDetailsModel().getFormattedAddress());
                             }
 
                             @Override
