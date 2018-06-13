@@ -8,6 +8,7 @@
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
     <string name="error_places_api_key_not_provided">No Places API KEY provided</string>
+    <string name="error_no_barcode_found">Barcode not found</string>
 
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>

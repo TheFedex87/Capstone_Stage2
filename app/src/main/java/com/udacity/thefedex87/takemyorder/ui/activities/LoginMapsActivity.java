@@ -2,14 +2,22 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +34,7 @@ import com.udacity.thefedex87.takemyorder.model.Customer;
 import com.udacity.thefedex87.takemyorder.model.Restaurant;
 import com.udacity.thefedex87.takemyorder.model.User;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,10 +45,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+import static com.google.android.gms.vision.barcode.Barcode.QR_CODE;
+
 public class LoginMapsActivity extends AppCompatActivity {
+    //Keys
     public final static String RESTAURANTS_INFO_KEY = "RESTAURANTS_INFO";
     public final static String USER_INFO_KEY = "USER_INFO_KEY";
+    public final static String USER_RESTAURANT_KEY = "USER_RESTAURANT_KEY";
+    public final static String USER_RESTAURANT_TABLE_KEY = "USER_RESTAURANT_TABLE_KEY";
+
+    //Activity results
     public static final int RC_SIGN_IN = 1;
+    public static final int RC_PHOTO_PICKER = 2;
+    public static final int RC_PHOTO_SHOT = 3;
 
     @BindView(R.id.map)
     ImageView map;
@@ -59,6 +77,8 @@ public class LoginMapsActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    private Customer customer;
 
     private boolean logindRequest = false;
 
@@ -154,14 +174,29 @@ public class LoginMapsActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             //If dataSnapshot.getValue() is equal to null, a customer is logging into the system
                                             if (dataSnapshot.getValue() == null){
-                                                //Customer login
-                                                Timber.d("Logging in user: " + user.getEmail());
-                                                Intent intent = new Intent(context, CustomerMainActivity.class);
-                                                Customer customer = new Customer();
+                                                customer = new Customer();
                                                 customer.setEmail(user.getEmail());
                                                 customer.setUserName(user.getDisplayName());
-                                                intent.putExtra(USER_INFO_KEY, customer);
-                                                startActivity(intent);
+
+                                                //Since this is a user log in, we need to launch camera in order to scan the qrcode at the table.
+                                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                                intent.setType("image/jpeg");
+                                                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                                                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+
+//                                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//                                                    startActivityForResult(takePictureIntent, RC_PHOTO_SHOT);
+//                                                }
+
+//                                                //Customer login
+//                                                Timber.d("Logging in user: " + user.getEmail());
+//                                                Intent intent = new Intent(context, CustomerMainActivity.class);
+//                                                Customer customer = new Customer();
+//                                                customer.setEmail(user.getEmail());
+//                                                customer.setUserName(user.getDisplayName());
+//                                                intent.putExtra(USER_INFO_KEY, customer);
+//                                                startActivity(intent);
 
                                             } else {
                                                 //Waiter login
@@ -194,12 +229,53 @@ public class LoginMapsActivity extends AppCompatActivity {
         });
     }
 
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
 //        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK){
 //
 //        }
-//    }
+
+        if ((requestCode == RC_PHOTO_PICKER || requestCode == RC_PHOTO_SHOT) && resultCode == RESULT_OK) {
+            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(QR_CODE).build();
+            Bitmap bitmap = null;
+
+
+            if (requestCode == RC_PHOTO_PICKER) {
+                //Requested selection of the picture from file chooser
+                Uri selectedImageUri = data.getData();
+
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if(requestCode == RC_PHOTO_SHOT) {
+                //Requested selection of the picture from file camera shot
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
+            }
+
+            Frame myFrame = new Frame.Builder().setBitmap(bitmap).build();
+            SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
+            if (barcodes.size() == 0){
+                Timber.w(getString(R.string.error_no_barcode_found));
+                Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
+            } else {
+                //Retrieve the barcode
+                Barcode barcode = barcodes.get(barcodes.keyAt(0));
+                String qrString = barcode.displayValue;
+                String[] infos = qrString.split("&");
+
+                //Customer login
+                Timber.d("Logging in user: " + customer.getEmail());
+                Intent intent = new Intent(context, CustomerMainActivity.class);
+                intent.putExtra(USER_INFO_KEY, customer);
+                intent.putExtra(USER_RESTAURANT_KEY, infos[0]);
+                intent.putExtra(USER_RESTAURANT_TABLE_KEY, infos[1]);
+                startActivity(intent);
+            }
+        }
+    }
 }
