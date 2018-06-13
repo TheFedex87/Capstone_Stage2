@@ -77,7 +77,7 @@
                 android:layout_height="match_parent"
                 android:textSize="@dimen/restaurant_detail_address_text_size"
                 android:layout_marginStart="@dimen/restaurant_detail_margin_start"
-                android:layout_marginTop="@dimen/restaurant_address_margin_top"
+                android:layout_marginTop="@dimen/restaurant_review_margin_top"
                 android:layout_marginBottom="@dimen/restaurant_address_margin_bottom"/>
 
             <include layout="@layout/rating" />

@@ -9,12 +9,18 @@ import com.google.gson.annotations.SerializedName;
 public class RestaurantReviewModel {
     @SerializedName("author_name")
     String authorName;
+
     @SerializedName("rating")
     double rating;
+
     @SerializedName("text")
     String review;
+
     @SerializedName("time")
     long time;
+
+    @SerializedName("profile_photo_url")
+    String profilePhotoUrl;
 
     public String getAuthorName() {
         return authorName;
@@ -46,5 +52,13 @@ public class RestaurantReviewModel {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getProfilePhotoUrl() {
+        return profilePhotoUrl;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 }

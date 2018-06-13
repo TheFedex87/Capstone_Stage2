@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantReviewModel;
 import com.udacity.thefedex87.takemyorder.utils.UserInterfaceUtils;
 
@@ -65,6 +68,8 @@ public class RestaurantReviewsAdapter extends RecyclerView.Adapter<RestaurantRev
             holder.reviewDate.setText("--/--/----");
         }
 
+        Picasso picasso = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(context)).build().getPicasso();
+        picasso.load(reviews.get(position).getProfilePhotoUrl()).into(holder.photoProfile);
     }
 
     @Override
@@ -74,28 +79,31 @@ public class RestaurantReviewsAdapter extends RecyclerView.Adapter<RestaurantRev
 
     class RestaurantReviewsViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.review_author)
-        public TextView reviewAuthor;
+        TextView reviewAuthor;
 
         @BindView(R.id.review_date)
         TextView reviewDate;
 
         @BindView(R.id.review_text)
-        public TextView reviewText;
+        TextView reviewText;
 
         @BindView(R.id.average_1)
-        public ImageView average1;
+        ImageView average1;
 
         @BindView(R.id.average_2)
-        public ImageView average2;
+        ImageView average2;
 
         @BindView(R.id.average_3)
-        public ImageView average3;
+        ImageView average3;
 
         @BindView(R.id.average_4)
-        public ImageView average4;
+        ImageView average4;
 
         @BindView(R.id.average_5)
-        public ImageView average5;
+        ImageView average5;
+
+        @BindView(R.id.photoProfile)
+        ImageView photoProfile;
 
         public RestaurantReviewsViewHolder(View itemView) {
             super(itemView);

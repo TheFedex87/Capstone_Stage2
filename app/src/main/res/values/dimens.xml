@@ -16,8 +16,20 @@
     <dimen name="review_margin_bottom">10dp</dimen>
     <dimen name="review_author_text_size">18sp</dimen>
     <dimen name="review_rating_text_size">16sp</dimen>
-    <dimen name="restaurant_address_margin_top">15dp</dimen>
-    <dimen name="restaurant_address_margin_bottom">15dp</dimen>
+    <dimen name="restaurant_review_margin_top">25dp</dimen>
+    <dimen name="restaurant_address_margin_top">8dp</dimen>
+    <dimen name="restaurant_address_margin_bottom">8dp</dimen>
+    <dimen name="restaurant_rating_margin_bottom">8dp</dimen>
+    <dimen name="review_author_margin_bottom">8dp</dimen>
+    <dimen name="review_author_margin_top">8dp</dimen>
+    <dimen name="review_author_margin_start">16dp</dimen>
+    <dimen name="review_date_margin_end">16dp</dimen>
+    <dimen name="review_author_profile_dimen">40dp</dimen>
+    <dimen name="review_author_profile_margin_start">16dp</dimen>
+    <dimen name="review_author_profile_margin_top">8dp</dimen>
+    <dimen name="review_rating_margin_top">8dp</dimen>
+    <dimen name="review_text_margin_top">8dp</dimen>
+    <dimen name="review_text_margin_end">16dp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>

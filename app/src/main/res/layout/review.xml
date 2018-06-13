@@ -5,56 +5,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/restaurant_review_margin_top"
     android:layout_marginBottom="@dimen/review_margin_bottom">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/black"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent" />-->
 
+    <ImageView
+        android:id="@+id/photoProfile"
+        android:layout_width="@dimen/review_author_profile_dimen"
+        android:layout_height="@dimen/review_author_profile_dimen"
+        android:layout_marginStart="@dimen/review_author_profile_margin_start"
+        android:layout_marginTop="@dimen/review_author_profile_margin_top"
+        android:src="@color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/review_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/review_author_text_size"/>
+        android:layout_marginBottom="@dimen/review_author_margin_bottom"
+        android:layout_marginStart="@dimen/review_author_margin_start"
+        android:layout_marginTop="@dimen/review_author_margin_top"
+        android:textColor="@color/black"
+        android:textSize="@dimen/review_author_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/photoProfile"
+        app:layout_constraintStart_toEndOf="@+id/photoProfile"
+        app:layout_constraintTop_toTopOf="@+id/photoProfile" />
 
     <TextView
         android:id="@+id/review_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:layout_marginEnd="@dimen/review_date_margin_end"
+        app:layout_constraintBottom_toBottomOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
     <include
         android:id="@+id/include"
         layout="@layout/rating"
-        android:layout_height="0dp"
         android:layout_width="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/review_author" />
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/review_rating_margin_top"
+        app:layout_constraintStart_toStartOf="@+id/review_author"
+        app:layout_constraintTop_toBottomOf="@+id/photoProfile" />
 
     <TextView
         android:id="@+id/review_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/review_text_margin_end"
+        android:layout_marginTop="@dimen/review_text_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/include"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
 </android.support.constraint.ConstraintLayout>
