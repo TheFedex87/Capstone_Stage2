@@ -41,12 +41,6 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/detail_photo_indicator_margin_bottom"
                     android:visibility="gone"/>
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="@dimen/progress_bar_size"
-                    android:layout_height="@dimen/progress_bar_size"
-                    android:layout_gravity="center"/>
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar

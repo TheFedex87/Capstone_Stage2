@@ -3,6 +3,7 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,8 +17,11 @@ import com.udacity.thefedex87.takemyorder.model.Restaurant;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class RestaurantsMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     public static final String PLACE_ID_KEY = "PLACE_ID_KEY";
+    public static final String RESTAURANT_NAME_KEY = "RESTAURANT_NAME_KEY";
 
     private GoogleMap mMap;
     private List<Restaurant> restaurantList;
@@ -55,9 +59,14 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if (getString(R.string.GOOGLE_PLACES_API_KEY) != null && getString(R.string.GOOGLE_PLACES_API_KEY) != "")
+        if (getString(R.string.GOOGLE_PLACES_API_KEY) != null && !getString(R.string.GOOGLE_PLACES_API_KEY).isEmpty())
             mMap.setOnMarkerClickListener(this);
+        else {
+            Timber.e(getString(R.string.error_places_api_key_not_provided));
+            Toast.makeText(this, getString(R.string.error_places_api_key_not_provided), Toast.LENGTH_LONG).show();
+        }
 
+        //TODO: implement controls to retrieve current user position
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            // TODO: Consider calling
 //            //    ActivityCompat#requestPermissions
@@ -92,8 +101,9 @@ public class RestaurantsMapActivity extends FragmentActivity implements OnMapRea
 
         Intent intent = new Intent(this, RestaurantDetailsActivity.class);
         intent.putExtra(PLACE_ID_KEY, marker.getTag().toString());
+        intent.putExtra(RESTAURANT_NAME_KEY, marker.getTitle());
         startActivity(intent);
 
-        return true;
+        return false;
     }
 }

@@ -50,6 +50,7 @@ import timber.log.Timber;
 
 public class RestaurantDetailsActivity extends AppCompatActivity implements RestaurantPhotoAdapter.ImageLoadingState {
     private String GOOGLE_PLACES_API_KEY = "";
+    private final int MAX_PHOTO_TO_LOAD = 15;
 
     @BindView(R.id.photo_pager)
     ViewPager photoPager;
@@ -84,8 +85,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
     @BindView(R.id.reviews_container)
     RecyclerView reviewsContainer;
 
-    @BindView(R.id.progress_bar)
-    ProgressBar progressBar;
+//    @BindView(R.id.progress_bar)
+//    ProgressBar progressBar;
 
     @Inject
     Context context;
@@ -106,9 +107,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
         if (intent != null && intent.hasExtra(RestaurantsMapActivity.PLACE_ID_KEY)){
             final String placeId = intent.getStringExtra(RestaurantsMapActivity.PLACE_ID_KEY);
 
+            //Set restaurant name
+            final boolean titleSet = intent.hasExtra(RestaurantsMapActivity.RESTAURANT_NAME_KEY);
+            if (titleSet)
+                collapsingToolbarLayout.setTitle(intent.getStringExtra(RestaurantsMapActivity.RESTAURANT_NAME_KEY));
+
+
             GOOGLE_PLACES_API_KEY = getString(R.string.GOOGLE_PLACES_API_KEY);
 
-            if (GOOGLE_PLACES_API_KEY != "") {
+            if (GOOGLE_PLACES_API_KEY != null && !GOOGLE_PLACES_API_KEY.isEmpty()) {
                 TakeMyOrderApplication.appComponent().inject(this);
 
                 final ApplicationModule applicationModule = new ApplicationModule(context);
@@ -122,20 +129,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                         googlePlacesApiInterface.placeDetails(placeId, GOOGLE_PLACES_API_KEY).enqueue(new Callback<GooglePlaceResultModel>() {
                             @Override
                             public void onResponse(Call<GooglePlaceResultModel> call, Response<GooglePlaceResultModel> response) {
-                                collapsingToolbarLayout.setTitle(response.body().getGooglePlaceDetailsModel().getName());
+                                if (!titleSet)
+                                    collapsingToolbarLayout.setTitle(response.body().getGooglePlaceDetailsModel().getName());
 
                                 List<String> photos = new ArrayList<>();
                                 for(RestaurantPhotoModel photoReference : response.body().getGooglePlaceDetailsModel().getPhotos()){
                                     String photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference.getPhotoReference() + "&key=" + GOOGLE_PLACES_API_KEY;
                                     photos.add(photoUrl);
+
+                                    //Max photo to load
+                                    if (photos.size() == MAX_PHOTO_TO_LOAD) break;
                                 }
 
                                 UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                                         .applicationModule(applicationModule)
-                                        .userInterfaceModule(new UserInterfaceModule(photos, response
-                                                .body()
-                                                .getGooglePlaceDetailsModel()
-                                                .getReviews(),
+                                        .userInterfaceModule(
+                                                new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
                                                 RestaurantDetailsActivity.this))
                                         .build();
 
@@ -206,7 +215,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
 
     @Override
     public void imageLoadCompleted() {
-        progressBar.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.GONE);
         photoIndicatorContainer.setVisibility(View.VISIBLE);
     }
 }

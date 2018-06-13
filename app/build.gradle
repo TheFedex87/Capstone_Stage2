@@ -52,6 +52,8 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
@@ -59,6 +61,8 @@ dependencies {
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.1'
 }
+
+
 
 
 apply plugin: 'com.google.gms.google-services'

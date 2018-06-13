@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_place"
+        android:src="@drawable/ic_place"
         android:contentDescription="@string/content_description_map"/>
 
 
@@ -56,6 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:srcCompat="@drawable/ic_login" />
+        android:src="@drawable/ic_login" />
 
 </android.support.constraint.ConstraintLayout>

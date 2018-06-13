@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/restaurant_review_margin_top"
-    android:layout_marginBottom="@dimen/review_margin_bottom">
+    android:layout_marginBottom="@dimen/restaurant_review_margin_bottom">
 
     <!--<View-->
         <!--android:layout_width="match_parent"-->

@@ -988,21 +988,24 @@ public final class PostMockData {
         restaurants.add(r);
 
         r = new Restaurant();
-        r.setName("Eat Eat Eat");
-        r.setLat(43.303262);
-        r.setLng(12.335086);
+        r.setName("Wood Pub");
+        r.setLat(43.302858);
+        r.setLng(12.331823);
+        r.setPlaceId("ChIJS2HpwMQQLBMRARDAFYMVVNs");
         restaurants.add(r);
 
         r = new Restaurant();
-        r.setName("Happy meal");
-        r.setLat(43.108486);
-        r.setLng(12.387825);
+        r.setName("Ristorante del sole");
+        r.setLat(43.109994);
+        r.setLng(12.390159);
+        r.setPlaceId("ChIJhY6ND4egLhMROPBqeKhIE_E");
         restaurants.add(r);
 
         r = new Restaurant();
-        r.setName("IWTWIWT");
-        r.setLat(43.101909);
-        r.setLng(12.310238);
+        r.setName("Ristorante Sottovento");
+        r.setLat(43.183221);
+        r.setLng(12.137858);
+        r.setPlaceId("ChIJtyLHjQoBLBMRt7QRk4K5_DM");
         restaurants.add(r);
 
         return restaurants;
@@ -1016,6 +1019,7 @@ public final class PostMockData {
         waiter.setLastName("Rossi");
         waiter.setUserName("m.rossi22");
         waiter.setPassword("mrossi22pwd");
+        waiter.setEmail("mrossi22@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1086,6 +1090,7 @@ public final class PostMockData {
         waiter.setLastName("Sparrow");
         waiter.setUserName("j.sparrow14");
         waiter.setPassword("jsparrow14pwd");
+        waiter.setEmail("jsparrow14@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
