@@ -2,13 +2,16 @@
     <string name="app_name">TakeMyOrder</string>
     <string name="title_activity_restaurants">Map</string>
 
+    <!--Content Descriptions-->
     <string name="content_description_map">Find all restaurants</string>
     <string name="content_description_login">Login</string>
+    <string name="content_description_fab_add_order">Add new food or drink to your order</string>
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
     <string name="error_places_api_key_not_provided">No Places API KEY provided</string>
     <string name="error_no_barcode_found">Barcode not found</string>
+    <string name="error_no_valid_information_from_barcode">Error trying to extrapolating information from barcode</string>
 
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>

@@ -31,6 +31,13 @@
     <dimen name="review_text_margin_top">8dp</dimen>
     <dimen name="review_text_margin_end">16dp</dimen>
 
+    <!--Customer main activity (order activity)-->
+    <dimen name="fab_elevation">6dp</dimen>
+    <dimen name="fab_press_translation_z">6dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="fab_width">56dp</dimen>
+    <dimen name="fab_height">56dp</dimen>
+
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>
     <dimen name="login_maps_icons_height">100dp</dimen>

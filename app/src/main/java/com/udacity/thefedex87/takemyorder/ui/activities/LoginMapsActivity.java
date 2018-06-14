@@ -1,14 +1,18 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,6 +37,9 @@ import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.model.Customer;
 import com.udacity.thefedex87.takemyorder.model.Restaurant;
 import com.udacity.thefedex87.takemyorder.model.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,6 +93,8 @@ public class LoginMapsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_maps);
+
+        Timber.plant(new Timber.DebugTree());
 
         TakeMyOrderApplication.appComponent().inject(this);
 
@@ -174,6 +183,27 @@ public class LoginMapsActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             //If dataSnapshot.getValue() is equal to null, a customer is logging into the system
                                             if (dataSnapshot.getValue() == null){
+//                                                AlertDialog.Builder builder;
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                                    builder = new AlertDialog.Builder(LoginMapsActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+//                                                } else {
+//                                                    builder = new AlertDialog.Builder(LoginMapsActivity.this);
+//                                                }
+//                                                builder.setTitle("Delete entry")
+//                                                        .setMessage("Are you sure you want to delete this entry?")
+//                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                                            public void onClick(DialogInterface dialog, int which) {
+//                                                                // continue with delete
+//                                                            }
+//                                                        })
+//                                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                                                            public void onClick(DialogInterface dialog, int which) {
+//                                                                // do nothing
+//                                                            }
+//                                                        })
+//                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                                                        .show();
+
                                                 customer = new Customer();
                                                 customer.setEmail(user.getEmail());
                                                 customer.setUserName(user.getDisplayName());
@@ -238,6 +268,7 @@ public class LoginMapsActivity extends AppCompatActivity {
 //        }
 
         if ((requestCode == RC_PHOTO_PICKER || requestCode == RC_PHOTO_SHOT) && resultCode == RESULT_OK) {
+            //Create the barcode reader
             BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(QR_CODE).build();
             Bitmap bitmap = null;
 
@@ -257,24 +288,49 @@ public class LoginMapsActivity extends AppCompatActivity {
                 bitmap = (Bitmap) extras.get("data");
             }
 
+            //Detect the barcode from Bitmap
             Frame myFrame = new Frame.Builder().setBitmap(bitmap).build();
             SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
             if (barcodes.size() == 0){
+                //Barcode not found on picture
                 Timber.w(getString(R.string.error_no_barcode_found));
                 Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
             } else {
-                //Retrieve the barcode
-                Barcode barcode = barcodes.get(barcodes.keyAt(0));
-                String qrString = barcode.displayValue;
-                String[] infos = qrString.split("&");
+                //Retrieve the barcode content
+                String qrString = barcodes.get(barcodes.keyAt(0)).displayValue;
 
-                //Customer login
-                Timber.d("Logging in user: " + customer.getEmail());
-                Intent intent = new Intent(context, CustomerMainActivity.class);
-                intent.putExtra(USER_INFO_KEY, customer);
-                intent.putExtra(USER_RESTAURANT_KEY, infos[0]);
-                intent.putExtra(USER_RESTAURANT_TABLE_KEY, infos[1]);
-                startActivity(intent);
+                //Parse the barcode content into a JSONObject
+                JSONObject json = null;
+                try {
+                    json = new JSONObject(qrString);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //Extract the information from the JSONObject
+                String restaurantId = null;
+                String table = null;
+                try {
+                    restaurantId = json.getString("restaurantId");
+                    table = json.getString("table");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (restaurantId != null || table != null) {
+                    //If information are correctly extracted goto CustomerMainActivity
+                    //Customer login
+                    Timber.d("Logging in user: " + customer.getEmail());
+                    Intent intent = new Intent(context, CustomerMainActivity.class);
+                    intent.putExtra(USER_INFO_KEY, customer);
+                    intent.putExtra(USER_RESTAURANT_KEY, restaurantId);
+                    intent.putExtra(USER_RESTAURANT_TABLE_KEY, table);
+                    startActivity(intent);
+                } else {
+                    Timber.w(getString(R.string.error_no_valid_information_from_barcode));
+                    Toast.makeText(this, getString(R.string.error_no_valid_information_from_barcode), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
