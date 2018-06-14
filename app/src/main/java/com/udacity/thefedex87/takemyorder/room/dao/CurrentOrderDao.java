@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface CurrentOrderDao {
     @Query("SELECT * FROM current_order")
-    LiveData<List<CurrentOrderEntry>> loadAllFoods();
+    LiveData<List<CurrentOrderEntry>> getCurrentOrderList();
 
     @Insert
     void insertFood(CurrentOrderEntry food);

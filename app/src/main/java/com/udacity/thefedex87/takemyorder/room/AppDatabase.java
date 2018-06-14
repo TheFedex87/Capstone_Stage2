@@ -7,6 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 import com.udacity.thefedex87.takemyorder.room.converter.FoodTypeConverter;
+import com.udacity.thefedex87.takemyorder.room.dao.CurrentOrderDao;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 
 import timber.log.Timber;
@@ -34,4 +35,6 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
+
+    public abstract CurrentOrderDao currentOrderDao();
 }
