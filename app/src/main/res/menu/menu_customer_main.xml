@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/new_game"
+        android:icon="@drawable/ic_call_waiter"
+        android:title="@string/call_waiter"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/content_description_customer_main_menu"/>
+
+</menu>

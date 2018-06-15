@@ -3,6 +3,8 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,21 +19,31 @@ import com.udacity.thefedex87.takemyorder.models.Restaurant;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class RestaurantsMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class RestaurantsMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     public static final String PLACE_ID_KEY = "PLACE_ID_KEY";
     public static final String RESTAURANT_NAME_KEY = "RESTAURANT_NAME_KEY";
 
     private GoogleMap mMap;
     private List<Restaurant> restaurantList;
 
-
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants);
+
+        ButterKnife.bind(this);
+
+        toolbar.setTitle(getString(R.string.title_activity_restaurants));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
