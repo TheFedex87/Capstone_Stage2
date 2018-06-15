@@ -6,7 +6,8 @@
     <string name="content_description_map">Find all restaurants</string>
     <string name="content_description_login">Login</string>
     <string name="content_description_fab_add_order">Add new food or drink to your order</string>
-    <string name="content_description_customer_main_menu">Call a waiter</string>
+    <string name="content_description_call_waiter">Call a waiter</string>
+    <string name="content_description_checkout_order">Procede to the checkout of your order</string>
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
@@ -17,6 +18,7 @@
     <!--Customer Main Activity-->
     <string name="order_something">Order something</string>
     <string name="call_waiter">Call a waiter</string>
+    <string name="checkout_order">Checkout order</string>
 
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
