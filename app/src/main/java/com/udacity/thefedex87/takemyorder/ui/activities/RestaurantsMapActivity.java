@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.model.Restaurant;
+import com.udacity.thefedex87.takemyorder.models.Restaurant;
 
 import java.util.List;
 

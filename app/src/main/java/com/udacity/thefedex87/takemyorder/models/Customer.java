@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.model;
+package com.udacity.thefedex87.takemyorder.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

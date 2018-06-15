@@ -1,9 +1,7 @@
-package com.udacity.thefedex87.takemyorder.model;
+package com.udacity.thefedex87.takemyorder.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by federico.creti on 07/06/2018.

@@ -13,10 +13,8 @@ import com.squareup.picasso.Picasso;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
 import com.udacity.thefedex87.takemyorder.utils.UserInterfaceUtils;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;

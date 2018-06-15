@@ -2,22 +2,16 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.LayoutDirection;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +22,8 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.GooglePlaceResultModel;
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantPhotoModel;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.GooglePlaceResultModel;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantPhotoModel;
 import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
@@ -145,7 +139,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                                         .applicationModule(applicationModule)
                                         .userInterfaceModule(
                                                 new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
-                                                RestaurantDetailsActivity.this))
+                                                RestaurantDetailsActivity.this, LinearLayoutManager.HORIZONTAL))
                                         .build();
 
                                 //Setup Photo container
@@ -156,7 +150,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                                 //Setup Photo Indicator
                                 final PhotoIndicatorContainerAdapter indicatorAdapter = userInterfaceComponent.getPhotoIndicatorContainerAdapter();
                                 photoIndicatorContainer.setAdapter(indicatorAdapter);
-                                photoIndicatorContainer.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+                                LinearLayoutManager d = userInterfaceComponent.getLinearLayoutManager();
+                                photoIndicatorContainer.setLayoutManager(d);
                                 photoPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                                     @Override
                                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -183,8 +178,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                                 ///////////////////////////////////
 
                                 //Setup Reviews
+                                userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                                        .applicationModule(applicationModule)
+                                        .userInterfaceModule(
+                                                new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
+                                                        RestaurantDetailsActivity.this, LinearLayoutManager.VERTICAL))
+                                        .build();
                                 RestaurantReviewsAdapter restaurantReviewsAdapter = userInterfaceComponent.getRestaurantReviewsAdapter();
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                                LinearLayoutManager linearLayoutManager = userInterfaceComponent.getLinearLayoutManager();
                                 reviewsContainer.setLayoutManager(linearLayoutManager);
                                 reviewsContainer.setAdapter(restaurantReviewsAdapter);
 

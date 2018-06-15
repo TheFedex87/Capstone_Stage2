@@ -13,6 +13,9 @@
     <string name="error_no_barcode_found">Barcode not found</string>
     <string name="error_no_valid_information_from_barcode">Error trying to extrapolating information from barcode</string>
 
+    <!--Customer Main Activity-->
+    <string name="order_something">Order something</string>
+
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
 </resources>

@@ -8,11 +8,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.udacity.thefedex87.takemyorder.model.Drink;
-import com.udacity.thefedex87.takemyorder.model.Food;
-import com.udacity.thefedex87.takemyorder.model.Ingredient;
-import com.udacity.thefedex87.takemyorder.model.Restaurant;
-import com.udacity.thefedex87.takemyorder.model.Waiter;
+import com.udacity.thefedex87.takemyorder.models.Drink;
+import com.udacity.thefedex87.takemyorder.models.Food;
+import com.udacity.thefedex87.takemyorder.models.Ingredient;
+import com.udacity.thefedex87.takemyorder.models.Restaurant;
+import com.udacity.thefedex87.takemyorder.models.Waiter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,8 +3,7 @@ package com.udacity.thefedex87.takemyorder.dagger;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantPhotoModel;
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
@@ -26,11 +25,17 @@ public class UserInterfaceModule {
     private List<String> photoUrls;
     private List<RestaurantReviewModel> reviews;
     private RestaurantPhotoAdapter.ImageLoadingState imageLoadingState;
+    private int linearLayoutManagerOrientation = LinearLayoutManager.VERTICAL;
 
-    public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState){
+    public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this.photoUrls = photoUrls;
         this.reviews = reviews;
         this.imageLoadingState = imageLoadingState;
+        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+    }
+
+    public UserInterfaceModule( int linearLayoutManagerOrientation) {
+        this(null, null, null, linearLayoutManagerOrientation);
     }
 
     public UserInterfaceModule(List<?> list){
@@ -64,7 +69,7 @@ public class UserInterfaceModule {
 
     @Provides
     public LinearLayoutManager provideLinearLayoutManager(Context context){
-        return new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        return new LinearLayoutManager(context, linearLayoutManagerOrientation, false);
     }
 
     @Singleton

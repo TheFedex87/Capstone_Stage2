@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel;
+package com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel;
 
 import com.google.gson.annotations.SerializedName;
 

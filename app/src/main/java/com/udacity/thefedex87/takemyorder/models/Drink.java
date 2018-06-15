@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.model;
+package com.udacity.thefedex87.takemyorder.models;
 
 /**
  * Created by feder on 07/06/2018.

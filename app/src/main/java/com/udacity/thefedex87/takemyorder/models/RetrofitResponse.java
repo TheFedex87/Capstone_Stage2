@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.model;
+package com.udacity.thefedex87.takemyorder.models;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/food_in_order_margin_top"
+    android:layout_marginBottom="@dimen/food_price_margin_bottom" >
+
+    <TextView
+        android:id="@+id/food_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/food_name_margin_start"
+        android:layout_marginTop="@dimen/food_name_margin_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:textSize="@dimen/food_name_text_size"
+        tools:text="Food name" />
+
+    <TextView
+        android:id="@+id/food_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/food_type_margin_start"
+        android:layout_marginTop="@dimen/food_type_margin_top"
+        app:layout_constraintStart_toStartOf="@+id/food_name"
+        app:layout_constraintTop_toBottomOf="@+id/food_name"
+        android:textSize="@dimen/food_type_text_size"
+        tools:text="Food type"/>
+
+    <TextView
+        android:id="@+id/food_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/food_price_margin_bottom"
+        android:layout_marginEnd="@dimen/food_price_margin_end"
+        android:layout_marginTop="@dimen/food_price_margin_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/food_price_text_size"
+        tools:text="Food price"/>
+
+</android.support.constraint.ConstraintLayout>

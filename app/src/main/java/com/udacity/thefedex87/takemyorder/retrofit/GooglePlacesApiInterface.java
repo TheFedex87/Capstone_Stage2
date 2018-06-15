@@ -1,6 +1,6 @@
 package com.udacity.thefedex87.takemyorder.retrofit;
 
-import com.udacity.thefedex87.takemyorder.model.GooglePlaceDetailModel.GooglePlaceResultModel;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.GooglePlaceResultModel;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

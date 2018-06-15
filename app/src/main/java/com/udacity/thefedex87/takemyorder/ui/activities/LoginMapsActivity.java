@@ -1,18 +1,13 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,9 +29,8 @@ import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
-import com.udacity.thefedex87.takemyorder.model.Customer;
-import com.udacity.thefedex87.takemyorder.model.Restaurant;
-import com.udacity.thefedex87.takemyorder.model.User;
+import com.udacity.thefedex87.takemyorder.models.Customer;
+import com.udacity.thefedex87.takemyorder.models.Restaurant;
 
 import org.json.JSONException;
 import org.json.JSONObject;

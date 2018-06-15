@@ -1,7 +1,4 @@
-package com.udacity.thefedex87.takemyorder.model;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.udacity.thefedex87.takemyorder.models;
 
 /**
  * Created by feder on 07/06/2018.

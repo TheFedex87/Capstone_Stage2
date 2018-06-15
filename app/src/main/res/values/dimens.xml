@@ -37,6 +37,21 @@
     <dimen name="fab_margin">24dp</dimen>
     <dimen name="fab_width">56dp</dimen>
     <dimen name="fab_height">56dp</dimen>
+    <dimen name="order_something_text_size">20sp</dimen>
+
+    <!--Food in order-->
+    <dimen name="food_in_order_margin_top">4dp</dimen>
+    <dimen name="food_in_order_margin_bottom">4dp</dimen>
+    <dimen name="food_name_margin_top">8dp</dimen>
+    <dimen name="food_name_margin_start">16dp</dimen>
+    <dimen name="food_type_margin_top">8dp</dimen>
+    <dimen name="food_type_margin_start">8dp</dimen>
+    <dimen name="food_price_margin_top">8dp</dimen>
+    <dimen name="food_price_margin_bottom">8dp</dimen>
+    <dimen name="food_price_margin_end">16dp</dimen>
+    <dimen name="food_name_text_size">18sp</dimen>
+    <dimen name="food_type_text_size">14sp</dimen>
+    <dimen name="food_price_text_size">18sp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>
