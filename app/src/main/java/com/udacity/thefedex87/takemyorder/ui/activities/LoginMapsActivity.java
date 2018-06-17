@@ -29,6 +29,7 @@ import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.mock.PostMockData;
 import com.udacity.thefedex87.takemyorder.models.Customer;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 
@@ -100,6 +101,8 @@ public class LoginMapsActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         restaurantsReference = firebaseDatabase.getReference("restaurants");
+
+        PostMockData.postMockData();
 
         //Intent intent = new Intent(this, RestaurantsMapActivity.class);
         //startActivity(intent);

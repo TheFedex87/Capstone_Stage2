@@ -1,13 +1,25 @@
 package com.udacity.thefedex87.takemyorder.mock;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Ingredient;
@@ -70,7 +82,13 @@ public final class PostMockData {
                     for (int i = 0; i < rndFood; i++) {
                         Food food = dishes.get(rnd.nextInt(dishes.size()));
                         dishes.remove(food);
-                        menuRef.child(child).push().setValue(food);
+                        DatabaseReference foodRef = menuRef.child(child);
+                        String newKey = foodRef.push().getKey();
+                        foodRef.child(newKey).setValue(food);
+
+                        if(food.getImageName() != null && !food.getImageName().isEmpty()){
+                            updloadMealImage(food.getImageName(), newKey);
+                        }
                     }
                 }
 
@@ -108,6 +126,13 @@ public final class PostMockData {
         }
     }
 
+    private static void updloadMealImage(String imgName, String key){
+        StorageReference mealImagesStorageRef = FirebaseStorage.getInstance().getReference().child("meals_images");
+        Uri uri = Uri.parse("android.resource://com.udacity.thefedex87.takemyorder/drawable/" + imgName);
+        StorageReference photoRef = mealImagesStorageRef.child(key);
+        UploadTask uploadTask = photoRef.putFile(uri);
+    }
+
     private static List<Food> getStarterDishMockedList(){
         //https://food.ndtv.com/food-drinks/10-best-starter-recipes-781678
         //https://www.greatbritishchefs.com/recipes/lobster-thermidor-recipe
@@ -117,6 +142,7 @@ public final class PostMockData {
         Food food = new Food();
         food.setName("Kakori Kebab Recipe");
         food.setPrice(7.5);
+        food.setImageName("recipe_kachori_kebab");
         food.setDescription("These Lucknowi Kebabs are nothing short of a celebration of meat. Juicy, succulent and just right, spruce them up with some chaat masala, fresh mint chutney, and they’ll have your party off to an impressive start.");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient = new Ingredient();
@@ -164,6 +190,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Stir Fried Chilli Chicken");
         food.setPrice(8.7);
+        food.setImageName("stir_fried_chilli_chicken");
         food.setDescription("We bring you the best of the best in just 15 minutes! So skip the usual and cook up a storm in your kitchen with this scrumptiously simple chilli chicken.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -199,6 +226,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Microwave Paneer Tikka Recipe");
         food.setPrice(5);
+        food.setImageName("microwave_paneer_tikka");
         food.setDescription("No tandoor? No problem! All you need is a microwave and a few minutes to spare for this flavor-packed paneer tikka.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -240,6 +268,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Cheese Balls Recipe");
         food.setPrice(5.5);
+        food.setImageName("cheese_balls");
         food.setDescription("No forks or spoons are required for this easy-to-grab party snack. Our outstanding cheese balls are all about the crunch and so sinful yet simple. (Umm, yum!)");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -269,6 +298,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Lobster Thermidor");
         food.setPrice(13);
+        food.setImageName("lobster_therminador");
         food.setDescription("Geoffrey Smeddle's Lobster Thermidor recipe offers a twist on the Parisian classic, bringing it home to Britain with the use of Anster cheese - a handmade, traditional and local cheese made on the North West coast of Scotland carrying a delicate and rich flavour, similar to that of Wenslydale or a mild English Cheddar. This recipe was developed as part of Geoffrey's collaboration with the Sunday Herald.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -324,6 +354,7 @@ public final class PostMockData {
         Food food = new Food();
         food.setName("Brodetto (Fish Stew) Ancona-Style");
         food.setPrice(11);
+        food.setImageName("brodetto_ancora_style");
         food.setDescription("Brodetto, a fish stew with a tomato base, is a specialty of the Marche region of Italy. There are several recipes for brodetto, even within the Marche. This recipe belongs to the province of Ancona. To make this recipe, I chose fish available in the southern United States");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient = new Ingredient();
@@ -380,6 +411,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Spinach Enchiladas");
         food.setPrice(8);
+        food.setImageName("spinach_enchiladas");
         food.setDescription("If you like spinach and Mexican food, you'll love these easy vegetarian enchiladas made with ricotta cheese and spinach.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -415,6 +447,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Lasagne Alla Bolognese Saporite");
         food.setPrice(9);
+        food.setImageName("lasagne_alla_bolognese");
         food.setDescription("This is the classic lasagne alla Bolognese recipe from the Emilia region in Northern Italy. The Bolognese sauce is made with a mixture of beef and pork mince. The addition of prosciutto, red wine, cinnamon, and nutmeg make it truly authentic.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
