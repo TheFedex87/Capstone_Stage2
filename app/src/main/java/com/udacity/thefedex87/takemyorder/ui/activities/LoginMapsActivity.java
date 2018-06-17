@@ -204,7 +204,7 @@ public class LoginMapsActivity extends AppCompatActivity {
 
                                                 //Since this is a user log in, we need to launch camera in order to scan the qrcode at the table.
                                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                                intent.setType("image/jpeg");
+                                                intent.setType("image/png");
                                                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                                                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
 
@@ -275,6 +275,9 @@ public class LoginMapsActivity extends AppCompatActivity {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Timber.e("Error parsing Bitmap " + e.getMessage());
+                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+                    return;
                 }
             } else if(requestCode == RC_PHOTO_SHOT) {
                 //Requested selection of the picture from file camera shot
@@ -299,6 +302,9 @@ public class LoginMapsActivity extends AppCompatActivity {
                     json = new JSONObject(qrString);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Timber.e("Errore creating JSON object " + e.getMessage());
+                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+                    return;
                 }
 
                 //Extract the information from the JSONObject
@@ -307,7 +313,7 @@ public class LoginMapsActivity extends AppCompatActivity {
                 try {
                     restaurantId = json.getString("restaurantId");
                     table = json.getString("table");
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

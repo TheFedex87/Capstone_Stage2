@@ -6,19 +6,10 @@ import java.util.List;
  * Created by feder on 07/06/2018.
  */
 
-public class Food {
-    String name;
+public class Food extends Meal {
+
     String description;
     List<Ingredient> ingredients;
-    double price;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
@@ -34,13 +25,5 @@ public class Food {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

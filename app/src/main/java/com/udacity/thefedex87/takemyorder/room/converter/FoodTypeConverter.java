@@ -4,6 +4,7 @@ import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
+import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 
 /**
  * Created by federico.creti on 14/06/2018.
@@ -11,12 +12,12 @@ import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 
 public class FoodTypeConverter {
     @TypeConverter
-    public static String toString(CurrentOrderEntry.FoodTypes foodType){
+    public static String toString(FoodTypes foodType){
         return foodType.toString();
     }
 
     @TypeConverter
-    public static CurrentOrderEntry.FoodTypes toFoodType(String stringFoodType){
-        return CurrentOrderEntry.FoodTypes.valueOf(stringFoodType);
+    public static FoodTypes toFoodType(String stringFoodType){
+        return FoodTypes.valueOf(stringFoodType);
     }
 }

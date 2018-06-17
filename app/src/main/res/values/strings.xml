@@ -14,6 +14,8 @@
     <string name="error_places_api_key_not_provided">No Places API KEY provided</string>
     <string name="error_no_barcode_found">Barcode not found</string>
     <string name="error_no_valid_information_from_barcode">Error trying to extrapolating information from barcode</string>
+    <string name="error_loading_bitmap">QR-COde reading error</string>
+    <string name="error_invalid_id_restaurant">Invalid ID restaurant</string>
 
     <!--Customer Main Activity-->
     <string name="order_something">Order something</string>
@@ -22,4 +24,11 @@
 
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
+
+    <!--Restaurant menu-->
+    <string name="starter_dishes">Starter dishes</string>
+    <string name="main_dishes">Main dishes</string>
+    <string name="side_dishes">Side dishes</string>
+    <string name="desserts">Desserts</string>
+    <string name="drinks">Drinks</string>
 </resources>

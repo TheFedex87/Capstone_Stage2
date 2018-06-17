@@ -2,6 +2,7 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,7 +12,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +42,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Customer customer;
     private Restaurant restaurant;
+    private String restaurantId;
     private String table;
 
     @BindView(R.id.add_to_order_fab)
@@ -68,7 +72,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             customer = getIntent().getParcelableExtra(LoginMapsActivity.USER_INFO_KEY);
-            final String restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
+            restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
             table = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY);
 
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -79,8 +83,15 @@ public class CustomerMainActivity extends AppCompatActivity {
                     for(DataSnapshot restaurantSnapshot : dataSnapshot.getChildren()) {
                         restaurant = restaurantSnapshot.getValue(Restaurant.class);
                     }
-                    collapsingToolbarLayout.setTitleEnabled(false);
-                    toolbar.setTitle(restaurant.getName());
+
+                    if (restaurant == null){
+                        Timber.e("Invalid ID restaurant");
+                        Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        collapsingToolbarLayout.setTitleEnabled(false);
+                        toolbar.setTitle(restaurant.getName());
+                    }
                 }
 
                 @Override
@@ -98,14 +109,17 @@ public class CustomerMainActivity extends AppCompatActivity {
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final AppDatabase db = AppDatabase.getInstance(CustomerMainActivity.this);
-                    final CurrentOrderEntry entry = new CurrentOrderEntry(0, "Pizza margherita", 3.4, CurrentOrderEntry.FoodTypes.MAINDISH, "asasasa");
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.currentOrderDao().insertFood(entry);
-                        }
-                    });
+//                    final AppDatabase db = AppDatabase.getInstance(CustomerMainActivity.this);
+//                    final CurrentOrderEntry entry = new CurrentOrderEntry(0, "Pizza margherita", 3.4, CurrentOrderEntry.FoodTypes.MAINDISH, "asasasa");
+//                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            db.currentOrderDao().insertFood(entry);
+//                        }
+//                    });
+                    Intent intent = new Intent(CustomerMainActivity.this, RestaurantMenuActivity.class);
+                    intent.putExtra(LoginMapsActivity.USER_RESTAURANT_KEY, restaurantId);
+                    startActivity(intent);
                 }
             });
         } else{
@@ -119,6 +133,11 @@ public class CustomerMainActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_customer_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     //    public void signout(View view){

@@ -64,12 +64,4 @@ public class CurrentOrderEntry {
     public void setFoodId(String foodId) {
         this.foodId = foodId;
     }
-
-    public enum FoodTypes{
-        STARTER,
-        MAINDISH,
-        SIDEDISH,
-        DESSERT,
-        DRINK
-    }
 }

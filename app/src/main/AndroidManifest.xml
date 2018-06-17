@@ -7,7 +7,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -48,7 +49,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.RestaurantsMapActivity" />
         </activity>
-
         <activity
             android:name=".ui.activities.RestaurantDetailsActivity"
             android:launchMode="singleTop">
@@ -63,8 +63,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LoginMapsActivity" />
         </activity>
-
-        <activity android:name=".ui.activities.WaiterMainActivity"></activity>
+        <activity android:name=".ui.activities.WaiterMainActivity" />
+        <activity android:name=".ui.activities.RestaurantMenuActivity"></activity>
     </application>
 
 </manifest>

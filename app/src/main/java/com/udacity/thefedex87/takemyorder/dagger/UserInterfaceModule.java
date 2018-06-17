@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
@@ -76,5 +77,11 @@ public class UserInterfaceModule {
     @Provides
     public RestaurantReviewsAdapter provideRestaurantReviewsAdapter(Context context){
         return new RestaurantReviewsAdapter(context, reviews);
+    }
+
+    @Singleton
+    @Provides
+    public FoodInMenuAdapter provideFoodInMenuAdapter(){
+        return new FoodInMenuAdapter();
     }
 }
