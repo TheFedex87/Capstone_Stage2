@@ -102,7 +102,7 @@ public class LoginMapsActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         restaurantsReference = firebaseDatabase.getReference("restaurants");
 
-        PostMockData.postMockData();
+        //PostMockData.postMockData();
 
         //Intent intent = new Intent(this, RestaurantsMapActivity.class);
         //startActivity(intent);
@@ -206,8 +206,9 @@ public class LoginMapsActivity extends AppCompatActivity {
                                                 customer.setUserName(user.getDisplayName());
 
                                                 //Since this is a user log in, we need to launch camera in order to scan the qrcode at the table.
+                                                String[] mimeTypes = {"image/jpeg", "image/png"};
                                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                                intent.setType("image/png");
+                                                intent.setType("image/*").putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                                                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                                                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
 

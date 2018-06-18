@@ -354,7 +354,7 @@ public final class PostMockData {
         Food food = new Food();
         food.setName("Brodetto (Fish Stew) Ancona-Style");
         food.setPrice(11);
-        food.setImageName("brodetto_ancora_style");
+        food.setImageName("brodetto_ancona_style");
         food.setDescription("Brodetto, a fish stew with a tomato base, is a specialty of the Marche region of Italy. There are several recipes for brodetto, even within the Marche. This recipe belongs to the province of Ancona. To make this recipe, I chose fish available in the southern United States");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient = new Ingredient();
@@ -509,6 +509,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Penne Alla Norcina");
         food.setPrice(8.5);
+        food.setImageName("penne_alla_norcina");
         food.setDescription("The name Norcina comes from the town of Norcia, famous for cured meat, cheese and the precious truffles.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -545,8 +546,9 @@ public final class PostMockData {
         foods.add(food);
 
         food = new Food();
-        food.setName("Pasta Carbonara Recipes");
+        food.setName("Spaghetti alla Carbonara");
         food.setPrice(7);
+        food.setImageName("spaghetti_alla_carbonara");
         food.setDescription("Spaghetti alla Carbonara: When it's good, it can make your eyes roll back in your head with pleasure. It lurks there, beckoning, batting its eyelashes on Italian menus. When you don't order it, you usually end up wishing you had.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -576,6 +578,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Pizza margherita");
         food.setPrice(5);
+        food.setImageName("pizza_margherita");
         food.setDescription("The original Italian pizza, the queen of Pizza");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -618,6 +621,7 @@ public final class PostMockData {
         Food food = new Food();
         food.setName("Boston Baked Beans");
         food.setPrice(7.5);
+        food.setImageName("boston_backed_beans");
         food.setDescription("What are Boston baked beans? The short answer is that they're small white beans (usually navy beans), slow-cooked in an oven, hearth, or ember-filled hole in the ground with molasses, salt pork, black pepper, and maybe a touch of mustard and onion until they form a thick stew, rich with a deep color and caramelized crust. Those are the ingredients my 1939 copy of The New England Yankee Cookbook calls for; it's what my 1914 copy of Household Discoveries & Mrs. Curtis's Cook Book describes; and it's what The Fannie Farmer Cookbook instructs as well (along with adding a couple of tablespoons of sugar).");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient = new Ingredient();
@@ -656,6 +660,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Parmigiana di melanzane");
         food.setPrice(6.5);
+        food.setImageName("parmigiana_di_melanzane");
         food.setDescription("An amazin Italian side dish made with aubergine. An incredible taste from one of the most important cuisine in the world.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -694,6 +699,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Tuscan-Style Fillet of Beef in Green Peppercorn Sauce");
         food.setPrice(12);
+        food.setImageName("fillet_of_beef_green_peppercon");
         food.setDescription("It's an incredibly simple and quick—you can have it on the table in 15 to 20 minutes—yet immensely satisfying dish: a melt-in-your-mouth cut of grilled beef tenderloin served with a creamy, piquant pickled green peppercorn sauce.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -717,6 +723,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Lemon Scaloppine");
         food.setPrice(7);
+        food.setImageName("lemon_scaloppine");
         food.setDescription("Veal cutlets with lemon juice. This is the way Italian kids are initiated to meat.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -755,6 +762,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Polpette fritte");
         food.setPrice(7.5);
+        food.setImageName("polpette_fritte");
         food.setDescription("There are few things better than homemade meatballs. These Polpette Fritte hail from the northeastern region of Italy and combine spicy Italian sausage, ground turkey and beef with raisins, pine nuts and Parmesan. Roll this killer combo of sweetness and spice in breadcrumbs then saute them until golden brown for the perfect appetizer or addition to your favorite pasta. I enjoyed them tonight with orechiette tossed with garlic-infused olive oil and fresh parm. Pasta has never looked so good.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -817,6 +825,7 @@ public final class PostMockData {
         Food food = new Food();
         food.setName("Lemon sorbet");
         food.setPrice(4);
+        food.setImageName("lemon_sorbet");
         food.setDescription("A simple and refreshing lemon sorbet with just 4 ingredients, serve as a light dessert or in between courses at a dinner party");
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient = new Ingredient();
@@ -837,6 +846,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Panna cotta");
         food.setPrice(5);
+        food.setImageName("panna_cotta");
         food.setDescription("Panna cotta is an Italian dessert of sweetened cream thickened with gelatin and molded. The cream may be aromatized with, coffee, vanilla, or other flavorings.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -860,6 +870,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Victorian Sponge Cake");
         food.setPrice(6);
+        food.setImageName("victorian_sponge_cake");
         food.setDescription("This is the traditional Victoria sponge cake, a much loved English favourite");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -886,6 +897,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Red velvet cake");
         food.setPrice(8);
+        food.setImageName("red_velvet");
         food.setDescription("A wonderful recipe for the classic American red velvet cake with a white chocolate cream cheese icing.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -933,6 +945,7 @@ public final class PostMockData {
         food = new Food();
         food.setName("Cheescake");
         food.setPrice(5.5);
+        food.setImageName("cheescake");
         food.setDescription("Cheesecake is a sweet dessert consisting of one or more layers");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
@@ -984,21 +997,25 @@ public final class PostMockData {
         drink = new Drink();
         drink.setName("Coca-Cola");
         drink.setPrice(3.5);
+        drink.setImageName("coca_cola");
         drinks.add(drink);
 
         drink = new Drink();
         drink.setName("Orange juice");
         drink.setPrice(4);
+        drink.setImageName("orange_juice");
         drinks.add(drink);
 
         drink = new Drink();
         drink.setName("Beer");
         drink.setPrice(4.5);
+        drink.setImageName("beer");
         drinks.add(drink);
 
         drink = new Drink();
         drink.setName("Sprite");
         drink.setPrice(4);
+        drink.setImageName("sprite");
         drinks.add(drink);
 
         return drinks;
