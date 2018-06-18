@@ -81,7 +81,7 @@ public class UserInterfaceModule {
 
     @Singleton
     @Provides
-    public FoodInMenuAdapter provideFoodInMenuAdapter(){
-        return new FoodInMenuAdapter();
+    public FoodInMenuAdapter provideFoodInMenuAdapter(Context context){
+        return new FoodInMenuAdapter(context);
     }
 }

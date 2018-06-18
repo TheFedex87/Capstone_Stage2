@@ -8,6 +8,7 @@ public abstract class Meal {
     String name;
     double price;
     String imageName;
+    String mealId;
 
     public String getName() {
         return name;
@@ -31,5 +32,13 @@ public abstract class Meal {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(String mealId) {
+        this.mealId = mealId;
     }
 }

@@ -99,7 +99,12 @@ public final class PostMockData {
                 for (int i = 0; i < rndFood; i++) {
                     Drink drink = drinks.get(rnd.nextInt(drinks.size()));
                     drinks.remove(drink);
-                    menuRef.push().setValue(drink);
+                    String newKey = menuRef.push().getKey();
+                    menuRef.child(newKey).setValue(drink);
+
+                    if(drink.getImageName() != null && !drink.getImageName().isEmpty()){
+                        updloadMealImage(drink.getImageName(), newKey);
+                    }
                 }
             }
 
@@ -990,8 +995,9 @@ public final class PostMockData {
         drinks.add(drink);
 
         drink = new Drink();
-        drink.setName("Thè");
+        drink.setName("Tea");
         drink.setPrice(3.5);
+        drink.setImageName("tea");
         drinks.add(drink);
 
         drink = new Drink();

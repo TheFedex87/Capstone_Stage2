@@ -31,4 +31,7 @@
     <string name="side_dishes">Side dishes</string>
     <string name="desserts">Desserts</string>
     <string name="drinks">Drinks</string>
+    <string name="add_to_order">ADD TO ORDER</string>
+    <string name="show_details">SHOW DETAILS</string>
+
 </resources>

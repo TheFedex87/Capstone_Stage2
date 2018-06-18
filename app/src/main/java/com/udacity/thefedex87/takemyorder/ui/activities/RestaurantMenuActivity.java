@@ -51,18 +51,24 @@ public class RestaurantMenuActivity extends AppCompatActivity {
                             for(DataSnapshot foodTypes : menuSnapshot.getChildren()){
                                 List<Meal> foods = new ArrayList();
                                 for(DataSnapshot foodType : foodTypes.getChildren()){
-                                    foods.add(foodType.getValue(Food.class));
+                                    Food food = foodType.getValue(Food.class);
+                                    food.setMealId(foodType.getKey());
+                                    foods.add(food);
                                 }
                                 menu.put(getFoodTypeFromKey(foodTypes.getKey()), foods);
                             }
                         } else if(menuSnapshot.getKey().toLowerCase().equals("drinks")){
                             List<Meal> drinks = new ArrayList();
                             for(DataSnapshot drinkSnapshot : menuSnapshot.getChildren()){
-                                drinks.add(drinkSnapshot.getValue(Drink.class));
+                                Drink drink = drinkSnapshot.getValue(Drink.class);
+                                drink.setMealId(drinkSnapshot.getKey());
+                                drinks.add(drink);
                             }
                             menu.put(FoodTypes.DRINK, drinks);
                         }
                     }
+
+                    //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
                     MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
                     menuCompleteFragment.setMenu(menu);
                 }

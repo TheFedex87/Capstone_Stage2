@@ -1,12 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:gravity="center">
 
-    <TextView
-        android:id="@+id/food_in_menu_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/food_in_menu_card_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/food_in_menu_card_margin"
+        app:cardCornerRadius="@dimen/food_in_menu_card_corner_radius">
 
-</android.support.v7.widget.CardView>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/food_in_menu_name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/food_in_menu_title_container_height"
+                android:layout_marginStart="@dimen/food_in_menu_title_container_margin_left_right"
+                android:layout_marginTop="@dimen/food_in_menu_title_container_margin_top_bottom"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/food_in_menu_title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Food name" />
+
+            <ImageView
+                android:id="@+id/food_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/food_in_menu_image_height"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_food"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name" />
+
+            <TextView
+                android:id="@+id/food_description"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/food_in_menu_description_height"
+                android:layout_marginTop="@dimen/food_in_menu_description_margin"
+                android:layout_marginStart="@dimen/food_in_menu_description_margin"
+                android:layout_marginEnd="@dimen/food_in_menu_description_margin"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_image"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula lorem suscipit pulvinar feugiat. Sed maximus feugiat tellus, sed iaculis libero consequat eu. Sed ultrices tempus eros a ornare. " />
+
+            <TextView
+                android:id="@+id/add_to_current_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/food_in_menu_action_margin"
+                android:text="@string/add_to_order"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/food_in_menu_action_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_description" />
+
+            <TextView
+                android:id="@+id/show_food_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/food_in_menu_action_margin"
+                android:text="@string/show_details"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/food_in_menu_action_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/add_to_current_order"
+                app:layout_constraintStart_toEndOf="@+id/add_to_current_order"
+                app:layout_constraintTop_toTopOf="@+id/add_to_current_order" />
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
