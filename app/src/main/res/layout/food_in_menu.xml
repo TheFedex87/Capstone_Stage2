@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/food_in_menu_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center">
@@ -19,13 +21,15 @@
 
             <TextView
                 android:id="@+id/food_in_menu_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/food_in_menu_title_container_height"
-                android:layout_marginStart="@dimen/food_in_menu_title_container_margin_left_right"
+                android:layout_marginEnd="@dimen/food_in_menu_title_container_margin_start_end"
+                android:layout_marginStart="@dimen/food_in_menu_title_container_margin_start_end"
                 android:layout_marginTop="@dimen/food_in_menu_title_container_margin_top_bottom"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/food_in_menu_title_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Food name" />
@@ -38,6 +42,16 @@
                 android:src="@drawable/ic_food"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name" />
+
+            <ProgressBar
+                android:id="@+id/food_image_pb"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/food_description"
+                app:layout_constraintEnd_toEndOf="@+id/food_image"
+                app:layout_constraintStart_toStartOf="@+id/food_image"
                 app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name" />
 
             <TextView
@@ -71,12 +85,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/food_in_menu_action_margin"
+                android:layout_marginStart="@dimen/food_in_menu_action_show_detail_margin_start"
                 android:text="@string/show_details"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/food_in_menu_action_text_size"
                 app:layout_constraintBottom_toBottomOf="@+id/add_to_current_order"
                 app:layout_constraintStart_toEndOf="@+id/add_to_current_order"
                 app:layout_constraintTop_toTopOf="@+id/add_to_current_order" />
+
         </android.support.constraint.ConstraintLayout>
 
 

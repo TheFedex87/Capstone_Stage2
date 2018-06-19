@@ -1,5 +1,6 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
@@ -24,4 +25,5 @@ public interface UserInterfaceComponent {
     FoodInMenuAdapter getFoodInMenuAdapter();
 
     LinearLayoutManager getLinearLayoutManager();
+    GridLayoutManager getGridLayoutManager();
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.Scene;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by feder on 16/06/2018.
  */
 
-public class MenuSingleFragment extends Fragment {
+public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.FoodInMenuActionClick {
     private List<Meal> meals;
 
     @BindView(R.id.foods_in_menu_container)
@@ -42,6 +44,8 @@ public class MenuSingleFragment extends Fragment {
 
     @Inject
     Context applicationContext;
+
+    private ViewGroup container;
 
     public MenuSingleFragment(){
 
@@ -66,17 +70,24 @@ public class MenuSingleFragment extends Fragment {
 
         ButterKnife.bind(this, viewRoot);
 
+        this.container = container;
+
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                 .applicationModule(new ApplicationModule(applicationContext))
                 .userInterfaceModule(
-                        new UserInterfaceModule(LinearLayoutManager.VERTICAL))
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
                 .build();
 
-        FoodInMenuAdapter foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
+        foodInMenuAdapter = new FoodInMenuAdapter(applicationContext, this);//userInterfaceComponent.getFoodInMenuAdapter();
         foodInMenuContainer.setAdapter(foodInMenuAdapter);
-        foodInMenuContainer.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+        foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());
         foodInMenuAdapter.setMeals(meals);
 
         return viewRoot;
+    }
+
+    @Override
+    public void addOrderClick() {
+        //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)getActivity().findViewById(R.id.food_in_menu_container), R.layout.food_in_menu_scene_2, getActivity()));
     }
 }

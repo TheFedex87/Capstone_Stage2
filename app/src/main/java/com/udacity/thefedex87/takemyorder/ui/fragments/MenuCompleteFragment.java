@@ -62,7 +62,7 @@ public class MenuCompleteFragment extends Fragment {
             foodTypesTabs.addTab(foodTypesTabs.newTab().setText(getString(R.string.drinks)));
         }
 
-        FoodTypePagerAdapter foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu);
+        FoodTypePagerAdapter foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, getContext());
         foodTypesPager.setAdapter(foodTypePagerAdapter);
     }
 

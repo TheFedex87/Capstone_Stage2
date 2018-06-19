@@ -2,22 +2,29 @@ package com.udacity.thefedex87.takemyorder.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.transition.Scene;
+import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -36,7 +43,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     private NetworkComponent networkInterfaceComponent;
 
-    public FoodInMenuAdapter(Context context){
+    FoodInMenuActionClick foodInMenuActionClick;
+
+    public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick){
         this.context = context;
         firebaseStorage = FirebaseStorage.getInstance();
 
@@ -44,6 +53,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 .builder()
                 .applicationModule(new ApplicationModule(context))
                 .build();
+
+        this.foodInMenuActionClick = foodInMenuActionClick;
     }
 
     public void setMeals(List<Meal> meals){
@@ -61,13 +72,24 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodInMenuViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, int position) {
 
         holder.foodInMenuName.setText(meals.get(position).getName());
 
         if(meals.get(position).getImageName() != null && !meals.get(position).getImageName().isEmpty()){
+            holder.foodImageProgressBar.setVisibility(View.VISIBLE);
             String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meals.get(position).getMealId() +  "?alt=media";
-            networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImage);
+            networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImage, new Callback() {
+                @Override
+                public void onSuccess() {
+                    holder.foodImageProgressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError() {
+                    holder.foodImageProgressBar.setVisibility(View.GONE);
+                }
+            });
         }
 
         if (meals.get(position) instanceof Food) {
@@ -82,6 +104,11 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         return meals.size();
     }
 
+    public interface FoodInMenuActionClick{
+        void addOrderClick();
+
+    }
+
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.food_in_menu_name)
         TextView foodInMenuName;
@@ -92,10 +119,24 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         @BindView(R.id.food_description)
         TextView foodDescription;
 
+        @BindView(R.id.food_image_pb)
+        ProgressBar foodImageProgressBar;
+
+        @BindView(R.id.add_to_current_order)
+        TextView addToCurrentOrder;
+
         public FoodInMenuViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+
+            addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    foodInMenuActionClick.addOrderClick();
+                    //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)context);
+                }
+            });
         }
     }
 }

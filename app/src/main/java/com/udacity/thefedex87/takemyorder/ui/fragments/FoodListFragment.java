@@ -90,7 +90,7 @@ public class FoodListFragment extends Fragment {
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                 .applicationModule(new ApplicationModule(applicationContext))
                 .userInterfaceModule(
-                        new UserInterfaceModule(LinearLayoutManager.VERTICAL))
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, null))
                 .build();
 
         currentOrderList.setAdapter(adapter);

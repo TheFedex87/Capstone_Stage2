@@ -1,8 +1,10 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
@@ -27,6 +29,7 @@ public class UserInterfaceModule {
     private List<RestaurantReviewModel> reviews;
     private RestaurantPhotoAdapter.ImageLoadingState imageLoadingState;
     private int linearLayoutManagerOrientation = LinearLayoutManager.VERTICAL;
+    private FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick;
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this.photoUrls = photoUrls;
@@ -35,8 +38,10 @@ public class UserInterfaceModule {
         this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
     }
 
-    public UserInterfaceModule( int linearLayoutManagerOrientation) {
+    //TODO: creare un costruttore apposito per FoodInMenuActionClick
+    public UserInterfaceModule(int linearLayoutManagerOrientation, FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick) {
         this(null, null, null, linearLayoutManagerOrientation);
+        this.foodInMenuActionClick = foodInMenuActionClick;
     }
 
     public UserInterfaceModule(List<?> list){
@@ -73,6 +78,12 @@ public class UserInterfaceModule {
         return new LinearLayoutManager(context, linearLayoutManagerOrientation, false);
     }
 
+    @Provides
+    public GridLayoutManager provideGridLayoutManager(Context context){
+        int nOfColumns = context.getResources().getInteger(R.integer.menu_column);
+        return new GridLayoutManager(context, nOfColumns);
+    }
+
     @Singleton
     @Provides
     public RestaurantReviewsAdapter provideRestaurantReviewsAdapter(Context context){
@@ -82,6 +93,6 @@ public class UserInterfaceModule {
     @Singleton
     @Provides
     public FoodInMenuAdapter provideFoodInMenuAdapter(Context context){
-        return new FoodInMenuAdapter(context);
+        return new FoodInMenuAdapter(context, foodInMenuActionClick);
     }
 }

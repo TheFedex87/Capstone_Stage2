@@ -53,6 +53,8 @@
     <dimen name="food_type_text_size">14sp</dimen>
     <dimen name="food_price_text_size">18sp</dimen>
 
+    <!--Menu Activity-->
+
     <!--Food in menu-->
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
@@ -60,13 +62,14 @@
     <dimen name="food_in_menu_card_corner_radius">4dp</dimen>
     <dimen name="food_in_menu_title_container_height">50dp</dimen>
     <dimen name="food_in_menu_title_container_margin_top_bottom">5dp</dimen>
-    <dimen name="food_in_menu_title_container_margin_left_right">10dp</dimen>
+    <dimen name="food_in_menu_title_container_margin_start_end">10dp</dimen>
     <dimen name="food_in_menu_title_text_size">20sp</dimen>
     <dimen name="food_in_menu_image_height">150dp</dimen>
     <dimen name="food_in_menu_description_height">40dp</dimen>
     <dimen name="food_in_menu_description_margin">8dp</dimen>
     <dimen name="food_in_menu_action_text_size">14sp</dimen>
     <dimen name="food_in_menu_action_margin">8dp</dimen>
+    <dimen name="food_in_menu_action_show_detail_margin_start">12dp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>
