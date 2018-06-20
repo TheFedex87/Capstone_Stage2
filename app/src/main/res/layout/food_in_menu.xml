@@ -34,15 +34,41 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Food name" />
 
-            <ImageView
-                android:id="@+id/food_image"
+            <RelativeLayout
+                android:id="@+id/food_image_container"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/food_in_menu_image_height"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_food"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name" />
+                app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name">
+                <ImageView
+                    android:id="@+id/food_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/food_in_menu_image_height"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_food"
+                    />
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/food_image_to_animate"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:alpha="0"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/colorAccent"/>
+
+                <!--<ImageView-->
+                    <!--android:layout_marginStart="2dp"-->
+                    <!--android:layout_marginTop="2dp"-->
+                    <!--android:layout_width="36dp"-->
+                    <!--android:layout_height="36dp"-->
+                    <!--android:background="@drawable/ic_food" />-->
+
+
+            </RelativeLayout>
+
 
             <ProgressBar
                 android:id="@+id/food_image_pb"
@@ -50,8 +76,8 @@
                 android:layout_height="@dimen/progress_bar_size"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/food_description"
-                app:layout_constraintEnd_toEndOf="@+id/food_image"
-                app:layout_constraintStart_toStartOf="@+id/food_image"
+                app:layout_constraintEnd_toEndOf="@+id/food_image_container"
+                app:layout_constraintStart_toStartOf="@+id/food_image_container"
                 app:layout_constraintTop_toBottomOf="@+id/food_in_menu_name" />
 
             <TextView
@@ -65,7 +91,7 @@
                 android:maxLines="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/food_image"
+                app:layout_constraintTop_toBottomOf="@+id/food_image_container"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula lorem suscipit pulvinar feugiat. Sed maximus feugiat tellus, sed iaculis libero consequat eu. Sed ultrices tempus eros a ornare. " />
 
             <TextView

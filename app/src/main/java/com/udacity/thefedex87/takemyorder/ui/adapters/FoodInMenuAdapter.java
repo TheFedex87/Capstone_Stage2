@@ -1,6 +1,7 @@
 package com.udacity.thefedex87.takemyorder.ui.adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.transition.Scene;
 import android.support.transition.TransitionManager;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by feder on 17/06/2018.
@@ -90,6 +94,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                     holder.foodImageProgressBar.setVisibility(View.GONE);
                 }
             });
+            networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImageToAnimate);
         }
 
         if (meals.get(position) instanceof Food) {
@@ -105,16 +110,21 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     public interface FoodInMenuActionClick{
-        void addOrderClick();
-
+        void addOrderClick(View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.food_image_container)
+        RelativeLayout foodImageContainer;
+
         @BindView(R.id.food_in_menu_name)
         TextView foodInMenuName;
 
         @BindView(R.id.food_image)
         ImageView foodImage;
+
+        @BindView(R.id.food_image_to_animate)
+        CircleImageView foodImageToAnimate;
 
         @BindView(R.id.food_description)
         TextView foodDescription;
@@ -125,15 +135,23 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         @BindView(R.id.add_to_current_order)
         TextView addToCurrentOrder;
 
+        private ViewGroup viewGroup;
+
         public FoodInMenuViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
 
+//            final ViewGroup parentViewGroup = (ViewGroup)foodImage
+//                    .getParent().getParent().getParent().getParent()
+//                    .getParent().getParent().getParent().getParent()
+//                    .getParent();
+//            parentViewGroup.getOverlay().add(foodImageToAnimate);
+
             addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    foodInMenuActionClick.addOrderClick();
+                    foodInMenuActionClick.addOrderClick(view, foodImageToAnimate, foodImageContainer, foodImage);
                     //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)context);
                 }
             });
