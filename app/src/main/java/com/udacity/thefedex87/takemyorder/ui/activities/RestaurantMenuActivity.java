@@ -1,43 +1,30 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.models.Drink;
-import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.converter.FoodTypeConverter;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
+import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,7 +36,7 @@ import static android.view.View.SCALE_Y;
 
 public class RestaurantMenuActivity extends AppCompatActivity {
     private String restaurantId;
-    //private HashMap<FoodTypes, List<Meal>> menu;
+    //private HashMap<FoodTypes, List<Meal>> getMenu;
 
     @BindView(R.id.menu_icon_container)
     RelativeLayout menuIconContainer;
@@ -65,7 +52,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_menu);
 
-        //menu = new HashMap<FoodTypes, List<Meal>>();
+        //getMenu = new HashMap<FoodTypes, List<Meal>>();
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY)){
@@ -74,7 +61,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             restaurantId = intent.getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
 
 //            FirebaseDatabase db = FirebaseDatabase.getInstance();
-//            db.getReference("restaurants/" + restaurantId + "/menu").addListenerForSingleValueEvent(new ValueEventListener() {
+//            db.getReference("restaurants/" + restaurantId + "/getMenu").addListenerForSingleValueEvent(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                    for(DataSnapshot menuSnapshot : dataSnapshot.getChildren()){
@@ -86,7 +73,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 //                                    food.setMealId(foodType.getKey());
 //                                    foods.add(food);
 //                                }
-//                                menu.put(getFoodTypeFromKey(foodTypes.getKey()), foods);
+//                                getMenu.put(getFoodTypeFromKey(foodTypes.getKey()), foods);
 //                            }
 //                        } else if(menuSnapshot.getKey().toLowerCase().equals("drinks")){
 //                            List<Meal> drinks = new ArrayList();
@@ -95,13 +82,13 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 //                                drink.setMealId(drinkSnapshot.getKey());
 //                                drinks.add(drink);
 //                            }
-//                            menu.put(FoodTypes.DRINK, drinks);
+//                            getMenu.put(FoodTypes.DRINK, drinks);
 //                        }
 //                    }
 //
 //                    //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
 //                    MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
-//                    menuCompleteFragment.setMenu(menu);
+//                    menuCompleteFragment.setMenu(getMenu);
 //                }
 //
 //                @Override
@@ -163,11 +150,11 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             }
         });
 
-        restaurantMenuViewModel.menu().observe(this, new Observer<HashMap<FoodTypes, List<Meal>>>() {
+        restaurantMenuViewModel.getMenu().observe(this, new Observer<HashMap<FoodTypes, List<Meal>>>() {
             @Override
             public void onChanged(@Nullable HashMap<FoodTypes, List<Meal>> foodTypesListHashMap) {
                 //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
-                MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
+                final MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
                 menuCompleteFragment.setMenu(foodTypesListHashMap);
             }
         });

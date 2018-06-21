@@ -28,7 +28,7 @@
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
 
-    <!--Restaurant menu-->
+    <!--RestaurgetMenumenu-->
     <string name="starter_dishes">Starter dishes</string>
     <string name="main_dishes">Main dishes</string>
     <string name="side_dishes">Side dishes</string>

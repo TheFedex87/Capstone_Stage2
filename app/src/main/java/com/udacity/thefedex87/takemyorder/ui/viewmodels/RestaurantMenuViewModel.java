@@ -16,6 +16,7 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
+import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 
 import java.util.ArrayList;
@@ -30,21 +31,21 @@ import timber.log.Timber;
 
 public class RestaurantMenuViewModel extends ViewModel {
     private LiveData<List<CurrentOrderEntry>> currentOrderList;
+    private LiveData<List<CurrentOrderGrouped>> currentOrderListGrouped;
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
     private String restaurantId;
 
 
     public RestaurantMenuViewModel(AppDatabase db, String restaurantId) {
-
-
         currentOrderList = db.currentOrderDao().getCurrentOrderList();
+        currentOrderListGrouped = db.currentOrderDao().getCurrentOrderListGrouped();
         this.restaurantId = restaurantId;
         menuLiveData = new MutableLiveData<>();
         retrieveRestaurantMenu();
     }
 
     private void retrieveRestaurantMenu(){
-        Timber.d("Retrieving restaurant menu from firebase");
+        Timber.d("Retrieving restaurant getMenu from firebase");
         final HashMap<FoodTypes, List<Meal>> menu = new HashMap<>();
         FirebaseDatabase db = FirebaseDatabase.getInstance();
             db.getReference("restaurants/" + restaurantId + "/menu").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -102,5 +103,7 @@ public class RestaurantMenuViewModel extends ViewModel {
         return currentOrderList;
     }
 
-    public LiveData<HashMap<FoodTypes, List<Meal>>> menu() { return menuLiveData; }
+    public LiveData<HashMap<FoodTypes, List<Meal>>> getMenu() { return menuLiveData; }
+
+    public LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped() { return currentOrderListGrouped; }
 }

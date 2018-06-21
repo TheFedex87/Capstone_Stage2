@@ -55,7 +55,7 @@
 
     <!--Menu Activity-->
 
-    <!--Food in menu-->
+    <!--FoodgetMenumenu-->
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
     <dimen name="food_in_menu_card_margin">15dp</dimen>
@@ -73,6 +73,8 @@
     <dimen name="food_in_menu_action_text_size">14sp</dimen>
     <dimen name="food_in_menu_action_margin">8dp</dimen>
     <dimen name="food_in_menu_action_show_detail_margin_start">12dp</dimen>
+    <dimen name="food_in_menu_meal_in_order_counter_size">25dp</dimen>
+    <dimen name="food_in_menu_meal_in_order_counter_text_size">18sp</dimen>
 
     <dimen name="counter_circle_size">18dp</dimen>
     <dimen name="counter_circle_margin_end">8dp</dimen>

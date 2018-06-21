@@ -26,9 +26,11 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.FoodInMenuViewHolder> {
     private List<Meal> meals;
     private Context context;
+    private HashMap<String, Integer> mealsCountInCurrentOrder;
 
     private FirebaseStorage firebaseStorage;
 
@@ -59,10 +62,18 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 .build();
 
         this.foodInMenuActionClick = foodInMenuActionClick;
+        mealsCountInCurrentOrder = new HashMap<>();
     }
 
     public void setMeals(List<Meal> meals){
         this.meals = meals;
+        notifyDataSetChanged();
+    }
+
+    public void setMealsCount(List<CurrentOrderGrouped> mealsCount){
+        for (CurrentOrderGrouped foodId: mealsCount ) {
+            mealsCountInCurrentOrder.put(foodId.getFoodId(), foodId.getCount());
+        }
         notifyDataSetChanged();
     }
 
@@ -77,6 +88,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, int position) {
+        if(mealsCountInCurrentOrder.containsKey(meals.get(position).getMealId())){
+            holder.foodCount.setText(String.valueOf(mealsCountInCurrentOrder.get(meals.get(position).getMealId())));
+        }
 
         holder.foodInMenuName.setText(meals.get(position).getName());
 
@@ -134,6 +148,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         @BindView(R.id.add_to_current_order)
         TextView addToCurrentOrder;
+
+        @BindView(R.id.food_id_count_in_current_order)
+        TextView foodCount;
 
         private ViewGroup viewGroup;
 
