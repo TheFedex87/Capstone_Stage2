@@ -7,6 +7,7 @@
     tools:context="com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
@@ -30,20 +31,7 @@
                 app:contentInsetStart="@dimen/detail_content_intent_start"
                 app:layout_collapseMode="pin">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/menu_icon"
-                        android:background="@drawable/ic_menu"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/food_in_menu_icon_toolbar_margin_end"
-                        android:layout_marginTop="@dimen/food_in_menu_icon_toolbar_margin_top"
-                        android:layout_width="@dimen/food_in_menu_icon_toolbar_size"
-                        android:layout_height="@dimen/food_in_menu_icon_toolbar_size" />
-
-                </RelativeLayout>
+                <include layout="@layout/food_in_order_counter" />
 
             </android.support.v7.widget.Toolbar>
 

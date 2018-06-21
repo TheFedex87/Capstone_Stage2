@@ -74,6 +74,13 @@
     <dimen name="food_in_menu_action_margin">8dp</dimen>
     <dimen name="food_in_menu_action_show_detail_margin_start">12dp</dimen>
 
+    <dimen name="counter_circle_size">18dp</dimen>
+    <dimen name="counter_circle_margin_end">8dp</dimen>
+    <dimen name="counter_circle_margin_top">7dp</dimen>
+    <dimen name="counter_circle_text_size">12sp</dimen>
+    <dimen name="counter_circle_text_marging_start">0dp</dimen>
+    <dimen name="counter_circle_text_marging_top">0dp</dimen>
+
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>
     <dimen name="login_maps_icons_height">100dp</dimen>

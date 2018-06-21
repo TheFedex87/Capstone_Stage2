@@ -110,7 +110,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     public interface FoodInMenuActionClick{
-        void addOrderClick(View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
+        void addOrderClick(Meal selectedMeal, View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
@@ -151,7 +151,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    foodInMenuActionClick.addOrderClick(view, foodImageToAnimate, foodImageContainer, foodImage);
+                    foodInMenuActionClick.addOrderClick(meals.get(getAdapterPosition()), view, foodImageToAnimate, foodImageContainer, foodImage);
                     //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)context);
                 }
             });

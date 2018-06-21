@@ -1,5 +1,7 @@
 package com.udacity.thefedex87.takemyorder.models;
 
+import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
+
 /**
  * Created by feder on 16/06/2018.
  */
@@ -9,6 +11,7 @@ public abstract class Meal {
     double price;
     String imageName;
     String mealId;
+    FoodTypes foodTypes;
 
     public String getName() {
         return name;
@@ -40,5 +43,13 @@ public abstract class Meal {
 
     public void setMealId(String mealId) {
         this.mealId = mealId;
+    }
+
+    public FoodTypes getFoodTypes() {
+        return foodTypes;
+    }
+
+    public void setFoodTypes(FoodTypes foodTypes) {
+        this.foodTypes = foodTypes;
     }
 }

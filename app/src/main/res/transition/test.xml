@@ -8,5 +8,7 @@
             android:maximumAngle="90"/>
     </changeBounds>
 
-    <fade android:startDelay="500" android:fadingMode="fade_out" android:duration="1500" />
+    <changeImageTransform android:duration="500" />
+
+    <!--<fade android:startDelay="500" android:fadingMode="fade_out" android:duration="1500" />-->
 </transitionSet>

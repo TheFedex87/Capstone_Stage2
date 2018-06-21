@@ -5,10 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.transition.ChangeBounds;
 import android.support.transition.Fade;
@@ -32,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
@@ -39,8 +43,14 @@ import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
+import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 
 import java.util.List;
 
@@ -114,8 +124,10 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         return viewRoot;
     }
 
+
+
     @Override
-    public void addOrderClick(final View sender, final View imageView, final ViewGroup foodImageContainer, final ImageView originalImage) {
+    public void addOrderClick(final Meal selectedMeal, final View sender, final View imageView, final ViewGroup foodImageContainer, final ImageView originalImage) {
         //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)getActivity().findViewById(R.id.food_in_menu_container), R.layout.food_in_menu_scene_2, getActivity()));
 
         sender.setEnabled(false);
@@ -124,7 +136,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                 .getParent().getParent().getParent().getParent()
                 .getParent();
         parentViewGroup.getOverlay().add(imageView);
-        int[] parentPos = new int[2];
+        final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
 
 
@@ -139,61 +151,120 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 //        lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 //        lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 //        imageView.setLayoutParams(lp);
+//        //imageView.layout(500, 0, 600, 100);
+
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = 0;
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+
+        final AppBarLayout appBar = parentViewGroup.findViewById(R.id.app_bar);
+        final ImageView menuIcon = parentViewGroup.findViewById(R.id.menu_icon);
+
+        final int[] appBarPos = new int[2];
+        appBar.getLocationOnScreen(appBarPos);
+
+        final int[] icMenuPos = new int[2];
 
 
-
-        ImageView menuIcon = parentViewGroup.findViewById(R.id.menu_icon);
-
-        int[] icMenuPos = new int[2];
-        menuIcon.getLocationOnScreen(icMenuPos);
-
-        int[] foodIcoPos = new int[2];
+        final int[] foodIcoPos = new int[2];
         imageView.getLocationOnScreen(foodIcoPos);
 
 
-        PropertyValuesHolder scaleXFoodImage = PropertyValuesHolder.ofFloat(SCALE_X, 0.1f);
-        PropertyValuesHolder scaleYFoodImage = PropertyValuesHolder.ofFloat(SCALE_Y, 0.1f);
-        PropertyValuesHolder alphaFoodImage = PropertyValuesHolder.ofFloat(ALPHA, 0f);
+        PropertyValuesHolder translationAppBar = PropertyValuesHolder.ofFloat(TRANSLATION_Y, statusBarHeight - appBarPos[1]);
 
-        Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), android.R
-                .interpolator.fast_out_slow_in);
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat(ALPHA, 1);
-        PropertyValuesHolder transX = PropertyValuesHolder.ofFloat(TRANSLATION_X, icMenuPos[0] - foodIcoPos[0] - parentPos[0] - 75);
-        PropertyValuesHolder transY = PropertyValuesHolder.ofFloat(TRANSLATION_Y, icMenuPos[1] - foodIcoPos[1] - parentPos[1] - 75);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(SCALE_X, 0.3f);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(SCALE_Y, 0.3f);
+        final ObjectAnimator translateAppBarAnimator = ObjectAnimator.ofPropertyValuesHolder(appBar, translationAppBar);
+        //if(appBarPos[1] < statusBarHeight){
 
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(originalImage, scaleXFoodImage, scaleYFoodImage, alphaFoodImage).setDuration(150);
-        objectAnimator.start();
-
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(imageView, alpha, transX, transY, scaleX, scaleY).setDuration(650);
-        animator.setInterpolator(interpolator);
-        animator.setStartDelay(75);
-        animator.addListener(new AnimatorListenerAdapter() {
-
+        translateAppBarAnimator.setDuration(50);
+        translateAppBarAnimator.start();
+        translateAppBarAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                parentViewGroup.getOverlay().remove(imageView);
-                foodImageContainer.addView(imageView);
 
-                imageView.animate().alpha(0).setDuration(0).start();
-                imageView.animate().translationY(0).setDuration(0).start();
-                imageView.animate().translationX(0).setDuration(0).start();
-                imageView.animate().scaleX(1).setDuration(0).start();
-                imageView.animate().scaleY(1).setDuration(0).start();
+                menuIcon.getLocationOnScreen(icMenuPos);
 
-                originalImage.animate().scaleY(1f).setDuration(300).start();
-                originalImage.animate().scaleX(1f).setDuration(300).start();
-                originalImage.animate().alpha(1f).setDuration(100).start();
+                PropertyValuesHolder scaleXFoodImage = PropertyValuesHolder.ofFloat(SCALE_X, 0.1f);
+                PropertyValuesHolder scaleYFoodImage = PropertyValuesHolder.ofFloat(SCALE_Y, 0.1f);
+                PropertyValuesHolder alphaFoodImage = PropertyValuesHolder.ofFloat(ALPHA, 0f);
 
-                sender.setEnabled(true);
+                Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), android.R
+                        .interpolator.fast_out_slow_in);
+                PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat(ALPHA, 1);
+                PropertyValuesHolder transX = PropertyValuesHolder.ofFloat(TRANSLATION_X, icMenuPos[0] - foodIcoPos[0] - parentPos[0] - 75);
+                PropertyValuesHolder transY = PropertyValuesHolder.ofFloat(TRANSLATION_Y, icMenuPos[1] - foodIcoPos[1] - parentPos[1] - 75);
+                PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(SCALE_X, 0.3f);
+                PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(SCALE_Y, 0.3f);
+
+                ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(originalImage, scaleXFoodImage, scaleYFoodImage, alphaFoodImage).setDuration(150);
+                scaleFoodImageAnimator.start();
+
+                ObjectAnimator moveFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(imageView, alpha, transX, transY, scaleX, scaleY).setDuration(650);
+                moveFoodImageAnimator.setInterpolator(interpolator);
+                moveFoodImageAnimator.setDuration(400);
+                moveFoodImageAnimator.setStartDelay(75);
+                moveFoodImageAnimator.addListener(new AnimatorListenerAdapter() {
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        parentViewGroup.getOverlay().remove(imageView);
+                        foodImageContainer.addView(imageView);
+
+                        imageView.animate().alpha(0).setDuration(0).start();
+                        imageView.animate().translationY(0).setDuration(0).start();
+                        imageView.animate().translationX(0).setDuration(0).start();
+                        imageView.animate().scaleX(1).setDuration(0).start();
+                        imageView.animate().scaleY(1).setDuration(0).start();
+
+                        originalImage.animate().scaleY(1f).setDuration(300).start();
+                        originalImage.animate().scaleX(1f).setDuration(300).start();
+                        originalImage.animate().alpha(1f).setDuration(100).start();
+
+
+
+                        final AppDatabase db = AppDatabase.getInstance(getActivity());
+                        final CurrentOrderEntry entry = new CurrentOrderEntry(0,
+                                selectedMeal.getName(),
+                                selectedMeal.getPrice(),
+                                selectedMeal.getFoodTypes(),
+                                selectedMeal.getMealId());
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.currentOrderDao().insertFood(entry);
+                            }
+                        });
+
+                        animation.removeListener(this);
+
+                        PropertyValuesHolder translationAppBar = PropertyValuesHolder.ofFloat(TRANSLATION_Y, 0);
+                        ObjectAnimator translateAppBarReverseAnimator = ObjectAnimator.ofPropertyValuesHolder(appBar, translationAppBar);
+                        translateAppBarReverseAnimator.setStartDelay(300);
+                        translateAppBarReverseAnimator.setDuration(50);
+                        translateAppBarReverseAnimator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                sender.setEnabled(true);
+                            }
+                        });
+                        translateAppBarReverseAnimator.start();
+
 
 //                animation.removeListener(this);
 //                animation.setDuration(0);
 //                ((ValueAnimator) animation).reverse();
+                    }
+                });
+                moveFoodImageAnimator.start();
             }
         });
-        animator.start();
+        //}
+
+
+
     }
 }

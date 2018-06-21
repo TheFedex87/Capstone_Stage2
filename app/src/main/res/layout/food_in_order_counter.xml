@@ -1,0 +1,45 @@
+<RelativeLayout
+    android:id="@+id/menu_icon_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <ImageView
+        android:id="@+id/menu_icon"
+        android:background="@drawable/ic_menu"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/food_in_menu_icon_toolbar_margin_end"
+        android:layout_marginTop="@dimen/food_in_menu_icon_toolbar_margin_top"
+        android:layout_width="@dimen/food_in_menu_icon_toolbar_size"
+        android:layout_height="@dimen/food_in_menu_icon_toolbar_size" />
+
+    <FrameLayout
+        android:id="@+id/counter_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/counter_circle_margin_end"
+        android:layout_marginTop="@dimen/counter_circle_margin_top"
+        android:layout_alignParentEnd="true"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="@dimen/counter_circle_size"
+            android:layout_height="@dimen/counter_circle_size"
+            android:background="@drawable/circle" />
+
+        <TextView
+            android:id="@+id/couter_value"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textSize="@dimen/counter_circle_text_size"
+            android:layout_marginTop="@dimen/counter_circle_text_marging_top"
+            android:textColor="@color/white"
+            android:text="3"/>
+    </FrameLayout>
+
+
+</RelativeLayout>
