@@ -8,6 +8,9 @@
     <string name="content_description_fab_add_order">Add new food or drink to your order</string>
     <string name="content_description_call_waiter">Call a waiter</string>
     <string name="content_description_checkout_order">Procede to the checkout of your order</string>
+    <string name="content_description_food_image">Image with the current food</string>
+    <string name="content_description_menu_icon">Procede to your order summary</string>
+    <string name="content_description_meals_number">Number of meals in current order</string>
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>

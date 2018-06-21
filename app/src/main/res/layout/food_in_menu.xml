@@ -47,8 +47,8 @@
                     android:layout_height="@dimen/food_in_menu_image_height"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_food"
+                    android:contentDescription="@string/content_description_food_image"
                     />
-
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/food_image_to_animate"
@@ -58,13 +58,6 @@
                     android:alpha="0"
                     app:civ_border_width="2dp"
                     app:civ_border_color="@color/colorAccent"/>
-
-                <!--<ImageView-->
-                    <!--android:layout_marginStart="2dp"-->
-                    <!--android:layout_marginTop="2dp"-->
-                    <!--android:layout_width="36dp"-->
-                    <!--android:layout_height="36dp"-->
-                    <!--android:background="@drawable/ic_food" />-->
 
 
             </RelativeLayout>
@@ -94,6 +87,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/food_image_container"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula lorem suscipit pulvinar feugiat. Sed maximus feugiat tellus, sed iaculis libero consequat eu. Sed ultrices tempus eros a ornare. " />
 
+            <!--TODO: Aggiungere un numero che visualizza quanti prodotti di un determinato cibo sono stati aggiunti-->
+            <!--TODO: Aggiungere un pulsante -1 che toglie un prodotto di un determinato cibo-->
             <TextView
                 android:id="@+id/add_to_current_order"
                 android:layout_width="wrap_content"

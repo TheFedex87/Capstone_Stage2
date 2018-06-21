@@ -15,7 +15,8 @@
         android:layout_marginEnd="@dimen/food_in_menu_icon_toolbar_margin_end"
         android:layout_marginTop="@dimen/food_in_menu_icon_toolbar_margin_top"
         android:layout_width="@dimen/food_in_menu_icon_toolbar_size"
-        android:layout_height="@dimen/food_in_menu_icon_toolbar_size" />
+        android:layout_height="@dimen/food_in_menu_icon_toolbar_size"
+        android:contentDescription="@string/content_description_menu_icon"/>
 
     <FrameLayout
         android:id="@+id/counter_container"
@@ -28,7 +29,8 @@
         <ImageView
             android:layout_width="@dimen/counter_circle_size"
             android:layout_height="@dimen/counter_circle_size"
-            android:background="@drawable/circle" />
+            android:background="@drawable/circle"
+            android:contentDescription="@string/content_description_meals_number"/>
 
         <TextView
             android:id="@+id/couter_value"
@@ -38,7 +40,7 @@
             android:textSize="@dimen/counter_circle_text_size"
             android:layout_marginTop="@dimen/counter_circle_text_marging_top"
             android:textColor="@color/white"
-            android:text="3"/>
+            tools:text="3"/>
     </FrameLayout>
 
 

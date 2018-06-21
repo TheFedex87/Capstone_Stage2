@@ -4,6 +4,4 @@
     android:id="@+id/indicator"
     android:layout_width="10dp"
     android:layout_height="10dp"
-    android:layout_margin="2dp">
-
-</ImageView>
+    android:layout_margin="2dp" />
