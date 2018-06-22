@@ -5,15 +5,15 @@ package com.udacity.thefedex87.takemyorder.room.entity;
  */
 
 public class CurrentOrderGrouped {
-    String foodId;
+    String mealId;
     int count;
 
-    public String getFoodId() {
-        return foodId;
+    public String getMealId() {
+        return mealId;
     }
 
-    public void setFoodId(String foodId) {
-        this.foodId = foodId;
+    public void setMealId(String mealId) {
+        this.mealId = mealId;
     }
 
     public int getCount() {

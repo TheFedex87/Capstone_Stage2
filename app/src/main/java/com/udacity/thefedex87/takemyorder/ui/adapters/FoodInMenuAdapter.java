@@ -1,24 +1,17 @@
 package com.udacity.thefedex87.takemyorder.ui.adapters;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.support.transition.Scene;
-import android.support.transition.TransitionManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -27,8 +20,6 @@ import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +63,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     public void setMealsCount(List<CurrentOrderGrouped> mealsCount){
         for (CurrentOrderGrouped foodId: mealsCount ) {
-            mealsCountInCurrentOrder.put(foodId.getFoodId(), foodId.getCount());
+            mealsCountInCurrentOrder.put(foodId.getMealId(), foodId.getCount());
         }
         notifyDataSetChanged();
     }

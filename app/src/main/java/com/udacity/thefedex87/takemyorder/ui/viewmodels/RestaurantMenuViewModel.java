@@ -1,7 +1,5 @@
 package com.udacity.thefedex87.takemyorder.ui.viewmodels;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
@@ -15,7 +13,6 @@ import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 
@@ -30,7 +27,7 @@ import timber.log.Timber;
  */
 
 public class RestaurantMenuViewModel extends ViewModel {
-    private LiveData<List<CurrentOrderEntry>> currentOrderList;
+    private LiveData<List<Meal>> currentOrderList;
     private LiveData<List<CurrentOrderGrouped>> currentOrderListGrouped;
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
     private String restaurantId;
@@ -58,7 +55,7 @@ public class RestaurantMenuViewModel extends ViewModel {
                                 for(DataSnapshot foodType : foodTypes.getChildren()){
                                     Food food = foodType.getValue(Food.class);
                                     food.setMealId(foodType.getKey());
-                                    food.setFoodTypes(getFoodTypeFromKey(foodTypes.getKey()));
+                                    food.setFoodType(getFoodTypeFromKey(foodTypes.getKey()));
                                     foods.add(food);
                                 }
                                 menu.put(getFoodTypeFromKey(foodTypes.getKey()), foods);
@@ -68,7 +65,7 @@ public class RestaurantMenuViewModel extends ViewModel {
                             for(DataSnapshot drinkSnapshot : menuSnapshot.getChildren()){
                                 Drink drink = drinkSnapshot.getValue(Drink.class);
                                 drink.setMealId(drinkSnapshot.getKey());
-                                drink.setFoodTypes(FoodTypes.DRINK);
+                                drink.setFoodType(FoodTypes.DRINK);
                                 drinks.add(drink);
                             }
                             menu.put(FoodTypes.DRINK, drinks);
@@ -99,7 +96,7 @@ public class RestaurantMenuViewModel extends ViewModel {
         }
     }
 
-    public LiveData<List<CurrentOrderEntry>> getCurrentOrderList() {
+    public LiveData<List<Meal>> getCurrentOrderList() {
         return currentOrderList;
     }
 

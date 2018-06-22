@@ -28,7 +28,6 @@ import com.udacity.thefedex87.takemyorder.models.Customer;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 

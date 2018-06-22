@@ -22,9 +22,9 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
+import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
@@ -109,7 +109,7 @@ public class FoodListFragment extends Fragment {
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<CurrentOrderEntry> foods = adapter.getCurrentOrderEntryList();
+                        List<Meal> foods = adapter.getCurrentOrderEntryList();
                         db.currentOrderDao().deleteFood(foods.get(position));
                     }
                 });
@@ -122,9 +122,9 @@ public class FoodListFragment extends Fragment {
 
     public void setupViewModel(){
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this).get(CustomerMainViewModel.class);
-        customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<CurrentOrderEntry>>() {
+        customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override
-            public void onChanged(@Nullable List<CurrentOrderEntry> currentOrderEntries) {
+            public void onChanged(@Nullable List<Meal> currentOrderEntries) {
                 adapter.swapCurrentOrderEntryList(currentOrderEntries);
                 if (currentOrderEntries.size() != 0)
                     foodListPlaceholder.setVisibility(View.GONE);

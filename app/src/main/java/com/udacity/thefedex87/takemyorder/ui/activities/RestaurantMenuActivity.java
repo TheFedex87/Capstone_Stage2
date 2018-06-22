@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment;
@@ -115,9 +114,9 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId);
         RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
 
-        restaurantMenuViewModel.getCurrentOrderList().observe(this, new Observer<List<CurrentOrderEntry>>() {
+        restaurantMenuViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
-            public void onChanged(@Nullable List<CurrentOrderEntry> currentOrderEntries) {
+            public void onChanged(@Nullable List<Meal> currentOrderEntries) {
                 if (currentOrderEntries.size() > 0)
                     counterContainer.setVisibility(View.VISIBLE);
                 else

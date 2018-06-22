@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -12,30 +11,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.transition.ChangeBounds;
-import android.support.transition.Fade;
-import android.support.transition.Scene;
-import android.support.transition.Transition;
-import android.support.transition.TransitionInflater;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
@@ -46,12 +30,8 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
-import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
-import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
@@ -92,10 +72,10 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     public MenuSingleFragment(){
         TakeMyOrderApplication.appComponent().inject(this);
         userInterfaceComponent = DaggerUserInterfaceComponent.builder()
-            .applicationModule(new ApplicationModule(applicationContext))
-            .userInterfaceModule(
-                    new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
-            .build();
+                .applicationModule(new ApplicationModule(applicationContext))
+                .userInterfaceModule(
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
+                .build();
     }
 
     public void setMeals(List<Meal> meals){
@@ -106,7 +86,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
 
         RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(getActivity()), null);
@@ -215,7 +194,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                 PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(SCALE_X, 0.3f);
                 PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(SCALE_Y, 0.3f);
 
-                ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(originalImage, scaleXFoodImage, scaleYFoodImage, alphaFoodImage).setDuration(150);
+                final ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(originalImage, scaleXFoodImage, scaleYFoodImage, alphaFoodImage).setDuration(150);
                 scaleFoodImageAnimator.start();
 
                 ObjectAnimator moveFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(imageView, alpha, transX, transY, scaleX, scaleY).setDuration(650);
@@ -236,22 +215,23 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                         imageView.animate().scaleX(1).setDuration(0).start();
                         imageView.animate().scaleY(1).setDuration(0).start();
 
-                        originalImage.animate().scaleY(1f).setDuration(300).start();
-                        originalImage.animate().scaleX(1f).setDuration(300).start();
-                        originalImage.animate().alpha(1f).setDuration(100).start();
+                        scaleFoodImageAnimator.reverse();
+//                        originalImage.animate().scaleY(1f).setDuration(300).start();
+//                        originalImage.animate().scaleX(1f).setDuration(300).start();
+//                        originalImage.animate().alpha(1f).setDuration(100).start();
 
 
 
                         final AppDatabase db = AppDatabase.getInstance(getActivity());
-                        final CurrentOrderEntry entry = new CurrentOrderEntry(0,
-                                selectedMeal.getName(),
-                                selectedMeal.getPrice(),
-                                selectedMeal.getFoodTypes(),
-                                selectedMeal.getMealId());
+//                        final CurrentOrderEntry entry = new CurrentOrderEntry(0,
+//                                selectedMeal.getName(),
+//                                selectedMeal.getPrice(),
+//                                selectedMeal.getFoodType(),
+//                                selectedMeal.getMealId());
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
-                                db.currentOrderDao().insertFood(entry);
+                                db.currentOrderDao().insertFood(selectedMeal);
                             }
                         });
 
@@ -266,6 +246,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 sender.setEnabled(true);
+                                animation.removeListener(this);
                             }
                         });
                         translateAppBarReverseAnimator.start();

@@ -3,7 +3,6 @@ package com.udacity.thefedex87.takemyorder.room.converter;
 import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 
 /**

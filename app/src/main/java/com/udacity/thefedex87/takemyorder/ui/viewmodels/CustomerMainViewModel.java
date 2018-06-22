@@ -5,8 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
+import com.udacity.thefedex87.takemyorder.models.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class CustomerMainViewModel extends AndroidViewModel {
-    private LiveData<List<CurrentOrderEntry>> currentOrderList;
+    private LiveData<List<Meal>> currentOrderList;
 
     public CustomerMainViewModel(@NonNull Application application) {
         super(application);
@@ -24,7 +24,7 @@ public class CustomerMainViewModel extends AndroidViewModel {
         currentOrderList = db.currentOrderDao().getCurrentOrderList();
     }
 
-    public LiveData<List<CurrentOrderEntry>> getCurrentOrderList() {
+    public LiveData<List<Meal>> getCurrentOrderList() {
         return currentOrderList;
     }
 }

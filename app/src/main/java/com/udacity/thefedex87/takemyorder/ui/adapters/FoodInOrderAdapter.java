@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderEntry;
+import com.udacity.thefedex87.takemyorder.models.Meal;
 
 import java.util.List;
 
@@ -20,14 +20,14 @@ import butterknife.ButterKnife;
  */
 
 public class FoodInOrderAdapter extends RecyclerView.Adapter<FoodInOrderAdapter.FoodInOrderViewHolder> {
-    private List<CurrentOrderEntry> currentOrderEntryList;
+    private List<Meal> currentOrderEntryList;
 
-    public void swapCurrentOrderEntryList(List<CurrentOrderEntry> currentOrderEntryList){
+    public void swapCurrentOrderEntryList(List<Meal> currentOrderEntryList){
         this.currentOrderEntryList = currentOrderEntryList;
         notifyDataSetChanged();
     }
 
-    public List<CurrentOrderEntry> getCurrentOrderEntryList(){
+    public List<Meal> getCurrentOrderEntryList(){
         return currentOrderEntryList;
     }
 
