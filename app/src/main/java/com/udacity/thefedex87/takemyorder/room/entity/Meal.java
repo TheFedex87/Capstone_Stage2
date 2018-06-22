@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.models;
+package com.udacity.thefedex87.takemyorder.room.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

@@ -1,11 +1,16 @@
 package com.udacity.thefedex87.takemyorder.ui.adapters;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -18,8 +23,11 @@ import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Food;
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +45,16 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     private Context context;
     private HashMap<String, Integer> mealsCountInCurrentOrder;
 
+    private AppCompatActivity parentActivity;
+
     private FirebaseStorage firebaseStorage;
 
     private NetworkComponent networkInterfaceComponent;
 
     FoodInMenuActionClick foodInMenuActionClick;
 
-    public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick){
+    public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity){
+        this.parentActivity = parentActivity;
         this.context = context;
         firebaseStorage = FirebaseStorage.getInstance();
 
@@ -78,10 +89,27 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, int position) {
-        if(mealsCountInCurrentOrder.containsKey(meals.get(position).getMealId())){
-            holder.foodCount.setText(String.valueOf(mealsCountInCurrentOrder.get(meals.get(position).getMealId())));
-        }
+    public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
+        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
+        RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
+
+        holder.foodCountContainer.setVisibility(View.GONE);
+        restaurantMenuViewModel.getCurrentOrderListGrouped().observe(parentActivity, new Observer<List<CurrentOrderGrouped>>() {
+            @Override
+            public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
+                for (CurrentOrderGrouped currentOrderGrouped : currentOrderEntries){
+                    if (currentOrderGrouped.getMealId().equals(meals.get(position).getMealId())){
+                        holder.foodCount.setText(String.valueOf(currentOrderGrouped.getCount()));
+                        holder.foodCountContainer.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+
+//        if(mealsCountInCurrentOrder.containsKey(meals.get(position).getMealId())){
+//            holder.foodCount.setText(String.valueOf(mealsCountInCurrentOrder.get(meals.get(position).getMealId())));
+//        }
 
         holder.foodInMenuName.setText(meals.get(position).getName());
 
@@ -139,6 +167,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         @BindView(R.id.add_to_current_order)
         TextView addToCurrentOrder;
+
+        @BindView(R.id.meal_in_order_counter_container)
+        FrameLayout foodCountContainer;
 
         @BindView(R.id.food_id_count_in_current_order)
         TextView foodCount;

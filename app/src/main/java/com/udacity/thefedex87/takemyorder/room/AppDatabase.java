@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.converter.FoodTypeConverter;
 import com.udacity.thefedex87.takemyorder.room.dao.CurrentOrderDao;
 

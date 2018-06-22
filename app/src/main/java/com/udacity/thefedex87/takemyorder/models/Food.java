@@ -1,5 +1,7 @@
 package com.udacity.thefedex87.takemyorder.models;
 
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+
 import java.util.List;
 
 /**

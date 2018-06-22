@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.models.Food;
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;

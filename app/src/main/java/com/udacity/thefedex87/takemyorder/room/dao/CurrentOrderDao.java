@@ -6,7 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface CurrentOrderDao {
     @Query("SELECT * FROM current_order WHERE mealId = :mealId")
     LiveData<List<Meal>> getCurrentOrderListByMealId(String mealId);
 
-    @Query("SELECT *,COUNT(mealId) AS count FROM current_order GROUP BY mealId")
+    @Query("SELECT mealId ,COUNT(mealId) AS count FROM current_order GROUP BY mealId")
     LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped();
 
     @Insert

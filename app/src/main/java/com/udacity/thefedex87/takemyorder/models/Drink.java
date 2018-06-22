@@ -1,5 +1,7 @@
 package com.udacity.thefedex87.takemyorder.models;
 
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+
 /**
  * Created by feder on 07/06/2018.
  */

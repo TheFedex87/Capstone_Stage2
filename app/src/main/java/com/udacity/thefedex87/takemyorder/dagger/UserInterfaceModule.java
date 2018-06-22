@@ -1,6 +1,7 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -30,6 +31,7 @@ public class UserInterfaceModule {
     private RestaurantPhotoAdapter.ImageLoadingState imageLoadingState;
     private int linearLayoutManagerOrientation = LinearLayoutManager.VERTICAL;
     private FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick;
+    private AppCompatActivity parentActivity;
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this.photoUrls = photoUrls;
@@ -39,9 +41,10 @@ public class UserInterfaceModule {
     }
 
     //TODO: creare un costruttore apposito per FoodInMenuActionClick
-    public UserInterfaceModule(int linearLayoutManagerOrientation, FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick) {
+    public UserInterfaceModule(int linearLayoutManagerOrientation, FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity) {
         this(null, null, null, linearLayoutManagerOrientation);
         this.foodInMenuActionClick = foodInMenuActionClick;
+        this.parentActivity = parentActivity;
     }
 
     public UserInterfaceModule(List<?> list){
@@ -93,6 +96,6 @@ public class UserInterfaceModule {
     @Singleton
     @Provides
     public FoodInMenuAdapter provideFoodInMenuAdapter(Context context){
-        return new FoodInMenuAdapter(context, foodInMenuActionClick);
+        return new FoodInMenuAdapter(context, foodInMenuActionClick, parentActivity);
     }
 }

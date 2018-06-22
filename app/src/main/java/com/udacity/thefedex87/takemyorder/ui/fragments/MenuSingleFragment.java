@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
@@ -70,12 +71,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     private UserInterfaceComponent userInterfaceComponent;
     public MenuSingleFragment(){
-        TakeMyOrderApplication.appComponent().inject(this);
-        userInterfaceComponent = DaggerUserInterfaceComponent.builder()
-                .applicationModule(new ApplicationModule(applicationContext))
-                .userInterfaceModule(
-                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
-                .build();
+
     }
 
     public void setMeals(List<Meal> meals){
@@ -86,19 +82,26 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void onAttach(Context context) {
+        TakeMyOrderApplication.appComponent().inject(this);
+        userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                .applicationModule(new ApplicationModule(applicationContext))
+                .userInterfaceModule(
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, this, (AppCompatActivity)getActivity()))
+                .build();
+
         super.onAttach(context);
 
-        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(getActivity()), null);
-        RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
-
-        restaurantMenuViewModel.getCurrentOrderListGrouped().observe(getActivity(), new Observer<List<CurrentOrderGrouped>>() {
-            @Override
-            public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
-                if (foodInMenuAdapter != null){
-                    foodInMenuAdapter.setMealsCount(currentOrderEntries);
-                }
-            }
-        });
+//        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(getActivity()), null);
+//        RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
+//
+//        restaurantMenuViewModel.getCurrentOrderListGrouped().observe(getActivity(), new Observer<List<CurrentOrderGrouped>>() {
+//            @Override
+//            public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
+//                if (foodInMenuAdapter != null){
+//                    foodInMenuAdapter.setMealsCount(currentOrderEntries);
+//                }
+//            }
+//        });
     }
 
     @Nullable

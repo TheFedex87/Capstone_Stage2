@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;

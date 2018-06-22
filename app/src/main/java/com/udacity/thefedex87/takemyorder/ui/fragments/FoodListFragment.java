@@ -22,10 +22,9 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
-import com.udacity.thefedex87.takemyorder.models.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 
@@ -90,7 +89,7 @@ public class FoodListFragment extends Fragment {
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                 .applicationModule(new ApplicationModule(applicationContext))
                 .userInterfaceModule(
-                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, null))
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, null, null))
                 .build();
 
         currentOrderList.setAdapter(adapter);
