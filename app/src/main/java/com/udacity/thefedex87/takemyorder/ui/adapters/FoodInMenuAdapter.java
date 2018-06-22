@@ -43,7 +43,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.FoodInMenuViewHolder> {
     private List<Meal> meals;
     private Context context;
-    private HashMap<String, Integer> mealsCountInCurrentOrder;
 
     private AppCompatActivity parentActivity;
 
@@ -51,7 +50,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     private NetworkComponent networkInterfaceComponent;
 
-    FoodInMenuActionClick foodInMenuActionClick;
+    private FoodInMenuActionClick foodInMenuActionClick;
+
+    private RestaurantMenuViewModelFactory restaurantMenuViewModelFactory;
+    private RestaurantMenuViewModel restaurantMenuViewModel;
 
     public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity){
         this.parentActivity = parentActivity;
@@ -64,18 +66,13 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 .build();
 
         this.foodInMenuActionClick = foodInMenuActionClick;
-        mealsCountInCurrentOrder = new HashMap<>();
+
+        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
+        restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
     }
 
     public void setMeals(List<Meal> meals){
         this.meals = meals;
-        notifyDataSetChanged();
-    }
-
-    public void setMealsCount(List<CurrentOrderGrouped> mealsCount){
-        for (CurrentOrderGrouped foodId: mealsCount ) {
-            mealsCountInCurrentOrder.put(foodId.getMealId(), foodId.getCount());
-        }
         notifyDataSetChanged();
     }
 
@@ -90,10 +87,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
-        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
-        RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
-
         holder.foodCountContainer.setVisibility(View.GONE);
+
         restaurantMenuViewModel.getCurrentOrderListGrouped().observe(parentActivity, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
@@ -105,11 +100,6 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 }
             }
         });
-
-
-//        if(mealsCountInCurrentOrder.containsKey(meals.get(position).getMealId())){
-//            holder.foodCount.setText(String.valueOf(mealsCountInCurrentOrder.get(meals.get(position).getMealId())));
-//        }
 
         holder.foodInMenuName.setText(meals.get(position).getName());
 

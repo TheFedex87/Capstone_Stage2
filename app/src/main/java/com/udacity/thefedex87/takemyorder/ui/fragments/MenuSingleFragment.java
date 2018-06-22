@@ -90,18 +90,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                 .build();
 
         super.onAttach(context);
-
-//        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(getActivity()), null);
-//        RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
-//
-//        restaurantMenuViewModel.getCurrentOrderListGrouped().observe(getActivity(), new Observer<List<CurrentOrderGrouped>>() {
-//            @Override
-//            public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
-//                if (foodInMenuAdapter != null){
-//                    foodInMenuAdapter.setMealsCount(currentOrderEntries);
-//                }
-//            }
-//        });
     }
 
     @Nullable
