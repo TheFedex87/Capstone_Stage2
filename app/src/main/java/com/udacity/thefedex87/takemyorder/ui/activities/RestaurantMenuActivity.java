@@ -1,5 +1,6 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
+import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.arch.lifecycle.Observer;
@@ -116,34 +117,41 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         restaurantMenuViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
-                if (currentOrderEntries.size() > 0)
+                if (currentOrderEntries.size() > 0) {
                     counterContainer.setVisibility(View.VISIBLE);
-                else
+                }
+                else {
                     counterContainer.setVisibility(View.GONE);
+                    return;
+                }
 
                 counterValue.setText(String.valueOf(currentOrderEntries.size() <= 99 ? currentOrderEntries.size() : 99));
 
-                AnimatorSet counterAnimationIncrease = new AnimatorSet();
-                counterAnimationIncrease.playTogether(
-                        ObjectAnimator.ofFloat(counterContainer, SCALE_X, 2.0f),
-                        ObjectAnimator.ofFloat(counterContainer, SCALE_Y, 2.0f)
-                );
-                counterAnimationIncrease.setDuration(75);
-                counterAnimationIncrease.setInterpolator(AnimationUtils.loadInterpolator(RestaurantMenuActivity.this, android.R
-                        .interpolator.fast_out_slow_in));
+//                AnimatorSet counterAnimationIncrease = new AnimatorSet();
+//                counterAnimationIncrease.playTogether(
+//                        ObjectAnimator.ofFloat(counterContainer, SCALE_X, 2.0f),
+//                        ObjectAnimator.ofFloat(counterContainer, SCALE_Y, 2.0f)
+//                );
+//                counterAnimationIncrease.setDuration(75);
+//                counterAnimationIncrease.setInterpolator(AnimationUtils.loadInterpolator(RestaurantMenuActivity.this, android.R
+//                        .interpolator.fast_out_slow_in));
+//
+//                AnimatorSet counterAnimationDecrease = new AnimatorSet();
+//                counterAnimationDecrease.playTogether(
+//                        ObjectAnimator.ofFloat(counterContainer, SCALE_X, 1.0f),
+//                        ObjectAnimator.ofFloat(counterContainer, SCALE_Y, 1.0f)
+//                );
+//                counterAnimationDecrease.setDuration(75);
+//                counterAnimationDecrease.setStartDelay(75);
+//                counterAnimationDecrease.setInterpolator(AnimationUtils.loadInterpolator(RestaurantMenuActivity.this, android.R
+//                        .interpolator.fast_out_slow_in));
 
-                AnimatorSet counterAnimationDecrease = new AnimatorSet();
-                counterAnimationDecrease.playTogether(
-                        ObjectAnimator.ofFloat(counterContainer, SCALE_X, 1.0f),
-                        ObjectAnimator.ofFloat(counterContainer, SCALE_Y, 1.0f)
-                );
-                counterAnimationDecrease.setDuration(75);
-                counterAnimationDecrease.setStartDelay(75);
-                counterAnimationDecrease.setInterpolator(AnimationUtils.loadInterpolator(RestaurantMenuActivity.this, android.R
-                        .interpolator.fast_out_slow_in));
+//                AnimatorSet counterAnimation = new AnimatorSet();
+//                counterAnimation.playSequentially(counterAnimationIncrease, counterAnimationDecrease);
+                AnimatorSet counterAnimation = (AnimatorSet)AnimatorInflater
+                        .loadAnimator(RestaurantMenuActivity.this, R.animator.food_counter_animation);
+                counterAnimation.setTarget(counterContainer);
 
-                AnimatorSet counterAnimation = new AnimatorSet();
-                counterAnimation.playSequentially(counterAnimationIncrease, counterAnimationDecrease);
                 counterAnimation.start();
             }
         });

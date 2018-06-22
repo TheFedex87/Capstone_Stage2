@@ -1,5 +1,7 @@
 package com.udacity.thefedex87.takemyorder.ui.adapters;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -26,6 +28,7 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
+import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
@@ -67,8 +70,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         this.foodInMenuActionClick = foodInMenuActionClick;
 
-        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
-        restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
+
     }
 
     public void setMeals(List<Meal> meals){
@@ -89,14 +91,21 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
         holder.foodCountContainer.setVisibility(View.GONE);
 
-        restaurantMenuViewModel.getCurrentOrderListGrouped().observe(parentActivity, new Observer<List<CurrentOrderGrouped>>() {
+        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
+        restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
+        restaurantMenuViewModel.setFoodId(meals.get(position).getMealId());
+        restaurantMenuViewModel.getCurrentOrdserListByMealId().observe(parentActivity, new Observer<List<Meal>>() {
             @Override
-            public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrderEntries) {
-                for (CurrentOrderGrouped currentOrderGrouped : currentOrderEntries){
-                    if (currentOrderGrouped.getMealId().equals(meals.get(position).getMealId())){
-                        holder.foodCount.setText(String.valueOf(currentOrderGrouped.getCount()));
-                        holder.foodCountContainer.setVisibility(View.VISIBLE);
-                    }
+            public void onChanged(@Nullable List<Meal> currentOrderEntries) {
+                if (currentOrderEntries.size() > 0){
+                    holder.foodCountContainer.setVisibility(View.VISIBLE);
+                    holder.foodCount.setText(String.valueOf(currentOrderEntries.size()));
+
+
+                    AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
+                            .loadAnimator(parentActivity, R.animator.food_counter_animation);
+                    counterAnimation.setTarget(holder.foodCountContainer);
+                    counterAnimation.start();
                 }
             }
         });

@@ -27,7 +27,9 @@ import timber.log.Timber;
  */
 
 public class RestaurantMenuViewModel extends ViewModel {
+    private AppDatabase db;
     private LiveData<List<Meal>> currentOrderList;
+    private LiveData<List<Meal>> currentOrderListByMealId;
     private LiveData<List<CurrentOrderGrouped>> currentOrderListGrouped;
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
     private String restaurantId;
@@ -36,9 +38,14 @@ public class RestaurantMenuViewModel extends ViewModel {
     public RestaurantMenuViewModel(AppDatabase db, String restaurantId) {
         currentOrderList = db.currentOrderDao().getCurrentOrderList();
         currentOrderListGrouped = db.currentOrderDao().getCurrentOrderListGrouped();
+        this.db = db;
         this.restaurantId = restaurantId;
         menuLiveData = new MutableLiveData<>();
         retrieveRestaurantMenu();
+    }
+
+    public void setFoodId(String mealId){
+        currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId);
     }
 
     private void retrieveRestaurantMenu(){
@@ -103,4 +110,6 @@ public class RestaurantMenuViewModel extends ViewModel {
     public LiveData<HashMap<FoodTypes, List<Meal>>> getMenu() { return menuLiveData; }
 
     public LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped() { return currentOrderListGrouped; }
+
+    public LiveData<List<Meal>> getCurrentOrdserListByMealId() {return currentOrderListByMealId; }
 }
