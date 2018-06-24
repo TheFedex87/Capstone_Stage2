@@ -63,8 +63,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LoginMapsActivity" />
         </activity>
+
         <activity android:name=".ui.activities.WaiterMainActivity" />
-        <activity android:name=".ui.activities.RestaurantMenuActivity"></activity>
+
+        <activity android:name=".ui.activities.RestaurantMenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.CustomerMainActivity" />
+        </activity>
+
+        <activity android:name=".ui.activities.DishDescriptionActivity"></activity>
     </application>
 
 </manifest>

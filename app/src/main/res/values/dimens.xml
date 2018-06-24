@@ -55,7 +55,7 @@
 
     <!--Menu Activity-->
 
-    <!--FoodgetMenumenu-->
+    <!--Restaurant menu-->
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
     <dimen name="food_in_menu_card_margin">15dp</dimen>
@@ -72,7 +72,8 @@
     <dimen name="food_in_menu_description_margin">8dp</dimen>
     <dimen name="food_in_menu_action_text_size">14sp</dimen>
     <dimen name="food_in_menu_action_margin">8dp</dimen>
-    <dimen name="food_in_menu_action_show_detail_margin_start">12dp</dimen>
+    <dimen name="food_in_menu_action_show_detail_margin_start">15dp</dimen>
+    ù<dimen name="food_in_menu_action_subtract_food_margin_start">15dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_size">25dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_text_size">18sp</dimen>
 
@@ -82,6 +83,15 @@
     <dimen name="counter_circle_text_size">12sp</dimen>
     <dimen name="counter_circle_text_marging_start">0dp</dimen>
     <dimen name="counter_circle_text_marging_top">0dp</dimen>
+
+    <!--Dish description-->
+    <dimen name="dish_description_image_height">200dp</dimen>
+    <dimen name="dish_description_margin_start">16dp</dimen>
+    <dimen name="dish_description_margin_end">16dp</dimen>
+    <dimen name="dish_description_margin_top">16dp</dimen>
+    <dimen name="dish_description_ingredients_margin_start">16dp</dimen>
+    <dimen name="dish_description_ingredients_margin_end">16dp</dimen>
+    <dimen name="dish_description_ingredients_margin_top">16dp</dimen>
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>

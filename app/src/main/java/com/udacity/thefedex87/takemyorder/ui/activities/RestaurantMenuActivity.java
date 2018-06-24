@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -35,7 +36,8 @@ import static android.view.View.SCALE_Y;
 
 public class RestaurantMenuActivity extends AppCompatActivity {
     private String restaurantId;
-    //private HashMap<FoodTypes, List<Meal>> getMenu;
+    private MenuCompleteFragment menuCompleteFragment;
+    private List<Meal> currentOrder;
 
     @BindView(R.id.menu_icon_container)
     RelativeLayout menuIconContainer;
@@ -45,6 +47,9 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
     @BindView(R.id.couter_value)
     TextView counterValue;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,9 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY)){
             ButterKnife.bind(this);
+
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             restaurantId = intent.getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
 
@@ -117,6 +125,9 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         restaurantMenuViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
+                //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
+                if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
+                currentOrder = currentOrderEntries;
                 if (currentOrderEntries.size() > 0) {
                     counterContainer.setVisibility(View.VISIBLE);
                 }
@@ -160,8 +171,9 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable HashMap<FoodTypes, List<Meal>> foodTypesListHashMap) {
                 //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
-                final MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
+                menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
                 menuCompleteFragment.setMenu(foodTypesListHashMap);
+                if (currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
             }
         });
     }

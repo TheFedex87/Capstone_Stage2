@@ -5,8 +5,10 @@ import android.animation.AnimatorSet;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -89,7 +91,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
-        holder.foodCountContainer.setVisibility(View.GONE);
+//
 
         restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
@@ -99,6 +101,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
                 if (currentOrderEntries.size() > 0){
                     holder.foodCountContainer.setVisibility(View.VISIBLE);
+                    holder.subtractFood.setVisibility(View.VISIBLE);
                     holder.foodCount.setText(String.valueOf(currentOrderEntries.size()));
 
 
@@ -106,6 +109,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                             .loadAnimator(parentActivity, R.animator.food_counter_animation);
                     counterAnimation.setTarget(holder.foodCountContainer);
                     counterAnimation.start();
+                } else {
+                    holder.foodCountContainer.setVisibility(View.GONE);
+                    holder.subtractFood.setVisibility(View.GONE);
                 }
             }
         });
@@ -133,6 +139,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             Food food = (Food) meals.get(position);
             holder.foodDescription.setText(food.getDescription());
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ViewCompat.setTransitionName(holder.foodImage, "foodTransition");
+        }
     }
 
     @Override
@@ -143,6 +153,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     public interface FoodInMenuActionClick{
         void addOrderClick(Meal selectedMeal, View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
+        void subtractFood(Meal selectedMeal);
+        void showDishDetails(Meal meal, ImageView imageView);
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
@@ -173,6 +185,12 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         @BindView(R.id.food_id_count_in_current_order)
         TextView foodCount;
 
+        @BindView(R.id.show_food_details)
+        TextView showDishDetails;
+
+        @BindView(R.id.subtract_food)
+        TextView subtractFood;
+
         private ViewGroup viewGroup;
 
         public FoodInMenuViewHolder(View itemView) {
@@ -180,17 +198,24 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
             ButterKnife.bind(this, itemView);
 
-//            final ViewGroup parentViewGroup = (ViewGroup)foodImage
-//                    .getParent().getParent().getParent().getParent()
-//                    .getParent().getParent().getParent().getParent()
-//                    .getParent();
-//            parentViewGroup.getOverlay().add(foodImageToAnimate);
-
             addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     foodInMenuActionClick.addOrderClick(meals.get(getAdapterPosition()), view, foodImageToAnimate, foodImageContainer, foodImage);
-                    //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)context);
+                }
+            });
+
+            subtractFood.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    foodInMenuActionClick.subtractFood(meals.get(getAdapterPosition()));
+                }
+            });
+
+            showDishDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
                 }
             });
         }

@@ -92,7 +92,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
 
         ButterKnife.bind(this);
 
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -7,10 +7,13 @@ import android.animation.PropertyValuesHolder;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +35,8 @@ import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
+import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
@@ -56,6 +61,8 @@ import static android.view.View.TRANSLATION_Y;
 public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.FoodInMenuActionClick {
     private List<Meal> meals;
 
+    private List<Meal> currentOrder;
+
     @BindView(R.id.foods_in_menu_container)
     RecyclerView foodInMenuContainer;
 
@@ -67,17 +74,24 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     @Inject
     Context applicationContext;
 
-    private ViewGroup container;
+    //private ViewGroup container;
+    private AppDatabase db;
+
+
 
     private UserInterfaceComponent userInterfaceComponent;
     public MenuSingleFragment(){
-
+        db = AppDatabase.getInstance(getActivity());
     }
 
     public void setMeals(List<Meal> meals){
         this.meals = meals;
         if (foodInMenuAdapter != null)
             foodInMenuAdapter.setMeals(meals);
+    }
+
+    public void setCurrentOrder(List<Meal> currentOrder){
+        this.currentOrder = currentOrder;
     }
 
     @Override
@@ -99,7 +113,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         ButterKnife.bind(this, viewRoot);
 
-        this.container = container;
+        //this.container = container;
 
 
 
@@ -252,5 +266,37 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
             }
         });
         //}
+    }
+
+    @Override
+    public void subtractFood(final Meal selectedMeal) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Meal mealToDelete = null;
+                for(Meal meal : currentOrder){
+                    if (meal.getMealId().equals(selectedMeal.getMealId())){
+                        mealToDelete = meal;
+                    }
+                }
+                if(mealToDelete != null)
+                    db.currentOrderDao().deleteFood(mealToDelete);
+            }
+        });
+    }
+
+    @Override
+    public void showDishDetails(Meal meal, ImageView foodImage) {
+        Intent intent = new Intent(getActivity(), DishDescriptionActivity.class);
+        Bundle b = new Bundle();
+        b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);
+        intent.putExtras(b);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Bundle transitionBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), foodImage, foodImage.getTransitionName()).toBundle();
+            startActivity(intent, transitionBundle);
+        } else {
+            startActivity(intent);
+        }
     }
 }

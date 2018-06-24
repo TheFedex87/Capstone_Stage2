@@ -2,6 +2,8 @@ package com.udacity.thefedex87.takemyorder.room.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 
@@ -10,7 +12,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
  */
 
 @Entity(tableName = "current_order")
-public class Meal {
+public class Meal implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -67,4 +69,34 @@ public class Meal {
     public void setFoodType(FoodTypes foodType) {
         this.foodType = foodType;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeDouble(this.price);
+        dest.writeString(this.imageName);
+        dest.writeString(this.mealId);
+        dest.writeInt(this.foodType == null ? -1 : this.foodType.ordinal());
+    }
+
+    public Meal() {
+    }
+
+    protected Meal(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.price = in.readDouble();
+        this.imageName = in.readString();
+        this.mealId = in.readString();
+        int tmpFoodType = in.readInt();
+        this.foodType = tmpFoodType == -1 ? null : FoodTypes.values()[tmpFoodType];
+    }
+
 }

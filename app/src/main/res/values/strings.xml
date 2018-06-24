@@ -28,7 +28,7 @@
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
 
-    <!--RestaurgetMenumenu-->
+    <!--Restaurant Menu-->
     <string name="starter_dishes">Starter dishes</string>
     <string name="main_dishes">Main dishes</string>
     <string name="side_dishes">Side dishes</string>
@@ -36,5 +36,6 @@
     <string name="drinks">Drinks</string>
     <string name="add_to_order">ADD TO ORDER</string>
     <string name="show_details">SHOW DETAILS</string>
+    <string name="subtract_food">-1</string>
 
 </resources>

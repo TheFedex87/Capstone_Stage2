@@ -27,6 +27,8 @@ import butterknife.ButterKnife;
  */
 
 public class MenuCompleteFragment extends Fragment {
+    private FoodTypePagerAdapter foodTypePagerAdapter;
+
     @BindView(R.id.food_types_tabs)
     TabLayout foodTypesTabs;
 
@@ -35,6 +37,10 @@ public class MenuCompleteFragment extends Fragment {
 
     public MenuCompleteFragment(){
 
+    }
+
+    public void setCurrentOrder(List<Meal> currentOrder){
+        foodTypePagerAdapter.setCurrentOrder(currentOrder);
     }
 
     public void setMenu(HashMap<FoodTypes, List<Meal>> menu){
@@ -60,7 +66,7 @@ public class MenuCompleteFragment extends Fragment {
             foodTypesTabs.addTab(foodTypesTabs.newTab().setText(getString(R.string.drinks)));
         }
 
-        FoodTypePagerAdapter foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, getContext());
+        foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, getContext());
         foodTypesPager.setAdapter(foodTypePagerAdapter);
     }
 

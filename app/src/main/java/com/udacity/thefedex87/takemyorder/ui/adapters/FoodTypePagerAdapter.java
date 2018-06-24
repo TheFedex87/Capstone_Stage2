@@ -21,14 +21,22 @@ import java.util.List;
 
 public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     private LinkedHashMap<FoodTypes, List<Meal>> meals;
-    private FragmentManager fragmentManager;
     private Context context;
+    private MenuSingleFragment[] fragments;
+    private List<Meal> currentOrder;
 
     public FoodTypePagerAdapter(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, Context context){
         super(fragmentManager);
         this.meals = meals;
-        this.fragmentManager = fragmentManager;
         this.context = context;
+        fragments = new MenuSingleFragment[meals.size()];
+    }
+
+    public void setCurrentOrder(List<Meal> currentOrder){
+        this.currentOrder = currentOrder;
+        for(MenuSingleFragment menuSingleFragment : fragments){
+            setCurrentOrderToFragment(currentOrder, menuSingleFragment);
+        }
     }
 
 //    @Override
@@ -42,8 +50,10 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment)super.instantiateItem(container, position);
+        fragments[position] = (MenuSingleFragment)fragment;
         List keys = new ArrayList(meals.keySet());
         ((MenuSingleFragment)fragment).setMeals(meals.get(keys.get(position)));
+        setCurrentOrderToFragment(currentOrder, (MenuSingleFragment)fragment);
         //if (fragment == null) fragment = getItem(position);
 //        FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        transaction.add(container.getId(), fragment, "fragment:" + position);
@@ -66,6 +76,11 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object fragment) {
         return ((Fragment) fragment).getView() == view;
+    }
+
+    private void setCurrentOrderToFragment(List<Meal> currentOrder, MenuSingleFragment fragment){
+        if (fragment != null && currentOrder != null)
+            fragment.setCurrentOrder(currentOrder);
     }
 }
 

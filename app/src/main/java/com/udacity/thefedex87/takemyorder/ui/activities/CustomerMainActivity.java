@@ -38,6 +38,8 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class CustomerMainActivity extends AppCompatActivity {
+    public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
+
     private FirebaseAuth firebaseAuth;
     private Customer customer;
     private Restaurant restaurant;
