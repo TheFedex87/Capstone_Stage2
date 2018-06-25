@@ -70,8 +70,7 @@ public class DishDescriptionActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dishDescriptionMealImage.setTransitionName("foodTransition");
-            Transition t = TransitionInflater.from(this).inflateTransition(R.transition.curve);
-            getWindow().setSharedElementEnterTransition(t);
+            //getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.curve));
         }
 
         ActivityCompat.postponeEnterTransition(this);
