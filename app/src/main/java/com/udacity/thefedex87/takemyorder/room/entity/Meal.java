@@ -70,6 +70,17 @@ public class Meal implements Parcelable {
         this.foodType = foodType;
     }
 
+    public static final Creator<Meal> CREATOR = new Creator<Meal>() {
+        @Override
+        public Meal createFromParcel(Parcel in) {
+            return new Meal(in);
+        }
+
+        @Override
+        public Meal[] newArray(int size) {
+            return new Meal[size];
+        }
+    };
 
     @Override
     public int describeContents() {

@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +41,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
     private List<Meal> currentOrder;
 
     @BindView(R.id.menu_icon_container)
-    RelativeLayout menuIconContainer;
+    FrameLayout menuIconContainer;
 
     @BindView(R.id.counter_container)
     FrameLayout counterContainer;
@@ -48,8 +49,14 @@ public class RestaurantMenuActivity extends AppCompatActivity {
     @BindView(R.id.couter_value)
     TextView counterValue;
 
+    @BindView(R.id.toolbar_container)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.activity_title)
+    TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbarTitle.setText(getString(R.string.menu));
 
             restaurantId = intent.getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
 

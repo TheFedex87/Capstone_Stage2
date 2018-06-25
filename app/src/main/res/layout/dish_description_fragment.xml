@@ -4,21 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <ImageView
-        android:id="@+id/dishDescriptionMealImage"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dish_description_image_height"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitCenter"
-        android:background="@drawable/ic_food" />
+    android:layout_height="match_parent"
+    android:background="#0F0">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dish_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dish_description_margin_end"
@@ -26,10 +16,11 @@
         android:layout_marginTop="@dimen/dish_description_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dishDescriptionMealImage" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#F00"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
@@ -37,5 +28,5 @@
         android:layout_marginTop="@dimen/dish_description_ingredients_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"></android.support.v7.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/dish_description"></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

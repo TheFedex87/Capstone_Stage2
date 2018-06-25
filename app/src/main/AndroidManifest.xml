@@ -58,6 +58,7 @@
         </activity>
         <activity
             android:name=".ui.activities.CustomerMainActivity"
+            android:parentActivityName=".ui.activities.LoginMapsActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -66,13 +67,20 @@
 
         <activity android:name=".ui.activities.WaiterMainActivity" />
 
-        <activity android:name=".ui.activities.RestaurantMenuActivity">
+        <activity android:name=".ui.activities.RestaurantMenuActivity"
+            android:parentActivityName=".ui.activities.CustomerMainActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.CustomerMainActivity" />
         </activity>
 
-        <activity android:name=".ui.activities.DishDescriptionActivity"></activity>
+        <activity android:name=".ui.activities.DishDescriptionActivity"
+            android:parentActivityName=".ui.activities.RestaurantMenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.RestaurantMenuActivity" />
+        </activity>
     </application>
 
 </manifest>
