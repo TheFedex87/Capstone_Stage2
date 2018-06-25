@@ -8,10 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
@@ -25,6 +28,7 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
+import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 
 import javax.inject.Inject;
 
@@ -39,22 +43,30 @@ public class DishDescriptionFragment extends Fragment {
     @BindView(R.id.dish_description)
     TextView mealDescription;
 
+    @BindView(R.id.ingredients_list)
+    RecyclerView ingredientsList;
+
     @Inject
     Context context;
 
     private UserInterfaceComponent userInterfaceComponent;
     private NetworkComponent networkComponent;
 
-    private Meal food;
+    //private Meal food;
 
     public DishDescriptionFragment(){
 
     }
 
     public void setFood(Food food){
-        this.food = food;
+        //this.food = food;
 
         mealDescription.setText(food.getDescription());
+
+        ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+        DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
+        ingredientsList.setAdapter(dishIngredientsAdapter);
+        dishIngredientsAdapter.setIngredients(food.getIngredients());
     }
 
     @Override
@@ -63,7 +75,7 @@ public class DishDescriptionFragment extends Fragment {
 
         userInterfaceComponent = DaggerUserInterfaceComponent
                 .builder()
-                .userInterfaceModule(new UserInterfaceModule(null, null, null, 0))
+                .userInterfaceModule(new UserInterfaceModule(null, null, null, LinearLayoutManager.VERTICAL))
                 .applicationModule(new ApplicationModule(context))
                 .build();
 

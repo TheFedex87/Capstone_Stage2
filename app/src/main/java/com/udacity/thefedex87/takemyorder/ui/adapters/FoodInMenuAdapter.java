@@ -103,13 +103,17 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 if (currentOrderEntries.size() > 0){
                     holder.foodCountContainer.setVisibility(View.VISIBLE);
                     holder.subtractFood.setVisibility(View.VISIBLE);
-                    holder.foodCount.setText(String.valueOf(currentOrderEntries.size()));
 
 
-                    AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
-                            .loadAnimator(parentActivity, R.animator.food_counter_animation);
-                    counterAnimation.setTarget(holder.foodCountContainer);
-                    counterAnimation.start();
+                    if (holder.foodCount.getText().toString().isEmpty()) holder.foodCount.setText("0");
+                    if (Integer.parseInt(holder.foodCount.getText().toString()) != currentOrderEntries.size()) {
+                        holder.foodCount.setText(String.valueOf(currentOrderEntries.size()));
+                        
+                        AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
+                                .loadAnimator(parentActivity, R.animator.food_counter_animation);
+                        counterAnimation.setTarget(holder.foodCountContainer);
+                        counterAnimation.start();
+                    }
                 } else {
                     holder.foodCountContainer.setVisibility(View.GONE);
                     holder.subtractFood.setVisibility(View.GONE);

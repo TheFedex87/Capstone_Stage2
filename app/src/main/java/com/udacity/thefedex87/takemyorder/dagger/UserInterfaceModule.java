@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
@@ -97,5 +98,11 @@ public class UserInterfaceModule {
     @Provides
     public FoodInMenuAdapter provideFoodInMenuAdapter(Context context){
         return new FoodInMenuAdapter(context, foodInMenuActionClick, parentActivity);
+    }
+
+    @Singleton
+    @Provides
+    public DishIngredientsAdapter provideDishIngredientsAdapter(){
+        return new DishIngredientsAdapter();
     }
 }

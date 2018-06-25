@@ -3,6 +3,7 @@ package com.udacity.thefedex87.takemyorder.dagger;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
@@ -23,6 +24,7 @@ public interface UserInterfaceComponent {
     RestaurantPhotoAdapter getRestaurantPhotoAdapter();
     RestaurantReviewsAdapter getRestaurantReviewsAdapter();
     FoodInMenuAdapter getFoodInMenuAdapter();
+    DishIngredientsAdapter getDishIngredientsAdapter();
 
     LinearLayoutManager getLinearLayoutManager();
     GridLayoutManager getGridLayoutManager();

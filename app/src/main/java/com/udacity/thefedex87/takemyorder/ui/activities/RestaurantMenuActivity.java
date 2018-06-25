@@ -167,11 +167,12 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
 //                AnimatorSet counterAnimation = new AnimatorSet();
 //                counterAnimation.playSequentially(counterAnimationIncrease, counterAnimationDecrease);
-                AnimatorSet counterAnimation = (AnimatorSet)AnimatorInflater
+                AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
                         .loadAnimator(RestaurantMenuActivity.this, R.animator.food_counter_animation);
                 counterAnimation.setTarget(counterContainer);
 
                 counterAnimation.start();
+
             }
         });
 

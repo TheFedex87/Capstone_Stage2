@@ -62,35 +62,35 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent">-->
 
-        <!--<fragment-->
-            <!--android:id="@+id/dish_description"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:name="com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment" />-->
-
-    <!--</FrameLayout>-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
+        <fragment
             android:id="@+id/dish_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dish_description_margin_end"
-            android:layout_marginStart="@dimen/dish_description_margin_start"
-            android:layout_marginTop="@dimen/dish_description_margin_top" />
+            android:layout_height="match_parent"
+            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/ingredients_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
-            android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"
-            android:layout_marginTop="@dimen/dish_description_ingredients_margin_top" />
+    <!--</FrameLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
 
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/dish_description"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="@dimen/dish_description_margin_end"-->
+            <!--android:layout_marginStart="@dimen/dish_description_margin_start"-->
+            <!--android:layout_marginTop="@dimen/dish_description_margin_top" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/ingredients_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"-->
+            <!--android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"-->
+            <!--android:layout_marginTop="@dimen/dish_description_ingredients_margin_top" />-->
+
+    <!--</LinearLayout>-->
 
 </android.support.v4.widget.NestedScrollView>
 

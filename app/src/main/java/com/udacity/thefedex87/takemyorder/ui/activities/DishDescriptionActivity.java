@@ -36,9 +36,6 @@ public class DishDescriptionActivity extends AppCompatActivity {
     @BindView(R.id.dish_description_meal_image)
     ImageView dishDescriptionMealImage;
 
-    @BindView(R.id.dish_description)
-    TextView dishDescription;
-
     private Food food;
     private DishDescriptionFragment dishDescriptionFragment;
 
@@ -55,8 +52,8 @@ public class DishDescriptionActivity extends AppCompatActivity {
 
                 food = bundle.getParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY);
 
-                //dishDescriptionFragment = (DishDescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.dish_description);
-                //dishDescriptionFragment.setFood((Food)meal);
+                dishDescriptionFragment = (DishDescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.dish_description);
+                dishDescriptionFragment.setFood(food);
 
                 initUi();
             }
@@ -92,8 +89,6 @@ public class DishDescriptionActivity extends AppCompatActivity {
                 ActivityCompat.startPostponedEnterTransition(DishDescriptionActivity.this);
             }
         });
-
-        dishDescription.setText(food.getDescription());
     }
 
     @Override
