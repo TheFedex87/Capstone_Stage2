@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dish_description"
-        android:layout_width="0dp"
+        android:id="@+id/dish_description_tv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dish_description_margin_end"
         android:layout_marginStart="@dimen/dish_description_margin_start"
         android:layout_marginTop="@dimen/dish_description_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusableInTouchMode="true"/>
 
     <android.support.v7.widget.RecyclerView
-        android:background="#F00"
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dish_description_ingredients_margin_top"
         android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
         android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"
-        android:layout_marginTop="@dimen/dish_description_ingredients_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dish_description"></android.support.v7.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/dish_description_tv" />
 </android.support.constraint.ConstraintLayout>

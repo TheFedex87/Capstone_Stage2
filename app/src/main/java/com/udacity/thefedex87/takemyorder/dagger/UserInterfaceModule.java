@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.models.Ingredient;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
@@ -33,6 +34,7 @@ public class UserInterfaceModule {
     private int linearLayoutManagerOrientation = LinearLayoutManager.VERTICAL;
     private FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick;
     private AppCompatActivity parentActivity;
+    private List<Ingredient> ingredients;
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this.photoUrls = photoUrls;
@@ -46,6 +48,11 @@ public class UserInterfaceModule {
         this(null, null, null, linearLayoutManagerOrientation);
         this.foodInMenuActionClick = foodInMenuActionClick;
         this.parentActivity = parentActivity;
+    }
+
+    public UserInterfaceModule(List<Ingredient> ingredients, int linearLayoutManagerOrientation){
+        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+        this.ingredients = ingredients;
     }
 
     public UserInterfaceModule(List<?> list){
@@ -103,6 +110,6 @@ public class UserInterfaceModule {
     @Singleton
     @Provides
     public DishIngredientsAdapter provideDishIngredientsAdapter(){
-        return new DishIngredientsAdapter();
+        return new DishIngredientsAdapter(ingredients);
     }
 }

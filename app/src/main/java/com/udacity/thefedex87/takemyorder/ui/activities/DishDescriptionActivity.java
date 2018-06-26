@@ -52,10 +52,10 @@ public class DishDescriptionActivity extends AppCompatActivity {
 
                 food = bundle.getParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY);
 
+                initUi();
+
                 dishDescriptionFragment = (DishDescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.dish_description);
                 dishDescriptionFragment.setFood(food);
-
-                initUi();
             }
         }
     }

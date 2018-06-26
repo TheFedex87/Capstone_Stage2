@@ -22,6 +22,10 @@ import butterknife.ButterKnife;
 public class DishIngredientsAdapter extends RecyclerView.Adapter<DishIngredientsAdapter.DishIngredientViewHolder> {
     private List<Ingredient> ingredients;
 
+    public DishIngredientsAdapter(List<Ingredient> ingredients){
+        this.ingredients = ingredients;
+    }
+
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
         notifyDataSetChanged();

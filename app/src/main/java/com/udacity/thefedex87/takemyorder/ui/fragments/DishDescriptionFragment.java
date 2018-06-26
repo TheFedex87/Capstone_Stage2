@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
  */
 
 public class DishDescriptionFragment extends Fragment {
-    @BindView(R.id.dish_description)
+    @BindView(R.id.dish_description_tv)
     TextView mealDescription;
 
     @BindView(R.id.ingredients_list)
@@ -52,32 +52,28 @@ public class DishDescriptionFragment extends Fragment {
     private UserInterfaceComponent userInterfaceComponent;
     private NetworkComponent networkComponent;
 
-    //private Meal food;
-
     public DishDescriptionFragment(){
 
     }
 
     public void setFood(Food food){
-        //this.food = food;
+
+        userInterfaceComponent = DaggerUserInterfaceComponent
+                .builder()
+                .userInterfaceModule(new UserInterfaceModule(food.getIngredients(), LinearLayoutManager.VERTICAL))
+                .applicationModule(new ApplicationModule(context))
+                .build();
 
         mealDescription.setText(food.getDescription());
 
         ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
         DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
         ingredientsList.setAdapter(dishIngredientsAdapter);
-        dishIngredientsAdapter.setIngredients(food.getIngredients());
     }
 
     @Override
     public void onAttach(Context context) {
         TakeMyOrderApplication.appComponent().inject(this);
-
-        userInterfaceComponent = DaggerUserInterfaceComponent
-                .builder()
-                .userInterfaceModule(new UserInterfaceModule(null, null, null, LinearLayoutManager.VERTICAL))
-                .applicationModule(new ApplicationModule(context))
-                .build();
 
         networkComponent = DaggerNetworkComponent
                 .builder()
@@ -85,8 +81,6 @@ public class DishDescriptionFragment extends Fragment {
                 .build();
 
         super.onAttach(context);
-        //((DishDescriptionActivity)context).fragmentLoaded();
-
     }
 
     @Nullable
