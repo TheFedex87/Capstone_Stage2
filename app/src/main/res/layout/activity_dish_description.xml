@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/dishDetailContainer"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity">
@@ -24,9 +25,11 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-        <FrameLayout
+        <RelativeLayout
+            android:id="@+id/dish_description_food_image_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <ImageView
                 android:id="@+id/dish_description_meal_image"
@@ -34,12 +37,23 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
                 android:layout_height="@dimen/dish_description_image_height"
                 android:scaleType="centerCrop" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/food_image_to_animate"
+                android:layout_width="@dimen/login_maps_icons_margin_bottom"
+                android:layout_height="@dimen/login_maps_icons_margin_bottom"
+                android:layout_centerInParent="true"
+                android:alpha="0"
+                android:src="@drawable/ic_food"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/colorAccent"/>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/drawable_background_layer" />
 
-        </FrameLayout>
+
+        </RelativeLayout>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -67,6 +81,17 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
 
 
 </android.support.v4.widget.NestedScrollView>
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/add_to_order_fab"
+    android:layout_width="@dimen/fab_width"
+    android:layout_height="@dimen/fab_height"
+    android:layout_marginBottom="@dimen/fab_margin"
+    android:layout_marginRight="@dimen/fab_margin"
+    android:elevation="@dimen/fab_elevation"
+    android:contentDescription="@string/content_description_fab_add_order"
+    android:src="@drawable/ic_add"
+    android:layout_gravity="bottom|end"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

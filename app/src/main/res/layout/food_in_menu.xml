@@ -74,8 +74,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/food_image_to_animate"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/food_in_menu_image_food_to_animate"
+                    android:layout_height="@dimen/food_in_menu_image_food_to_animate"
                     android:layout_centerInParent="true"
                     android:alpha="0"
                     android:src="@drawable/ic_food"
