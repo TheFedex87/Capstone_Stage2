@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
-    <TextView
 
+
+    <ImageView
+        android:id="@+id/dot_ingredient"
+        android:layout_width="@dimen/dish_description_ingredient_dot_size"
+        android:layout_height="@dimen/dish_description_ingredient_dot_size"
+        android:layout_marginStart="@dimen/dish_description_ingredient_dot_margin_start"
+        android:background="@drawable/circle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/top_dot_line"
+        android:layout_width="@dimen/dish_description_ingredient_dot_line_size"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dot_ingredient"
+        app:layout_constraintLeft_toLeftOf="@id/dot_ingredient"
+        app:layout_constraintRight_toRightOf="@id/dot_ingredient"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <ImageView
+        android:id="@+id/bottom_dot_line"
+        android:layout_width="@dimen/dish_description_ingredient_dot_line_size"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@id/dot_ingredient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/dot_ingredient"
+        app:layout_constraintRight_toRightOf="@id/dot_ingredient"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
         android:id="@+id/ingredient_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/dish_description_ingredient_margin_start_end"
+        android:layout_marginStart="@dimen/dish_description_ingredient_margin_start_end"
+        android:textSize="@dimen/dish_description_ingredient_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dot_ingredient"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Ingredient">
 
     </TextView>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

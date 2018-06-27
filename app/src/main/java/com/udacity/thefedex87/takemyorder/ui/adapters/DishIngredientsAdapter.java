@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
@@ -41,6 +42,15 @@ public class DishIngredientsAdapter extends RecyclerView.Adapter<DishIngredients
     @Override
     public void onBindViewHolder(@NonNull DishIngredientViewHolder holder, int position) {
         holder.ingredientName.setText(ingredients.get(position).getName());
+        if (position == 0)
+            holder.topDotLine.setVisibility(View.GONE);
+        else
+            holder.topDotLine.setVisibility(View.VISIBLE);
+
+        if (position == ingredients.size() - 1)
+            holder.bottomDotLine.setVisibility(View.GONE);
+        else
+            holder.bottomDotLine.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -52,6 +62,12 @@ public class DishIngredientsAdapter extends RecyclerView.Adapter<DishIngredients
     class DishIngredientViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.ingredient_name)
         TextView ingredientName;
+
+        @BindView(R.id.top_dot_line)
+        ImageView topDotLine;
+
+        @BindView(R.id.bottom_dot_line)
+        ImageView bottomDotLine;
 
         public DishIngredientViewHolder(View itemView) {
             super(itemView);

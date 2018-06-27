@@ -29,10 +29,22 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/food_in_menu_title_text_size"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/food_price"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Food name" />
+
+            <TextView
+                android:id="@+id/food_price"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/food_in_menu_title_container_height"
+                android:layout_marginEnd="@dimen/food_in_menu_title_container_margin_start_end"
+                android:layout_marginTop="@dimen/food_in_menu_title_container_margin_top_bottom"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="12.5€"/>
 
             <RelativeLayout
                 android:id="@+id/food_image_container"
@@ -151,6 +163,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/show_food_details"
                 app:layout_constraintStart_toEndOf="@+id/show_food_details"
                 app:layout_constraintTop_toTopOf="@+id/show_food_details" />
+
+
 
         </android.support.constraint.ConstraintLayout>
 

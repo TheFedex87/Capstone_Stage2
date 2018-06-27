@@ -43,6 +43,9 @@ public class DishDescriptionFragment extends Fragment {
     @BindView(R.id.dish_description_tv)
     TextView mealDescription;
 
+    @BindView(R.id.food_price)
+    TextView foodPrice;
+
     @BindView(R.id.ingredients_list)
     RecyclerView ingredientsList;
 
@@ -65,6 +68,8 @@ public class DishDescriptionFragment extends Fragment {
                 .build();
 
         mealDescription.setText(food.getDescription());
+
+        foodPrice.setText(food.getPrice() + " €");
 
         ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
         DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();

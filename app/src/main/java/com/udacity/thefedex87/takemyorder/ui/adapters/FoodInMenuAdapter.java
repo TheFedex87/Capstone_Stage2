@@ -122,6 +122,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         });
 
         holder.foodInMenuName.setText(meals.get(position).getName());
+        holder.foodPrice.setText(meals.get(position).getPrice() + "€");
 
         if(meals.get(position).getImageName() != null && !meals.get(position).getImageName().isEmpty()){
             holder.foodImageProgressBar.setVisibility(View.VISIBLE);
@@ -168,6 +169,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         @BindView(R.id.food_in_menu_name)
         TextView foodInMenuName;
+
+        @BindView(R.id.food_price)
+        TextView foodPrice;
 
         @BindView(R.id.food_image)
         ImageView foodImage;

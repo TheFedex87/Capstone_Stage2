@@ -7,25 +7,44 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/food_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dish_description_price_margin_start"
+        android:layout_marginTop="@dimen/dish_description_price_margin_top"
+        android:textSize="@dimen/dish_description_price_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14.5 €" />
+
+    <TextView
         android:id="@+id/dish_description_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dish_description_margin_end"
         android:layout_marginStart="@dimen/dish_description_margin_start"
-        android:layout_marginTop="@dimen/dish_description_margin_top"
+        android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
+        android:textSize="@dimen/dish_description_text_size"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent faucibus mi sed iaculis hendrerit.
+            Vestibulum non aliquam ipsum, eu maximus dolor. In maximus mi sed est ornare, et congue ante rutrum."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:focusableInTouchMode="true"/>
+        app:layout_constraintTop_toBottomOf="@+id/food_price" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dish_description_ingredients_margin_top"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dish_description_ingredients_margin_top_bottom"
         android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
         android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"
+        android:layout_marginTop="@dimen/dish_description_ingredients_margin_top_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dish_description_tv" />
+
+
 </android.support.constraint.ConstraintLayout>
