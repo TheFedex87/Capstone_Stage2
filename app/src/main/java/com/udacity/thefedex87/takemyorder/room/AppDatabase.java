@@ -6,6 +6,8 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
+import com.udacity.thefedex87.takemyorder.room.dao.FavouriteMealsDao;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.converter.FoodTypeConverter;
 import com.udacity.thefedex87.takemyorder.room.dao.CurrentOrderDao;
@@ -16,7 +18,7 @@ import timber.log.Timber;
  * Created by federico.creti on 14/06/2018.
  */
 
-@Database(entities = {Meal.class}, version = 2, exportSchema = false)
+@Database(entities = {Meal.class, FavouriteMeal.class}, version = 3, exportSchema = false)
 @TypeConverters(FoodTypeConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     private static final Object LOCK = new Object();
@@ -37,4 +39,5 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract CurrentOrderDao currentOrderDao();
+    public abstract FavouriteMealsDao favouriteMealsDao();
 }

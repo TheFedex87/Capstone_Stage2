@@ -14,4 +14,10 @@
         app:showAsAction="ifRoom"
         android:contentDescription="@string/content_description_checkout_order"/>
 
+    <item android:id="@+id/log_out"
+        android:icon="@drawable/ic_log_out"
+        android:title="@string/log_out"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/content_description_log_out"/>
+
 </menu>

@@ -76,6 +76,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
             table = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY);
 
+
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference restaurantReference = firebaseDatabase.getReference("restaurants");
             restaurantReference.orderByKey().equalTo(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,6 +107,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             Order order = new Order();
             order.setUserId("USERD ID TEST");
             foodListFragment.setOrder(order);
+            foodListFragment.setTableNumber(table);
 
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,13 +140,23 @@ public class CustomerMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.checkout_order:
+                return true;
+            case R.id.call_waiter:
+                return true;
+            case R.id.log_out:
+                signout();
+                finish();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    //    public void signout(View view){
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseAuth.signOut();
-//        Timber.d("User signed out");
-//        finish();
-//    }
+    private void signout(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+        Timber.d("User signed out");
+        finish();
+    }
 }

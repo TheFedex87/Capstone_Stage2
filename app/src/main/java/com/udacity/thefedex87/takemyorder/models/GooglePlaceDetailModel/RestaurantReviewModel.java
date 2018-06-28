@@ -19,6 +19,9 @@ public class RestaurantReviewModel {
     @SerializedName("time")
     long time;
 
+    @SerializedName("relative_time_description")
+    String relativeTimeDescription;
+
     @SerializedName("profile_photo_url")
     String profilePhotoUrl;
 
@@ -52,6 +55,14 @@ public class RestaurantReviewModel {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getRelativeTimeDescription() {
+        return relativeTimeDescription;
+    }
+
+    public void setRelativeTimeDescription(String relativeTimeDescription) {
+        this.relativeTimeDescription = relativeTimeDescription;
     }
 
     public String getProfilePhotoUrl() {

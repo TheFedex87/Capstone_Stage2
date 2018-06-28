@@ -10,11 +10,22 @@ public class GooglePlaceResultModel {
     @SerializedName("result")
     private GooglePlaceDetailsModel googlePlaceDetailsModel;
 
+    @SerializedName("status")
+    private String status;
+
     public GooglePlaceDetailsModel getGooglePlaceDetailsModel() {
         return googlePlaceDetailsModel;
     }
 
     public void setGooglePlaceDetailsModel(GooglePlaceDetailsModel googlePlaceDetailsModel) {
         this.googlePlaceDetailsModel = googlePlaceDetailsModel;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -8,9 +8,13 @@
     <string name="content_description_fab_add_order">Add new food or drink to your order</string>
     <string name="content_description_call_waiter">Call a waiter</string>
     <string name="content_description_checkout_order">Procede to the checkout of your order</string>
+    <string name="content_description_log_out">Log out from the system</string>
     <string name="content_description_food_image">Image with the current food</string>
     <string name="content_description_menu_icon">Procede to your order summary</string>
     <string name="content_description_meals_number">Number of meals in current order</string>
+    <!--Favourite icon-->
+    <string name="content_description_add_to_favourite">Add or remove this food from the favourites meals of this restaurant</string>
+
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
@@ -24,6 +28,9 @@
     <string name="order_something">Order something</string>
     <string name="call_waiter">Call a waiter</string>
     <string name="checkout_order">Checkout order</string>
+    <string name="log_out">Log out</string>
+    <string name="total_price">Tot.: %1$.2f €</string>
+    <string name="table_number">Table: %1$s</string>
 
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
@@ -38,6 +45,5 @@
     <string name="show_details">SHOW DETAILS</string>
     <string name="subtract_food">-1</string>
     <string name="menu">Menu</string>
-
 
 </resources>

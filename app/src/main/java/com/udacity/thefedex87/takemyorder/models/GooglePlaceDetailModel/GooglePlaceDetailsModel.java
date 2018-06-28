@@ -21,8 +21,8 @@ public class GooglePlaceDetailsModel {
     @SerializedName("formatted_address")
     String formattedAddress;
 
-    @SerializedName("formatted_phone_number")
-    String formattedPhoneNumber;
+//    @SerializedName("formatted_phone_number")
+//    String formattedPhoneNumber;
 
     @SerializedName("reviews")
     List<RestaurantReviewModel> reviews;
@@ -62,13 +62,13 @@ public class GooglePlaceDetailsModel {
         this.formattedAddress = formattedAddress;
     }
 
-    public String getFormattedPhoneNumber() {
-        return formattedPhoneNumber;
-    }
-
-    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
-        this.formattedPhoneNumber = formattedPhoneNumber;
-    }
+//    public String getFormattedPhoneNumber() {
+//        return formattedPhoneNumber;
+//    }
+//
+//    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
+//        this.formattedPhoneNumber = formattedPhoneNumber;
+//    }
 
     public List<RestaurantReviewModel> getReviews() {
         return reviews;

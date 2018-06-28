@@ -56,15 +56,16 @@ public class RestaurantReviewsAdapter extends RecyclerView.Adapter<RestaurantRev
                 holder.average1, holder.average2, holder.average3, holder.average4, holder.average5, context);
 
         //Setup review date
-        Date reviewDate = new Date(reviews.get(position).getTime() * 1000);
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date dateWithoutTime = formatter.parse(formatter.format(reviewDate));
-            holder.reviewDate.setText(new SimpleDateFormat("MM/dd/yyyy").format(dateWithoutTime));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            holder.reviewDate.setText("--/--/----");
-        }
+//        Date reviewDate = new Date(reviews.get(position).getTime() * 1000);
+//        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//        try {
+//            Date dateWithoutTime = formatter.parse(formatter.format(reviewDate));
+//            holder.reviewDate.setText(new SimpleDateFormat("MM/dd/yyyy").format(dateWithoutTime));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            holder.reviewDate.setText("--/--/----");
+//        }
+        holder.reviewDate.setText(reviews.get(position).getRelativeTimeDescription());
 
         Picasso picasso = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(context)).build().getPicasso();
         picasso.load(reviews.get(position).getProfilePhotoUrl()).into(holder.photoProfile);

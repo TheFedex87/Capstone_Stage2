@@ -238,7 +238,6 @@ public class LoginMapsActivity extends AppCompatActivity {
                                         }
                                     });
                         } else {
-                            //TODO: add facebook login
                             startActivityForResult(
                                     AuthUI.getInstance()
                                             .createSignInIntentBuilder()

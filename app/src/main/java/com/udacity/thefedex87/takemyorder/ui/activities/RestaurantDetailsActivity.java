@@ -122,79 +122,86 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                         googlePlacesApiInterface.placeDetails(placeId, GOOGLE_PLACES_API_KEY).enqueue(new Callback<GooglePlaceResultModel>() {
                             @Override
                             public void onResponse(Call<GooglePlaceResultModel> call, Response<GooglePlaceResultModel> response) {
-                                if (!titleSet)
-                                    collapsingToolbarLayout.setTitle(response.body().getGooglePlaceDetailsModel().getName());
+                                if (response.body().getStatus().equals("OK")) {
 
-                                List<String> photos = new ArrayList<>();
-                                for(RestaurantPhotoModel photoReference : response.body().getGooglePlaceDetailsModel().getPhotos()){
-                                    String photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference.getPhotoReference() + "&key=" + GOOGLE_PLACES_API_KEY;
-                                    photos.add(photoUrl);
+                                    if (!titleSet)
+                                        collapsingToolbarLayout.setTitle(response.body().getGooglePlaceDetailsModel().getName());
 
-                                    //Max photo to load
-                                    if (photos.size() == MAX_PHOTO_TO_LOAD) break;
+                                    List<String> photos = new ArrayList<>();
+                                    for (RestaurantPhotoModel photoReference : response.body().getGooglePlaceDetailsModel().getPhotos()) {
+                                        String photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference.getPhotoReference() + "&key=" + GOOGLE_PLACES_API_KEY;
+                                        photos.add(photoUrl);
+
+                                        //Max photo to load
+                                        if (photos.size() == MAX_PHOTO_TO_LOAD) break;
+                                    }
+
+                                    UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                                            .applicationModule(applicationModule)
+                                            .userInterfaceModule(
+                                                    new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
+                                                            RestaurantDetailsActivity.this, LinearLayoutManager.HORIZONTAL))
+                                            .build();
+
+                                    //Setup Photo container
+                                    RestaurantPhotoAdapter adapter = userInterfaceComponent.getRestaurantPhotoAdapter();
+                                    photoPager.setAdapter(adapter);
+                                    //////////////////////
+
+                                    //Setup Photo Indicator
+                                    final PhotoIndicatorContainerAdapter indicatorAdapter = userInterfaceComponent.getPhotoIndicatorContainerAdapter();
+                                    photoIndicatorContainer.setAdapter(indicatorAdapter);
+                                    LinearLayoutManager d = userInterfaceComponent.getLinearLayoutManager();
+                                    photoIndicatorContainer.setLayoutManager(d);
+                                    photoPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                                        @Override
+                                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                                            indicatorAdapter.setActivePhoto(position);
+                                        }
+
+                                        @Override
+                                        public void onPageSelected(int position) {
+
+                                        }
+
+                                        @Override
+                                        public void onPageScrollStateChanged(int state) {
+
+                                        }
+                                    });
+                                    ///////////////////////
+
+                                    restaurantAddress.setText(response.body().getGooglePlaceDetailsModel().getFormattedAddress());
+
+                                    //Setup restaurant rating
+                                    UserInterfaceUtils.SetAverageDots(response.body().getGooglePlaceDetailsModel().getRating(),
+                                            average1, average2, average3, average4, average5, context);
+                                    ///////////////////////////////////
+
+                                    //Setup Reviews
+                                    userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                                            .applicationModule(applicationModule)
+                                            .userInterfaceModule(
+                                                    new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
+                                                            RestaurantDetailsActivity.this, LinearLayoutManager.VERTICAL))
+                                            .build();
+                                    RestaurantReviewsAdapter restaurantReviewsAdapter = userInterfaceComponent.getRestaurantReviewsAdapter();
+                                    LinearLayoutManager linearLayoutManager = userInterfaceComponent.getLinearLayoutManager();
+                                    reviewsContainer.setLayoutManager(linearLayoutManager);
+                                    reviewsContainer.setAdapter(restaurantReviewsAdapter);
+
+                                    ////////////////////////////////////
+                                }else{
+                                    Timber.e("Error retrieving restaurant detials: " + response.body().getStatus());
+                                    Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details) + ". " + response.body().getStatus(), Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
-
-                                UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
-                                        .applicationModule(applicationModule)
-                                        .userInterfaceModule(
-                                                new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
-                                                RestaurantDetailsActivity.this, LinearLayoutManager.HORIZONTAL))
-                                        .build();
-
-                                //Setup Photo container
-                                RestaurantPhotoAdapter adapter = userInterfaceComponent.getRestaurantPhotoAdapter();
-                                photoPager.setAdapter(adapter);
-                                //////////////////////
-
-                                //Setup Photo Indicator
-                                final PhotoIndicatorContainerAdapter indicatorAdapter = userInterfaceComponent.getPhotoIndicatorContainerAdapter();
-                                photoIndicatorContainer.setAdapter(indicatorAdapter);
-                                LinearLayoutManager d = userInterfaceComponent.getLinearLayoutManager();
-                                photoIndicatorContainer.setLayoutManager(d);
-                                photoPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                                    @Override
-                                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                                        indicatorAdapter.setActivePhoto(position);
-                                    }
-
-                                    @Override
-                                    public void onPageSelected(int position) {
-
-                                    }
-
-                                    @Override
-                                    public void onPageScrollStateChanged(int state) {
-
-                                    }
-                                });
-                                ///////////////////////
-
-                                restaurantAddress.setText(response.body().getGooglePlaceDetailsModel().getFormattedAddress());
-
-                                //Setup restaurant rating
-                                UserInterfaceUtils.SetAverageDots(response.body().getGooglePlaceDetailsModel().getRating(),
-                                        average1, average2, average3, average4, average5, context);
-                                ///////////////////////////////////
-
-                                //Setup Reviews
-                                userInterfaceComponent = DaggerUserInterfaceComponent.builder()
-                                        .applicationModule(applicationModule)
-                                        .userInterfaceModule(
-                                                new UserInterfaceModule(photos, response.body().getGooglePlaceDetailsModel().getReviews(),
-                                                        RestaurantDetailsActivity.this, LinearLayoutManager.VERTICAL))
-                                        .build();
-                                RestaurantReviewsAdapter restaurantReviewsAdapter = userInterfaceComponent.getRestaurantReviewsAdapter();
-                                LinearLayoutManager linearLayoutManager = userInterfaceComponent.getLinearLayoutManager();
-                                reviewsContainer.setLayoutManager(linearLayoutManager);
-                                reviewsContainer.setAdapter(restaurantReviewsAdapter);
-
-                                ////////////////////////////////////
                             }
 
                             @Override
                             public void onFailure(Call<GooglePlaceResultModel> call, Throwable t) {
                                 Timber.e("Error retrieving restaurant detials: " + t.getMessage());
-                                Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details), Toast.LENGTH_LONG);
+                                Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details), Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         });

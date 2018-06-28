@@ -11,6 +11,6 @@ import retrofit2.http.Query;
  */
 
 public interface GooglePlacesApiInterface {
-    @GET("maps/api/place/details/json")
+    @GET("maps/api/place/details/json?fields=name,rating,formatted_address,reviews,photos")
     Call<GooglePlaceResultModel> placeDetails(@Query("placeid") String placeId, @Query("key")String key);
 }

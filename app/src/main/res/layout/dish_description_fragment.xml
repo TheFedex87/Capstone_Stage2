@@ -11,11 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dish_description_price_margin_start"
-        android:layout_marginTop="@dimen/dish_description_price_margin_top"
         android:textSize="@dimen/dish_description_price_text_size"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/favourite_food"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/favourite_food"
         tools:text="14.5 €" />
 
     <TextView
@@ -27,16 +27,16 @@
         android:layout_marginTop="8dp"
         android:focusableInTouchMode="true"
         android:textSize="@dimen/dish_description_text_size"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent faucibus mi sed iaculis hendrerit.
-            Vestibulum non aliquam ipsum, eu maximus dolor. In maximus mi sed est ornare, et congue ante rutrum."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/food_price" />
+        app:layout_constraintTop_toBottomOf="@+id/favourite_food"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent faucibus mi sed iaculis hendrerit.
+            Vestibulum non aliquam ipsum, eu maximus dolor. In maximus mi sed est ornare, et congue ante rutrum." />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="@dimen/dish_description_ingredients_margin_top_bottom"
         android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
         android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"
@@ -45,6 +45,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dish_description_tv" />
+
+    <ImageView
+        android:id="@+id/favourite_food"
+        android:layout_width="@dimen/dish_description_favourite_size"
+        android:layout_height="@dimen/dish_description_favourite_size"
+        android:layout_marginEnd="@dimen/dish_description_favourite_margin_end"
+        android:layout_marginTop="@dimen/dish_description_favourite_margin_start"
+        android:contentDescription="@string/content_description_add_to_favourite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite_empty" />
 
 
 </android.support.constraint.ConstraintLayout>

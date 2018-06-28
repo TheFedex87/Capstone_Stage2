@@ -48,12 +48,20 @@ public class FoodListFragment extends Fragment {
     @BindView(R.id.food_list_placeholder)
     TextView foodListPlaceholder;
 
-    FoodInOrderAdapter adapter;
+    @BindView(R.id.total_price)
+    TextView totalOrderPriceTV;
+
+    @BindView(R.id.table_number)
+    TextView tableNumber;
 
     @Inject
     Context applicationContext;
 
     private AppDatabase db;
+
+    private FoodInOrderAdapter adapter;
+
+    private double totalOrderPrice;
 
     public FoodListFragment(){
         adapter = new FoodInOrderAdapter();
@@ -72,6 +80,10 @@ public class FoodListFragment extends Fragment {
         //textView.setText(order.getUserId());
     }
 
+    public void setTableNumber(String tableNumber){
+        this.tableNumber.setText(getString(R.string.table_number, tableNumber));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +97,8 @@ public class FoodListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_food_list, container, false);
 
         ButterKnife.bind(this, rootView);
+
+        totalOrderPriceTV.setText(getString(R.string.total_price, 0.00f));
 
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                 .applicationModule(new ApplicationModule(applicationContext))
@@ -129,6 +143,13 @@ public class FoodListFragment extends Fragment {
                     foodListPlaceholder.setVisibility(View.GONE);
                 else
                     foodListPlaceholder.setVisibility(View.VISIBLE);
+
+                totalOrderPrice = 0;
+                //Calculate total price of order
+                for(Meal meal : currentOrderEntries){
+                    totalOrderPrice += meal.getPrice();
+                }
+                totalOrderPriceTV.setText(getString(R.string.total_price, totalOrderPrice));
             }
         });
     }
