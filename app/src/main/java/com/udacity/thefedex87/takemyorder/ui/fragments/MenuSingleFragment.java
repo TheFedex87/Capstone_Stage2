@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
@@ -60,24 +61,23 @@ import static android.view.View.TRANSLATION_Y;
 
 public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.FoodInMenuActionClick {
     private List<Meal> meals;
+    private String restaurantId;
 
     private List<Meal> currentOrder;
 
     @BindView(R.id.foods_in_menu_container)
     RecyclerView foodInMenuContainer;
 
-//    @BindView(R.id.menu_icon)
-//    ImageView menuIcon;
+    @BindView(R.id.food_list_placeholder)
+    TextView foodListPlaceholder;
 
     private FoodInMenuAdapter foodInMenuAdapter;
 
     @Inject
     Context applicationContext;
 
-    //private ViewGroup container;
+
     private AppDatabase db;
-
-
 
     private UserInterfaceComponent userInterfaceComponent;
     public MenuSingleFragment(){
@@ -88,6 +88,10 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         this.meals = meals;
         if (foodInMenuAdapter != null)
             foodInMenuAdapter.setMeals(meals);
+    }
+
+    public void setRestaurantId(String restaurantId){
+        this.restaurantId = restaurantId;
     }
 
     public void setCurrentOrder(List<Meal> currentOrder){
@@ -113,14 +117,15 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         ButterKnife.bind(this, viewRoot);
 
-        //this.container = container;
-
-
-
         foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
         foodInMenuContainer.setAdapter(foodInMenuAdapter);
         foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());
         foodInMenuAdapter.setMeals(meals);
+
+        if (meals.size() > 0)
+            foodListPlaceholder.setVisibility(View.GONE);
+        else
+            foodListPlaceholder.setVisibility(View.VISIBLE);
 
         return viewRoot;
     }
@@ -135,7 +140,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         final ViewGroup parentViewGroup = (ViewGroup)foodInMenuContainer
                 .getParent().getParent().getParent().getParent()
-                .getParent();
+                .getParent().getParent();
         parentViewGroup.getOverlay().add(imageView);
         final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
@@ -274,13 +279,16 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
             @Override
             public void run() {
                 Meal mealToDelete = null;
-                for(Meal meal : currentOrder){
-                    if (meal.getMealId().equals(selectedMeal.getMealId())){
-                        mealToDelete = meal;
+                if (currentOrder != null) {
+                    for (Meal meal : currentOrder) {
+                        if (meal.getMealId().equals(selectedMeal.getMealId())) {
+                            mealToDelete = meal;
+                        }
                     }
+
+                    if (mealToDelete != null)
+                        db.currentOrderDao().deleteFood(mealToDelete);
                 }
-                if(mealToDelete != null)
-                    db.currentOrderDao().deleteFood(mealToDelete);
             }
         });
     }
@@ -290,6 +298,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         Intent intent = new Intent(getActivity(), DishDescriptionActivity.class);
         Bundle b = new Bundle();
         b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);
+        b.putString(CustomerMainActivity.RESTAURANT_ID_KEY, restaurantId);
         intent.putExtras(b);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){

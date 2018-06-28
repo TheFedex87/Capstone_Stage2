@@ -9,17 +9,14 @@ import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.transition.Transition;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.udacity.thefedex87.takemyorder.R;
@@ -29,7 +26,6 @@ import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment;
 
 import butterknife.BindView;
@@ -65,6 +61,7 @@ public class DishDescriptionActivity extends AppCompatActivity {
     RelativeLayout dishDescriptionFoodImageContainer;
 
     private Food food;
+    private String restaurantId;
     private DishDescriptionFragment dishDescriptionFragment;
 
     @Override
@@ -75,15 +72,16 @@ public class DishDescriptionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
-            if(bundle != null && bundle.containsKey(CustomerMainActivity.FOOD_DESCRIPTION_KEY)){
+            if(bundle != null && bundle.containsKey(CustomerMainActivity.FOOD_DESCRIPTION_KEY) && bundle.containsKey(CustomerMainActivity.RESTAURANT_ID_KEY)){
                 ButterKnife.bind(this);
 
                 food = bundle.getParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY);
+                restaurantId = bundle.getString(CustomerMainActivity.RESTAURANT_ID_KEY);
 
                 initUi();
 
                 dishDescriptionFragment = (DishDescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.dish_description);
-                dishDescriptionFragment.setFood(food);
+                dishDescriptionFragment.setData(food, restaurantId);
 
                 addToOrderFab.setOnClickListener(new View.OnClickListener() {
                     @Override

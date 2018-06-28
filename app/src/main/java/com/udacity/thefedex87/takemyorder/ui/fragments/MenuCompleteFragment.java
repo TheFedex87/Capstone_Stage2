@@ -40,10 +40,14 @@ public class MenuCompleteFragment extends Fragment {
     }
 
     public void setCurrentOrder(List<Meal> currentOrder){
-        foodTypePagerAdapter.setCurrentOrder(currentOrder);
+        if (foodTypePagerAdapter != null)
+            foodTypePagerAdapter.setCurrentOrder(currentOrder);
     }
 
-    public void setMenu(HashMap<FoodTypes, List<Meal>> menu){
+
+    public void setMenu(HashMap<FoodTypes, List<Meal>> menu, String restaurantId){
+        foodTypesTabs.removeAllTabs();
+
         LinkedHashMap<FoodTypes, List<Meal>> orderedMenu = new LinkedHashMap<>();
         if (menu.containsKey(FoodTypes.STARTER)){
             orderedMenu.put(FoodTypes.STARTER, menu.get(FoodTypes.STARTER));
@@ -66,7 +70,7 @@ public class MenuCompleteFragment extends Fragment {
             foodTypesTabs.addTab(foodTypesTabs.newTab().setText(getString(R.string.drinks)));
         }
 
-        foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, getContext());
+        foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, restaurantId, getContext());
         foodTypesPager.setAdapter(foodTypePagerAdapter);
     }
 

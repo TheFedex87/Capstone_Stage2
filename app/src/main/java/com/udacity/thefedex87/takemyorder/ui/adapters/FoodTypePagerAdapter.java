@@ -24,10 +24,12 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     private Context context;
     private MenuSingleFragment[] fragments;
     private List<Meal> currentOrder;
+    private String restaurantId;
 
-    public FoodTypePagerAdapter(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, Context context){
+    public FoodTypePagerAdapter(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, String restaurantId, Context context){
         super(fragmentManager);
         this.meals = meals;
+        this.restaurantId = restaurantId;
         this.context = context;
         fragments = new MenuSingleFragment[meals.size()];
     }
@@ -53,6 +55,7 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         fragments[position] = (MenuSingleFragment)fragment;
         List keys = new ArrayList(meals.keySet());
         ((MenuSingleFragment)fragment).setMeals(meals.get(keys.get(position)));
+        ((MenuSingleFragment)fragment).setRestaurantId(restaurantId);
         setCurrentOrderToFragment(currentOrder, (MenuSingleFragment)fragment);
         //if (fragment == null) fragment = getItem(position);
 //        FragmentTransaction transaction = fragmentManager.beginTransaction();

@@ -21,8 +21,8 @@ public interface FavouriteMealsDao {
     @Query("SELECT * FROM favourite_meals")
     LiveData<List<FavouriteMeal>> getFavouriteMeals();
 
-    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId")
-    LiveData<FavouriteMeal> getFavouriteMealById(String mealId);
+    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId AND restaurantId = :restaurantId")
+    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId);
 
     @Insert
     void insertFavouriteMeal(FavouriteMeal food);

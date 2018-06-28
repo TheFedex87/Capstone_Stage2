@@ -78,8 +78,8 @@ public class DishDescriptionFragment extends Fragment {
     public DishDescriptionFragment(){
     }
 
-    public void setFood(final Food food){
-        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId());
+    public void setData(final Food food, final String restaurantId){
+        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId);
         DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
         dishDetailsViewModel.getFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
@@ -144,7 +144,8 @@ public class DishDescriptionFragment extends Fragment {
                     favouriteMeal.setMealId(food.getMealId());
                     favouriteMeal.setName(food.getName());
                     favouriteMeal.setPrice(food.getPrice());
-                    favouriteMeal.setRestaurantId(null);
+                    favouriteMeal.setRestaurantId(restaurantId);
+                    favouriteMeal.setDescription((food).getDescription());
 
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override

@@ -12,8 +12,8 @@
     <string name="content_description_food_image">Image with the current food</string>
     <string name="content_description_menu_icon">Procede to your order summary</string>
     <string name="content_description_meals_number">Number of meals in current order</string>
-    <!--Favourite icon-->
     <string name="content_description_add_to_favourite">Add or remove this food from the favourites meals of this restaurant</string>
+    <string name="content_description_favourites">Show favourites foods</string>
 
 
     <!--Errors-->
@@ -29,6 +29,7 @@
     <string name="call_waiter">Call a waiter</string>
     <string name="checkout_order">Checkout order</string>
     <string name="log_out">Log out</string>
+    <string name="favourites">Favourites</string>
     <string name="total_price">Tot.: %1$.2f €</string>
     <string name="table_number">Table: %1$s</string>
 
@@ -36,6 +37,7 @@
     <string name="restaurant_rating">Rating:</string>
 
     <!--Restaurant Menu-->
+    <string name="no_food_for_this_category">No food on this category</string>
     <string name="starter_dishes">Starter dishes</string>
     <string name="main_dishes">Main dishes</string>
     <string name="side_dishes">Side dishes</string>

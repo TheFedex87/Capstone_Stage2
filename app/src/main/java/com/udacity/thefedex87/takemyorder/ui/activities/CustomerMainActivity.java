@@ -39,6 +39,7 @@ import timber.log.Timber;
 
 public class CustomerMainActivity extends AppCompatActivity {
     public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
+    public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
 
     private FirebaseAuth firebaseAuth;
     private Customer customer;
@@ -141,6 +142,11 @@ public class CustomerMainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.favourites:
+                Intent intent = new Intent(this, FavouritesFoodsActivity.class);
+                intent.putExtra(RESTAURANT_ID_KEY, restaurantId);
+                startActivity(intent);
+                return true;
             case R.id.checkout_order:
                 return true;
             case R.id.call_waiter:

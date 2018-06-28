@@ -126,7 +126,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         }
     }
 
-    private void setupViewModel(String restaurantId){
+    private void setupViewModel(final String restaurantId){
         RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId);
         RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
 
@@ -181,7 +181,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             public void onChanged(@Nullable HashMap<FoodTypes, List<Meal>> foodTypesListHashMap) {
                 //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
                 menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
-                menuCompleteFragment.setMenu(foodTypesListHashMap);
+                menuCompleteFragment.setMenu(foodTypesListHashMap, restaurantId);
                 if (currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
             }
         });

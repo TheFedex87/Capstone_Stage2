@@ -20,6 +20,7 @@ public class FavouriteMeal {
     private String mealId;
     private FoodTypes foodType;
     private String restaurantId;
+    private String description;
 
     public long getId() {
         return id;
@@ -75,5 +76,13 @@ public class FavouriteMeal {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
