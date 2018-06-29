@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
@@ -32,6 +33,9 @@ public class RestaurantMenuViewModel extends ViewModel {
     private LiveData<List<Meal>> currentOrderListByMealId;
     private LiveData<List<CurrentOrderGrouped>> currentOrderListGrouped;
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
+
+    private LiveData<FavouriteMeal> favouriteMealByeMealId;
+
     private String restaurantId;
 
 
@@ -46,6 +50,7 @@ public class RestaurantMenuViewModel extends ViewModel {
 
     public void setFoodId(String mealId){
         currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId);
+        favouriteMealByeMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
     }
 
     private void retrieveRestaurantMenu(){
@@ -112,4 +117,8 @@ public class RestaurantMenuViewModel extends ViewModel {
     public LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped() { return currentOrderListGrouped; }
 
     public LiveData<List<Meal>> getCurrentOrdserListByMealId() {return currentOrderListByMealId; }
+
+    public LiveData<FavouriteMeal> getFavouriteMealByeMealId(){
+        return favouriteMealByeMealId;
+    }
 }

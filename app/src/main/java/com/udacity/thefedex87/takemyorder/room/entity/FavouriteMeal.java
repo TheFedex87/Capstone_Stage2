@@ -5,6 +5,10 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.udacity.thefedex87.takemyorder.models.Ingredient;
+
+import java.util.List;
+
 /**
  * Created by federico.creti on 28/06/2018.
  */

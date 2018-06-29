@@ -33,6 +33,8 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
+import com.udacity.thefedex87.takemyorder.models.Food;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
@@ -88,10 +90,18 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         this.meals = meals;
         if (foodInMenuAdapter != null)
             foodInMenuAdapter.setMeals(meals);
+
+        if (foodListPlaceholder != null) {
+            if (meals.size() > 0)
+                foodListPlaceholder.setVisibility(View.GONE);
+            else
+                foodListPlaceholder.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setRestaurantId(String restaurantId){
         this.restaurantId = restaurantId;
+        if (foodInMenuAdapter != null) foodInMenuAdapter.setRestaurantId(restaurantId);
     }
 
     public void setCurrentOrder(List<Meal> currentOrder){
@@ -121,11 +131,14 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         foodInMenuContainer.setAdapter(foodInMenuAdapter);
         foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());
         foodInMenuAdapter.setMeals(meals);
+        foodInMenuAdapter.setRestaurantId(restaurantId);
 
-        if (meals.size() > 0)
-            foodListPlaceholder.setVisibility(View.GONE);
-        else
-            foodListPlaceholder.setVisibility(View.VISIBLE);
+        if (meals != null) {
+            if (meals.size() > 0)
+                foodListPlaceholder.setVisibility(View.GONE);
+            else
+                foodListPlaceholder.setVisibility(View.VISIBLE);
+        }
 
         return viewRoot;
     }
@@ -306,6 +319,34 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
             startActivity(intent, transitionBundle);
         } else {
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void addRemoveFavourite(Food food, final FavouriteMeal favouriteMealFromDB) {
+        if (favouriteMealFromDB == null) {
+            final FavouriteMeal favouriteMeal = new FavouriteMeal();
+            favouriteMeal.setFoodType(food.getFoodType());
+            favouriteMeal.setImageName(food.getImageName());
+            favouriteMeal.setMealId(food.getMealId());
+            favouriteMeal.setName(food.getName());
+            favouriteMeal.setPrice(food.getPrice());
+            favouriteMeal.setRestaurantId(restaurantId);
+            favouriteMeal.setDescription(food.getDescription());
+
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
+                }
+            });
+        } else{
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
+                }
+            });
         }
     }
 }

@@ -145,7 +145,7 @@ public class DishDescriptionFragment extends Fragment {
                     favouriteMeal.setName(food.getName());
                     favouriteMeal.setPrice(food.getPrice());
                     favouriteMeal.setRestaurantId(restaurantId);
-                    favouriteMeal.setDescription((food).getDescription());
+                    favouriteMeal.setDescription(food.getDescription());
 
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override

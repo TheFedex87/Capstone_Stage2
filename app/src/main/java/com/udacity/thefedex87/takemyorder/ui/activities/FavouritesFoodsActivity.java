@@ -37,6 +37,9 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
 
     private HashMap<FoodTypes, List<Meal>> favourites;
 
+    @BindView(R.id.menu_icon_container)
+    FrameLayout menuIconContainer;
+
     @BindView(R.id.counter_container)
     FrameLayout counterContainer;
 
@@ -59,6 +62,13 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
             favourites.put(FoodTypes.MAINDISH, new ArrayList<Meal>());
             favourites.put(FoodTypes.SIDEDISH, new ArrayList<Meal>());
             favourites.put(FoodTypes.DESSERT, new ArrayList<Meal>());
+
+            menuIconContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
 
             setupViewModel();
 

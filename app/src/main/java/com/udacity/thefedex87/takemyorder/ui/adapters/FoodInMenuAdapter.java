@@ -29,13 +29,11 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
-import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +59,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     private RestaurantMenuViewModelFactory restaurantMenuViewModelFactory;
     private RestaurantMenuViewModel restaurantMenuViewModel;
 
+    private String restaurantId;
+
     public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity){
         this.parentActivity = parentActivity;
         this.context = context;
@@ -81,6 +81,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         notifyDataSetChanged();
     }
 
+    public void setRestaurantId(String restaurantId){
+        this.restaurantId = restaurantId;
+    }
+
     @NonNull
     @Override
     public FoodInMenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -94,7 +98,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
 //
 
-        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), null);
+        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
         restaurantMenuViewModel.setFoodId(meals.get(position).getMealId());
         restaurantMenuViewModel.getCurrentOrdserListByMealId().observe(parentActivity, new Observer<List<Meal>>() {
@@ -118,6 +122,23 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                     holder.foodCountContainer.setVisibility(View.GONE);
                     holder.subtractFood.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        restaurantMenuViewModel.getFavouriteMealByeMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
+            @Override
+            public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
+                if (favouriteMeal != null){
+                    holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_fill));
+                } else {
+                    holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_empty));
+                }
+                holder.favouriteFood.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        foodInMenuActionClick.addRemoveFavourite((Food)meals.get(position), favouriteMeal);
+                    }
+                });
             }
         });
 
@@ -161,6 +182,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         void addOrderClick(Meal selectedMeal, View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
         void subtractFood(Meal selectedMeal);
         void showDishDetails(Meal meal, ImageView imageView);
+        void addRemoveFavourite(Food food, FavouriteMeal favouriteMealFromDB);
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
@@ -199,6 +221,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         @BindView(R.id.subtract_food)
         TextView subtractFood;
+
+        @BindView(R.id.favourite_food)
+        ImageView favouriteFood;
 
         private ViewGroup viewGroup;
 

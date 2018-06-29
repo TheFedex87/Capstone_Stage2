@@ -64,9 +64,9 @@
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
     <dimen name="food_in_menu_card_margin">15dp</dimen>
-    <dimen name="food_in_menu_icon_toolbar_size">40dp</dimen>
+    <dimen name="food_in_menu_icon_toolbar_size">30dp</dimen>
     <dimen name="food_in_menu_icon_toolbar_margin_end">8dp</dimen>
-    <dimen name="food_in_menu_icon_toolbar_margin_top">8dp</dimen>
+    <dimen name="food_in_menu_icon_toolbar_margin_top">4dp</dimen>
     <dimen name="food_in_menu_card_corner_radius">4dp</dimen>
     <dimen name="food_in_menu_title_container_height">50dp</dimen>
     <dimen name="food_in_menu_title_container_margin_top_bottom">5dp</dimen>
@@ -77,16 +77,17 @@
     <dimen name="food_in_menu_description_margin">8dp</dimen>
     <dimen name="food_in_menu_action_text_size">14sp</dimen>
     <dimen name="food_in_menu_action_margin">8dp</dimen>
-    <dimen name="food_in_menu_action_show_detail_margin_start">20dp</dimen>
-    <dimen name="food_in_menu_action_subtract_food_margin_start">20dp</dimen>
+    <dimen name="food_in_menu_action_show_detail_margin_start">18dp</dimen>
+    <dimen name="food_in_menu_action_subtract_food_margin_start">18dp</dimen>
+    <dimen name="food_in_menu_action_favourite_margin_start">18dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_size">25dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_text_size">18sp</dimen>
     <dimen name="food_in_menu_image_food_to_animate">100dp</dimen>
 
 
     <dimen name="counter_circle_size">18dp</dimen>
-    <dimen name="counter_circle_margin_start">24dp</dimen>
-    <dimen name="counter_circle_margin_top">7dp</dimen>
+    <dimen name="counter_circle_margin_start">18dp</dimen>
+    <dimen name="counter_circle_margin_top">0dp</dimen>
     <dimen name="counter_circle_text_size">12sp</dimen>
     <dimen name="counter_circle_text_marging_start">0dp</dimen>
     <dimen name="counter_circle_text_marging_top">0dp</dimen>

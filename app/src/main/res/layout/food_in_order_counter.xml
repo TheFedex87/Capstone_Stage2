@@ -28,6 +28,7 @@
             android:layout_width="@dimen/counter_circle_size"
             android:layout_height="@dimen/counter_circle_size"
             android:background="@drawable/circle"
+            android:tint="@color/colorAccent"
             android:contentDescription="@string/content_description_meals_number"/>
 
         <TextView

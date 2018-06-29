@@ -6,8 +6,10 @@
     <color name="colorPrimary">#8BC34A</color>
     <color name="colorPrimaryDark">#689F38</color>
     <color name="colorPrimaryLight">#AED581</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorAccent">#FFFF4081</color>
     <!--<color name="colorAccent">#f0d200</color>-->
+
+    <color name="darkGrey">#333</color>
 
     <color name="black">#000</color>
     <color name="white">#FFF</color>

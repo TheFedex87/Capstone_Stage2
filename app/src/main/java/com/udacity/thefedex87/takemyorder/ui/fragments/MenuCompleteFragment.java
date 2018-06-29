@@ -46,6 +46,7 @@ public class MenuCompleteFragment extends Fragment {
 
 
     public void setMenu(HashMap<FoodTypes, List<Meal>> menu, String restaurantId){
+        int selectedTab = foodTypesTabs.getSelectedTabPosition();
         foodTypesTabs.removeAllTabs();
 
         LinkedHashMap<FoodTypes, List<Meal>> orderedMenu = new LinkedHashMap<>();
@@ -72,6 +73,9 @@ public class MenuCompleteFragment extends Fragment {
 
         foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, restaurantId, getContext());
         foodTypesPager.setAdapter(foodTypePagerAdapter);
+
+        if (selectedTab >= 0)
+            foodTypesTabs.getTabAt(selectedTab).select();
     }
 
     @Nullable

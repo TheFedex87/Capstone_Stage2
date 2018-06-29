@@ -38,7 +38,8 @@
                     <include layout="@layout/food_in_order_counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
 
                     <TextView
                         android:id="@+id/activity_title"

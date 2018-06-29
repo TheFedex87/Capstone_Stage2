@@ -26,7 +26,8 @@
                 android:id="@+id/photo_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryLight">
+                android:background="@color/colorPrimaryLight"
+                app:layout_collapseMode="parallax">
 
                 <!--suppress AndroidLintContentDescription -->
                 <android.support.v4.view.ViewPager

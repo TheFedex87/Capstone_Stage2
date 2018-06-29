@@ -28,7 +28,8 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
         <RelativeLayout
             android:id="@+id/dish_description_food_image_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_collapseMode="parallax">
 
 
             <ImageView
