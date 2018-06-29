@@ -4,8 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -37,12 +36,10 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
+import com.udacity.thefedex87.takemyorder.utils.FavouritesManager;
 
 import java.util.List;
 
@@ -247,7 +244,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
                         final AppDatabase db = AppDatabase.getInstance(getActivity());
 //                        final CurrentOrderEntry entry = new CurrentOrderEntry(0,
-//                                selectedMeal.getName(),
+//                                selectedMeal.getIngredientName(),
 //                                selectedMeal.getPrice(),
 //                                selectedMeal.getFoodType(),
 //                                selectedMeal.getMealId());
@@ -323,30 +320,33 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     }
 
     @Override
-    public void addRemoveFavourite(Food food, final FavouriteMeal favouriteMealFromDB) {
+    public void addRemoveFavourite(Food food, final FavouriteMeal favouriteMealFromDB, ViewModel viewModel) {
         if (favouriteMealFromDB == null) {
-            final FavouriteMeal favouriteMeal = new FavouriteMeal();
-            favouriteMeal.setFoodType(food.getFoodType());
-            favouriteMeal.setImageName(food.getImageName());
-            favouriteMeal.setMealId(food.getMealId());
-            favouriteMeal.setName(food.getName());
-            favouriteMeal.setPrice(food.getPrice());
-            favouriteMeal.setRestaurantId(restaurantId);
-            favouriteMeal.setDescription(food.getDescription());
+//            final FavouriteMeal favouriteMeal = new FavouriteMeal();
+//            favouriteMeal.setFoodType(food.getFoodType());
+//            favouriteMeal.setImageName(food.getImageName());
+//            favouriteMeal.setMealId(food.getMealId());
+//            favouriteMeal.setName(food.getName());
+//            favouriteMeal.setPrice(food.getPrice());
+//            favouriteMeal.setRestaurantId(restaurantId);
+//            favouriteMeal.setDescription(food.getDescription());
+//
+//            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
+//                }
+//            });
 
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
-                }
-            });
+            FavouritesManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId);
         } else{
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
-                }
-            });
+//            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
+//                }
+//            });
+            FavouritesManager.removeFromFavourite(db, favouriteMealFromDB);
         }
     }
 }

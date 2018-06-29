@@ -30,6 +30,7 @@ import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
 
 import java.util.List;
 
@@ -77,50 +78,20 @@ public class CustomerMainActivity extends AppCompatActivity {
             restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
             table = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY);
 
-
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference restaurantReference = firebaseDatabase.getReference("restaurants");
-            restaurantReference.orderByKey().equalTo(restaurantId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot restaurantSnapshot : dataSnapshot.getChildren()) {
-                        restaurant = restaurantSnapshot.getValue(Restaurant.class);
-                    }
-
-                    if (restaurant == null){
-                        Timber.e("Invalid ID restaurant");
-                        Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        collapsingToolbarLayout.setTitleEnabled(false);
-                        toolbar.setTitle(restaurant.getName());
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+            //Setup view model (used in this activity to retrieve the restaurant from Firebase)
+            setupViewModel();
 
 
-            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
-            Order order = new Order();
-            order.setUserId("USERD ID TEST");
-            foodListFragment.setOrder(order);
-            foodListFragment.setTableNumber(table);
+//            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
+//            Order order = new Order();
+//            order.setUserId("USERD ID TEST");
+//            foodListFragment.setOrder(order);
+//            foodListFragment.setTableNumber(table);
 
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    final AppDatabase db = AppDatabase.getInstance(CustomerMainActivity.this);
-//                    final CurrentOrderEntry entry = new CurrentOrderEntry(0, "Pizza margherita", 3.4, CurrentOrderEntry.FoodTypes.MAINDISH, "asasasa");
-//                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            db.currentOrderDao().insertFood(entry);
-//                        }
-//                    });
+                    //Launch the Restaurant menu activity passing the restaurantId
                     Intent intent = new Intent(CustomerMainActivity.this, RestaurantMenuActivity.class);
                     intent.putExtra(LoginMapsActivity.USER_RESTAURANT_KEY, restaurantId);
                     startActivity(intent);
@@ -157,6 +128,24 @@ public class CustomerMainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupViewModel(){
+        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId);
+        CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
+        customerMainViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
+            @Override
+            public void onChanged(@Nullable Restaurant restaurant) {
+                if (restaurant == null){
+                    Timber.e("Invalid ID restaurant");
+                    Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    collapsingToolbarLayout.setTitleEnabled(false);
+                    toolbar.setTitle(restaurant.getName());
+                }
+            }
+        });
     }
 
     private void signout(){

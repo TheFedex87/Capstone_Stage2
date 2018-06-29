@@ -1,11 +1,9 @@
 package com.udacity.thefedex87.takemyorder.room.entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.udacity.thefedex87.takemyorder.models.Ingredient;
 
 import java.util.List;
 
@@ -13,7 +11,8 @@ import java.util.List;
  * Created by federico.creti on 28/06/2018.
  */
 
-@Entity(tableName = "favourite_meals")
+@Entity(tableName = "favourite_meals", indices = {@Index(value = {"mealId"},
+        unique = true)})
 public class FavouriteMeal {
     @PrimaryKey(autoGenerate = true)
     private long id;

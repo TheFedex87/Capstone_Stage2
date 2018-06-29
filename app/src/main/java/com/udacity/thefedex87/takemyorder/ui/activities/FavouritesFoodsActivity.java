@@ -2,9 +2,11 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Index;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.FavouritesViewModel;
@@ -78,7 +81,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
 
     private void setupViewModel() {
         FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId);
-        FavouritesViewModel favouritesViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
+        final FavouritesViewModel favouritesViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
 
         favouritesViewModel.getFavouriteMeals().observe(this, new Observer<List<FavouriteMeal>>() {
             @Override
@@ -89,8 +92,8 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
                 favourites.get(FoodTypes.SIDEDISH).clear();
                 favourites.get(FoodTypes.DESSERT).clear();
 
-                for(FavouriteMeal favouriteMeal : favouriteMeals){
-                    Food food = new Food();
+                for(final FavouriteMeal favouriteMeal : favouriteMeals){
+                    final Food food = new Food();
                     food.setFoodType(favouriteMeal.getFoodType());
                     food.setImageName(favouriteMeal.getImageName());
                     food.setMealId(favouriteMeal.getMealId());
@@ -98,6 +101,15 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
                     food.setPrice(favouriteMeal.getPrice());
                     food.setDescription(favouriteMeal.getDescription());
 
+                    favouritesViewModel.setMealId(favouriteMeal.getMealId());
+                    final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
+                    ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Ingredient> ingredients) {
+                            ingredientsLiveData.removeObserver(this);
+                            food.setIngredients(ingredients);
+                        }
+                    });
                     favourites.get(favouriteMeal.getFoodType()).add(food);
                 }
 
@@ -128,7 +140,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
                 counterAnimation.setTarget(counterContainer);
 
                 counterAnimation.start();
-
             }
         });
     }

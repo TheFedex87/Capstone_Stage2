@@ -49,7 +49,7 @@
     <dimen name="food_in_order_margin_top">4dp</dimen>
     <dimen name="food_in_order_margin_bottom">4dp</dimen>
     <dimen name="food_name_margin_top">8dp</dimen>
-    <dimen name="food_name_margin_start">16dp</dimen>
+    <dimen name="food_name_margin_start_end">16dp</dimen>
     <dimen name="food_type_margin_top">8dp</dimen>
     <dimen name="food_type_margin_start">8dp</dimen>
     <dimen name="food_price_margin_top">8dp</dimen>

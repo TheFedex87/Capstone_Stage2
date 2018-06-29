@@ -3,6 +3,7 @@ package com.udacity.thefedex87.takemyorder.ui.adapters;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Build;
@@ -27,6 +28,7 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
@@ -96,7 +98,17 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
-//
+
+        if (meals.get(position) instanceof Drink){
+            holder.favouriteFood.setVisibility(View.GONE);
+            holder.showDishDetails.setVisibility(View.GONE);
+        } else if(meals.get(position) instanceof Food){
+            holder.favouriteFood.setVisibility(View.VISIBLE);
+            holder.showDishDetails.setVisibility(View.VISIBLE);
+
+            Food food = (Food) meals.get(position);
+            holder.foodDescription.setText(food.getDescription());
+        }
 
         restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
@@ -136,7 +148,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 holder.favouriteFood.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        foodInMenuActionClick.addRemoveFavourite((Food)meals.get(position), favouriteMeal);
+                        foodInMenuActionClick.addRemoveFavourite((Food)meals.get(position), favouriteMeal, restaurantMenuViewModel);
                     }
                 });
             }
@@ -162,11 +174,6 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImageToAnimate);
         }
 
-        if (meals.get(position) instanceof Food) {
-            Food food = (Food) meals.get(position);
-            holder.foodDescription.setText(food.getDescription());
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ViewCompat.setTransitionName(holder.foodImage, "foodTransition");
         }
@@ -182,7 +189,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         void addOrderClick(Meal selectedMeal, View sender, View imageView, ViewGroup foodImageContainer, ImageView originalImage);
         void subtractFood(Meal selectedMeal);
         void showDishDetails(Meal meal, ImageView imageView);
-        void addRemoveFavourite(Food food, FavouriteMeal favouriteMealFromDB);
+        void addRemoveFavourite(Food food, FavouriteMeal favouriteMealFromDB, ViewModel viewModel);
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{

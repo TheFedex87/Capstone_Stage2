@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
-import com.udacity.thefedex87.takemyorder.models.Ingredient;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;

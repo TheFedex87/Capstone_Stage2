@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.models.Ingredient;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class DishIngredientsAdapter extends RecyclerView.Adapter<DishIngredients
 
     @Override
     public void onBindViewHolder(@NonNull DishIngredientViewHolder holder, int position) {
-        holder.ingredientName.setText(ingredients.get(position).getName());
+        holder.ingredientName.setText(ingredients.get(position).getIngredientName());
         if (position == 0)
             holder.topDotLine.setVisibility(View.GONE);
         else

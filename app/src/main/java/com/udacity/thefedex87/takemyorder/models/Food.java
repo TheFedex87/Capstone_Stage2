@@ -2,6 +2,7 @@ package com.udacity.thefedex87.takemyorder.models;
 
 import android.os.Parcel;
 
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 
 import java.util.ArrayList;

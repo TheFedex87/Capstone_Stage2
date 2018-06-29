@@ -27,6 +27,7 @@ import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
 
 import java.util.List;
 
@@ -77,7 +78,6 @@ public class FoodListFragment extends Fragment {
 
     public void setOrder(Order order){
         this.order = order;
-        //textView.setText(order.getUserId());
     }
 
     public void setTableNumber(String tableNumber){
@@ -117,7 +117,6 @@ public class FoodListFragment extends Fragment {
             // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -134,7 +133,9 @@ public class FoodListFragment extends Fragment {
     }
 
     public void setupViewModel(){
-        CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this).get(CustomerMainViewModel.class);
+        //Setup the CustomerMainViewModel in order to observe the current order
+        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null);
+        CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {

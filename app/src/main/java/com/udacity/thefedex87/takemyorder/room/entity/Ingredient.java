@@ -1,21 +1,25 @@
-package com.udacity.thefedex87.takemyorder.models;
+package com.udacity.thefedex87.takemyorder.room.entity;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /**
  * Created by feder on 07/06/2018.
  */
-
+@Entity
 public class Ingredient implements Parcelable {
-    String name;
+    @PrimaryKey
+    private @NonNull String ingredientName;
 
-    public String getName() {
-        return name;
+    public String getIngredientName() {
+        return ingredientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIngredientName(String ingredientName) {
+        this.ingredientName = ingredientName;
     }
 
 
@@ -26,14 +30,14 @@ public class Ingredient implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
+        dest.writeString(this.ingredientName);
     }
 
     public Ingredient() {
     }
 
     protected Ingredient(Parcel in) {
-        this.name = in.readString();
+        this.ingredientName = in.readString();
     }
 
     public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {

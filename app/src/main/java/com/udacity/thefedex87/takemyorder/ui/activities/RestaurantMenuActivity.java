@@ -75,43 +75,6 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
             restaurantId = intent.getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
 
-//            FirebaseDatabase db = FirebaseDatabase.getInstance();
-//            db.getReference("restaurants/" + restaurantId + "/getMenu").addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    for(DataSnapshot menuSnapshot : dataSnapshot.getChildren()){
-//                        if (menuSnapshot.getKey().toLowerCase().equals("foods")){
-//                            for(DataSnapshot foodTypes : menuSnapshot.getChildren()){
-//                                List<Meal> foods = new ArrayList();
-//                                for(DataSnapshot foodType : foodTypes.getChildren()){
-//                                    Food food = foodType.getValue(Food.class);
-//                                    food.setMealId(foodType.getKey());
-//                                    foods.add(food);
-//                                }
-//                                getMenu.put(getFoodTypeFromKey(foodTypes.getKey()), foods);
-//                            }
-//                        } else if(menuSnapshot.getKey().toLowerCase().equals("drinks")){
-//                            List<Meal> drinks = new ArrayList();
-//                            for(DataSnapshot drinkSnapshot : menuSnapshot.getChildren()){
-//                                Drink drink = drinkSnapshot.getValue(Drink.class);
-//                                drink.setMealId(drinkSnapshot.getKey());
-//                                drinks.add(drink);
-//                            }
-//                            getMenu.put(FoodTypes.DRINK, drinks);
-//                        }
-//                    }
-//
-//                    //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
-//                    MenuCompleteFragment menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
-//                    menuCompleteFragment.setMenu(getMenu);
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-
             setupViewModel(restaurantId);
 
             menuIconContainer.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +109,12 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
                 counterValue.setText(String.valueOf(currentOrderEntries.size() <= 99 ? currentOrderEntries.size() : 99));
 
+                AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
+                        .loadAnimator(RestaurantMenuActivity.this, R.animator.food_counter_animation);
+                counterAnimation.setTarget(counterContainer);
+
+                counterAnimation.start();
+
 //                AnimatorSet counterAnimationIncrease = new AnimatorSet();
 //                counterAnimationIncrease.playTogether(
 //                        ObjectAnimator.ofFloat(counterContainer, SCALE_X, 2.0f),
@@ -167,11 +136,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
 
 //                AnimatorSet counterAnimation = new AnimatorSet();
 //                counterAnimation.playSequentially(counterAnimationIncrease, counterAnimationDecrease);
-                AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
-                        .loadAnimator(RestaurantMenuActivity.this, R.animator.food_counter_animation);
-                counterAnimation.setTarget(counterContainer);
 
-                counterAnimation.start();
 
             }
         });

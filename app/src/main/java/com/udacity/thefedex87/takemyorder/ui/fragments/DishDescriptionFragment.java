@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -33,12 +34,14 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
-import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealIngredientJoin;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModelFactory;
+import com.udacity.thefedex87.takemyorder.utils.FavouritesManager;
 
 import javax.inject.Inject;
 
@@ -80,7 +83,7 @@ public class DishDescriptionFragment extends Fragment {
 
     public void setData(final Food food, final String restaurantId){
         DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId);
-        DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
+        final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
         dishDetailsViewModel.getFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable FavouriteMeal meal) {
@@ -138,28 +141,9 @@ public class DishDescriptionFragment extends Fragment {
                 favouriteIconAnimation.start();
 
                 if (!isMealAFavourite) {
-                    final FavouriteMeal favouriteMeal = new FavouriteMeal();
-                    favouriteMeal.setFoodType(food.getFoodType());
-                    favouriteMeal.setImageName(food.getImageName());
-                    favouriteMeal.setMealId(food.getMealId());
-                    favouriteMeal.setName(food.getName());
-                    favouriteMeal.setPrice(food.getPrice());
-                    favouriteMeal.setRestaurantId(restaurantId);
-                    favouriteMeal.setDescription(food.getDescription());
-
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
-                        }
-                    });
+                    FavouritesManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId);
                 } else{
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
-                        }
-                    });
+                    FavouritesManager.removeFromFavourite(db, favouriteMealFromDB);
                 }
 
                 isMealAFavourite = !isMealAFavourite;

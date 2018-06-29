@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
-import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 
 import java.util.List;
 
@@ -14,19 +14,24 @@ import java.util.List;
  */
 
 public class DishDetailsViewModel extends ViewModel {
-    private LiveData<List<FavouriteMeal>> favouriteMeals;
     private LiveData<FavouriteMeal> favouriteMealByMealId;
+    private LiveData<Ingredient> ingredient;
+
+    private AppDatabase db;
 
     public DishDetailsViewModel(AppDatabase db, String mealId, String restaurantId){
+        this.db = db;
 
-
-        favouriteMeals = db.favouriteMealsDao().getFavouriteMeals();
         favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
     }
 
-    public LiveData<List<FavouriteMeal>> getFavouriteMeals() { return favouriteMeals; }
+    public void setIngredientName(String ingredientName){
+        ingredient = db.favouriteMealsDao().getIngredientByName(ingredientName);
+    }
 
     public LiveData<FavouriteMeal> getFavouriteMealByMealId() {
         return favouriteMealByMealId;
     }
+
+    public LiveData<Ingredient> getIngredient() {return ingredient;}
 }
