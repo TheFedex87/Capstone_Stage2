@@ -83,11 +83,13 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         db = AppDatabase.getInstance(getActivity());
     }
 
+
     public void setMeals(List<Meal> meals){
         this.meals = meals;
         if (foodInMenuAdapter != null)
             foodInMenuAdapter.setMeals(meals);
 
+        //If for this category the are not foods, show the text "No foods for this category"
         if (foodListPlaceholder != null) {
             if (meals.size() > 0)
                 foodListPlaceholder.setVisibility(View.GONE);
@@ -124,6 +126,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         ButterKnife.bind(this, viewRoot);
 
+        //Setup the recylcer view of this food category
         foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
         foodInMenuContainer.setAdapter(foodInMenuAdapter);
         foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());

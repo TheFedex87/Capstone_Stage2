@@ -32,7 +32,7 @@ public interface FavouriteMealsDao {
     @Query("SELECT * FROM ingredient WHERE ingredientName = :ingredientName")
     LiveData<Ingredient> getIngredientByName(String ingredientName);
 
-    @Query("SELECT * FROM ingredient JOIN favouritemeal_ingredient_join ON ingredientName = ingredientId " +
+    @Query("SELECT ingredient.ingredientName FROM ingredient JOIN favouritemeal_ingredient_join ON ingredientName = ingredientId " +
             "JOIN favourite_meals ON favourite_meals.mealId = favouritemeal_ingredient_join.mealId " +
             "WHERE favourite_meals.mealId = :favouriteMealId AND restaurantId = :restaurantId")
     LiveData<List<Ingredient>> ingredientsOfMeal(String favouriteMealId, String restaurantId);

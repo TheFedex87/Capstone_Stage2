@@ -1,5 +1,6 @@
 package com.udacity.thefedex87.takemyorder.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
@@ -18,6 +24,8 @@ import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,10 +43,23 @@ public class MenuCompleteFragment extends Fragment {
     @BindView(R.id.food_types_pager)
     ViewPager foodTypesPager;
 
+    @Inject
+    Context context;
+
+    private UserInterfaceComponent userInterfaceComponent;
+
     public MenuCompleteFragment(){
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        TakeMyOrderApplication.appComponent().inject(this);
+
+    }
+
+    //Set the current order to the the pageradapter if it has been created
     public void setCurrentOrder(List<Meal> currentOrder){
         if (foodTypePagerAdapter != null)
             foodTypePagerAdapter.setCurrentOrder(currentOrder);
@@ -49,6 +70,7 @@ public class MenuCompleteFragment extends Fragment {
         int selectedTab = foodTypesTabs.getSelectedTabPosition();
         foodTypesTabs.removeAllTabs();
 
+        //Create the menu of the restaurant (or the favourite view if we are showing the user's favourite
         LinkedHashMap<FoodTypes, List<Meal>> orderedMenu = new LinkedHashMap<>();
         if (menu.containsKey(FoodTypes.STARTER)){
             orderedMenu.put(FoodTypes.STARTER, menu.get(FoodTypes.STARTER));
@@ -71,7 +93,12 @@ public class MenuCompleteFragment extends Fragment {
             foodTypesTabs.addTab(foodTypesTabs.newTab().setText(getString(R.string.drinks)));
         }
 
-        foodTypePagerAdapter = new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, restaurantId, getContext());
+        userInterfaceComponent = DaggerUserInterfaceComponent.builder()
+                .applicationModule(new ApplicationModule(context))
+                .userInterfaceModule(new UserInterfaceModule(getFragmentManager(), orderedMenu, restaurantId))
+                .build();
+
+        foodTypePagerAdapter = userInterfaceComponent.getFoodTypePagerAdapter(); //new FoodTypePagerAdapter(getFragmentManager(), orderedMenu, restaurantId, context);
         foodTypesPager.setAdapter(foodTypePagerAdapter);
 
         if (selectedTab >= 0)
@@ -85,8 +112,8 @@ public class MenuCompleteFragment extends Fragment {
 
         ButterKnife.bind(this, viewRoot);
 
+        //Setup the TabLayout
         foodTypesTabs.setTabGravity(TabLayout.GRAVITY_FILL);
-
         foodTypesPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(foodTypesTabs));
         foodTypesTabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

@@ -75,6 +75,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
 
             setupViewModel();
 
+            //This activity use the same fragment of the menu
             menuCompleteFragment = (MenuCompleteFragment)getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
         }
     }
@@ -83,15 +84,18 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
         FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId);
         final FavouritesViewModel favouritesViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
 
+        //Using the viewmodel of this activity retrieve the list of user favourites
         favouritesViewModel.getFavouriteMeals().observe(this, new Observer<List<FavouriteMeal>>() {
             @Override
             public void onChanged(@Nullable List<FavouriteMeal> favouriteMeals) {
 
+                //Clean the list of favourites, otherwise if remove a favourite the whole list will be added again to the current favourites causing duplicates
                 favourites.get(FoodTypes.STARTER).clear();
                 favourites.get(FoodTypes.MAINDISH).clear();
                 favourites.get(FoodTypes.SIDEDISH).clear();
                 favourites.get(FoodTypes.DESSERT).clear();
 
+                //For each favourite, create the Food entity which will be passed to the meal list
                 for(final FavouriteMeal favouriteMeal : favouriteMeals){
                     final Food food = new Food();
                     food.setFoodType(favouriteMeal.getFoodType());
@@ -101,6 +105,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
                     food.setPrice(favouriteMeal.getPrice());
                     food.setDescription(favouriteMeal.getDescription());
 
+                    //Using the viewmodle, extract the list of the ingredient of this meal, and assign it the food entity
                     favouritesViewModel.setMealId(favouriteMeal.getMealId());
                     final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
                     ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
@@ -118,12 +123,13 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
             }
         });
 
-
+        //Retrieve the current order from ViewModel
         favouritesViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
                 //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
-                if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
+                //if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
+                menuCompleteFragment.setCurrentOrder(currentOrderEntries);
                 currentOrder = currentOrderEntries;
                 if (currentOrderEntries.size() > 0) {
                     counterContainer.setVisibility(View.VISIBLE);

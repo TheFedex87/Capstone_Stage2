@@ -1,20 +1,25 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -36,11 +41,22 @@ public class UserInterfaceModule {
     private AppCompatActivity parentActivity;
     private List<Ingredient> ingredients;
 
+    private FragmentManager fragmentManager;
+    private LinkedHashMap<FoodTypes, List<Meal>> meals;
+    private String restaurantId;
+
+
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this.photoUrls = photoUrls;
         this.reviews = reviews;
         this.imageLoadingState = imageLoadingState;
         this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+    }
+
+    public UserInterfaceModule(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, String restaurantId) {
+        this.fragmentManager = fragmentManager;
+        this.meals = meals;
+        this.restaurantId = restaurantId;
     }
 
     //TODO: creare un costruttore apposito per FoodInMenuActionClick
@@ -111,5 +127,10 @@ public class UserInterfaceModule {
     @Provides
     public DishIngredientsAdapter provideDishIngredientsAdapter(){
         return new DishIngredientsAdapter(ingredients);
+    }
+
+    @Provides
+    public FoodTypePagerAdapter provideFoodTypePagerAdapter(Context context){
+        return new FoodTypePagerAdapter(fragmentManager, meals, restaurantId, context);
     }
 }

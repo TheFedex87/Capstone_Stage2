@@ -34,6 +34,7 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         fragments = new MenuSingleFragment[meals.size()];
     }
 
+    //Set the current order to the adatper, which will setup the current order to every fragmnent it contains
     public void setCurrentOrder(List<Meal> currentOrder){
         this.currentOrder = currentOrder;
         for(MenuSingleFragment menuSingleFragment : fragments){
@@ -41,32 +42,21 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-//    @Override
-//    public void destroyItem(ViewGroup container, int position, Object object) {
-//        Fragment fragment = fragmentManager.findFragmentByTag("fragment:" + position);
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.remove(fragment);
-//        transaction.commit();
-//    }
-
     @Override
     public Fragment instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment)super.instantiateItem(container, position);
         fragments[position] = (MenuSingleFragment)fragment;
         List keys = new ArrayList(meals.keySet());
+        //Set the meals for the current tab (food type)
         ((MenuSingleFragment)fragment).setMeals(meals.get(keys.get(position)));
         ((MenuSingleFragment)fragment).setRestaurantId(restaurantId);
         setCurrentOrderToFragment(currentOrder, (MenuSingleFragment)fragment);
-        //if (fragment == null) fragment = getItem(position);
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.add(container.getId(), fragment, "fragment:" + position);
-//        transaction.commit();
         return fragment;
     }
 
     @Override
     public Fragment getItem(int position) {
-        //MenuSingleFragment menuSingleFragment = new MenuSingleFragment();
+        //Set the fragment to every page of the adapter
         MenuSingleFragment menuSingleFragment = (MenuSingleFragment)Fragment.instantiate(context, MenuSingleFragment.class.getName());
         return menuSingleFragment;
     }

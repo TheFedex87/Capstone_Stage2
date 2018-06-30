@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
@@ -25,6 +26,8 @@ public interface UserInterfaceComponent {
     RestaurantReviewsAdapter getRestaurantReviewsAdapter();
     FoodInMenuAdapter getFoodInMenuAdapter();
     DishIngredientsAdapter getDishIngredientsAdapter();
+
+    FoodTypePagerAdapter getFoodTypePagerAdapter();
 
     LinearLayoutManager getLinearLayoutManager();
     GridLayoutManager getGridLayoutManager();

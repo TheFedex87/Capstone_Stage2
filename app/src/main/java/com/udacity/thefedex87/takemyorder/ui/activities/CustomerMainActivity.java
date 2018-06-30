@@ -81,12 +81,14 @@ public class CustomerMainActivity extends AppCompatActivity {
             //Setup view model (used in this activity to retrieve the restaurant from Firebase)
             setupViewModel();
 
-
-//            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
+            //Retrieve the food list fragment
+            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
 //            Order order = new Order();
 //            order.setUserId("USERD ID TEST");
 //            foodListFragment.setOrder(order);
-//            foodListFragment.setTableNumber(table);
+
+            //Assign the table to the fragment
+            foodListFragment.setTableNumber(table);
 
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,6 +133,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(){
+        //Retrieve the restaurant using VIewModel
         CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId);
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
@@ -149,6 +152,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     }
 
     private void signout(){
+        //Signout from Firebase
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
         Timber.d("User signed out");

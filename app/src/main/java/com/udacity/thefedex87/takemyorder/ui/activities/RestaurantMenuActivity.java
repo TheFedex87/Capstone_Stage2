@@ -90,15 +90,19 @@ public class RestaurantMenuActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(final String restaurantId){
+        //Retreive the ViewModel for this activity
         RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId);
         RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
 
+        //Get the current order from ViewModel
         restaurantMenuViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
-                //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
+                //Set the current order to the fragment
                 if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
                 currentOrder = currentOrderEntries;
+
+                //If there is something in the order show the counter into the menu icon in the toolbar
                 if (currentOrderEntries.size() > 0) {
                     counterContainer.setVisibility(View.VISIBLE);
                 }
@@ -107,8 +111,10 @@ public class RestaurantMenuActivity extends AppCompatActivity {
                     return;
                 }
 
+                //Set the counter text
                 counterValue.setText(String.valueOf(currentOrderEntries.size() <= 99 ? currentOrderEntries.size() : 99));
 
+                //Animate the counter
                 AnimatorSet counterAnimation = (AnimatorSet) AnimatorInflater
                         .loadAnimator(RestaurantMenuActivity.this, R.animator.food_counter_animation);
                 counterAnimation.setTarget(counterContainer);
@@ -141,10 +147,10 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             }
         });
 
+        //Get the menu of the restaurant from the ViewModel
         restaurantMenuViewModel.getMenu().observe(this, new Observer<HashMap<FoodTypes, List<Meal>>>() {
             @Override
             public void onChanged(@Nullable HashMap<FoodTypes, List<Meal>> foodTypesListHashMap) {
-                //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
                 menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
                 menuCompleteFragment.setMenu(foodTypesListHashMap, restaurantId);
                 if (currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);

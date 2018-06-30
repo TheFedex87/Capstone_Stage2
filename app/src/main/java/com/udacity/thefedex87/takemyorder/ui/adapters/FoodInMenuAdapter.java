@@ -99,6 +99,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
 
+        //If this meal is a drink, hide the add to favourite icon and the detials icon
         if (meals.get(position) instanceof Drink){
             holder.favouriteFood.setVisibility(View.GONE);
             holder.showDishDetails.setVisibility(View.GONE);
@@ -113,6 +114,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
         restaurantMenuViewModel.setFoodId(meals.get(position).getMealId());
+        //Through the view model, retrieve the food with the meal id which is the same of the current mealid, this allow me to show the counter which show the number of this
+        //food added to the current order
         restaurantMenuViewModel.getCurrentOrdserListByMealId().observe(parentActivity, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
@@ -137,6 +140,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
         });
 
+        //Check if this food is a favourite food, if it is show the icon of added to favourite otherwise the icon which allow the user to add to the favourite
         restaurantMenuViewModel.getFavouriteMealByeMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
@@ -145,6 +149,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 } else {
                     holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_empty));
                 }
+
+                //Set the clicklistener fot the add/remove to favourite, passing it the favouriteMeal, if it is null, the food is not into favourite
                 holder.favouriteFood.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -157,6 +163,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         holder.foodInMenuName.setText(meals.get(position).getName());
         holder.foodPrice.setText(meals.get(position).getPrice() + "€");
 
+        //If the food as a set image, I load it using picasso
         if(meals.get(position).getImageName() != null && !meals.get(position).getImageName().isEmpty()){
             holder.foodImageProgressBar.setVisibility(View.VISIBLE);
             String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meals.get(position).getMealId() +  "?alt=media";
