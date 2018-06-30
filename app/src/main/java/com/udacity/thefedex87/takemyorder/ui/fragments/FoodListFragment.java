@@ -134,7 +134,7 @@ public class FoodListFragment extends Fragment {
 
     public void setupViewModel(){
         //Setup the CustomerMainViewModel in order to observe the current order
-        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null);
+        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null);
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override

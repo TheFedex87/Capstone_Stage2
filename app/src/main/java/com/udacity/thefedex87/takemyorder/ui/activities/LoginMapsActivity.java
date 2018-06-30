@@ -222,7 +222,7 @@ public class LoginMapsActivity extends AppCompatActivity {
 //                                                Intent intent = new Intent(context, CustomerMainActivity.class);
 //                                                Customer customer = new Customer();
 //                                                customer.setEmail(user.getEmail());
-//                                                customer.setUserName(user.getDisplayName());
+//                                                customer.setUserFirebaseId(user.getDisplayName());
 //                                                intent.putExtra(USER_INFO_KEY, customer);
 //                                                startActivity(intent);
 

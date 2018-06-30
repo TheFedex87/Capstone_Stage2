@@ -1,5 +1,6 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
+import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
@@ -20,6 +21,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(LoginMapsActivity loginMapsActivity);
+    void inject(CustomerMainActivity customerMainActivity);
     void inject(RestaurantDetailsActivity restaurantInfoActivity);
     void inject(MenuSingleFragment menuSingleFragment);
 

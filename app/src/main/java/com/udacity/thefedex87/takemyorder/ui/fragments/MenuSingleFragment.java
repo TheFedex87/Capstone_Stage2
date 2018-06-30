@@ -38,6 +38,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.room.DBManager;
 
@@ -284,6 +285,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         Bundle b = new Bundle();
         b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);
         b.putString(CustomerMainActivity.RESTAURANT_ID_KEY, restaurantId);
+        b.putLong(CustomerMainActivity.USER_ID_KEY, ((RestaurantMenuActivity)getActivity()).getUserRoomId());
         intent.putExtras(b);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -313,7 +315,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 //                }
 //            });
 
-            DBManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId);
+            DBManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId, ((RestaurantMenuActivity)getActivity()).getUserRoomId());
         } else{
 //            AppExecutors.getInstance().diskIO().execute(new Runnable() {
 //                @Override

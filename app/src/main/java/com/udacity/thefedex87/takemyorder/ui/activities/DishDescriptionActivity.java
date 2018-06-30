@@ -63,6 +63,7 @@ public class DishDescriptionActivity extends AppCompatActivity {
     private Food food;
     private String restaurantId;
     private DishDescriptionFragment dishDescriptionFragment;
+    private long userRoomId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class DishDescriptionActivity extends AppCompatActivity {
 
                 food = bundle.getParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY);
                 restaurantId = bundle.getString(CustomerMainActivity.RESTAURANT_ID_KEY);
+                userRoomId = bundle.getLong(CustomerMainActivity.USER_ID_KEY, -1);
 
                 initUi();
 
@@ -196,5 +198,9 @@ public class DishDescriptionActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public long getUserRoomId(){
+        return userRoomId;
     }
 }

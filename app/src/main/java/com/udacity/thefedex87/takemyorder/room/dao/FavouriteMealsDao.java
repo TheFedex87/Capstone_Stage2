@@ -9,6 +9,7 @@ import android.arch.persistence.room.Query;
 
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealIngredientJoin;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealUserJoin;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 
 import java.util.List;
@@ -38,13 +39,16 @@ public interface FavouriteMealsDao {
     LiveData<List<Ingredient>> ingredientsOfMeal(String favouriteMealId, String restaurantId);
 
     @Insert
-    void insertFavouriteMeal(FavouriteMeal food);
+    long insertFavouriteMeal(FavouriteMeal food);
 
     @Insert(onConflict = IGNORE)
     void insertIngredient(Ingredient ingredient);
 
     @Insert(onConflict = IGNORE)
     void insertMealIngredient(FavouriteMealIngredientJoin favouriteMealIngredientJoin);
+
+    @Insert(onConflict = IGNORE)
+    void insertMealUser(FavouriteMealUserJoin favouriteMealUserJoin);
 
     @Delete
     void deleteFavouriteMeal(FavouriteMeal food);

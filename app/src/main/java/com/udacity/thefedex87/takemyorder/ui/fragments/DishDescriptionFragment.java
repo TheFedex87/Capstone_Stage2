@@ -34,6 +34,7 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
+import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModelFactory;
@@ -137,7 +138,7 @@ public class DishDescriptionFragment extends Fragment {
                 favouriteIconAnimation.start();
 
                 if (!isMealAFavourite) {
-                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId);
+                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId, ((DishDescriptionActivity)getActivity()).getUserRoomId());
                 } else{
                     DBManager.removeFromFavourite(db, favouriteMealFromDB);
                 }

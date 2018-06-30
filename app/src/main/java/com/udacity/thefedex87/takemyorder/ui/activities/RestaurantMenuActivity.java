@@ -39,6 +39,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
     private String restaurantId;
     private MenuCompleteFragment menuCompleteFragment;
     private List<Meal> currentOrder;
+    private long userRoomId;
 
     @BindView(R.id.menu_icon_container)
     FrameLayout menuIconContainer;
@@ -74,6 +75,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
             toolbarTitle.setText(getString(R.string.menu));
 
             restaurantId = intent.getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
+            userRoomId = intent.getLongExtra(CustomerMainActivity.USER_ID_KEY, -1);
 
             setupViewModel(restaurantId);
 
@@ -158,5 +160,7 @@ public class RestaurantMenuActivity extends AppCompatActivity {
         });
     }
 
-
+    public long getUserRoomId(){
+        return userRoomId;
+    }
 }

@@ -12,14 +12,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealIngredientJoin;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealUserJoin;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
+
+import java.util.concurrent.Executor;
 
 import static android.view.View.ALPHA;
 import static android.view.View.SCALE_X;
@@ -32,7 +36,7 @@ import static android.view.View.TRANSLATION_Y;
  */
 
 public final class DBManager {
-    public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, String restaurantId){
+    public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, String restaurantId, final long userId){
         final FavouriteMeal favouriteMeal = new FavouriteMeal();
         favouriteMeal.setFoodType(food.getFoodType());
         favouriteMeal.setImageName(food.getImageName());
@@ -46,7 +50,17 @@ public final class DBManager {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
+                long favouriteMealId = db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
+
+                //Insert into the FavouriteMealUserJoin the new insert favourite meal and the current logged user
+                final FavouriteMealUserJoin favouriteMealUserJoin = new FavouriteMealUserJoin(userId, favouriteMealId);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.favouriteMealsDao().insertMealUser(favouriteMealUserJoin);
+                    }
+                });
+
 
                 for(final Ingredient ingredient : food.getIngredients()){
                     final LiveData<Ingredient> ingredientLiveData;

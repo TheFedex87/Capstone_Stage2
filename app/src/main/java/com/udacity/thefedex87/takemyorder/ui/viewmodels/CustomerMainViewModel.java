@@ -17,6 +17,7 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.User;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 
 import java.util.List;
@@ -30,12 +31,17 @@ import timber.log.Timber;
 public class CustomerMainViewModel extends ViewModel {
     private LiveData<List<Meal>> currentOrderList;
     private MutableLiveData<Restaurant> restaurantLivedata;
+    private LiveData<User> userByUserFirebaseId;
 
-    public CustomerMainViewModel(AppDatabase db, String restaurantId) {
+    public CustomerMainViewModel(AppDatabase db, String restaurantId, String userName) {
         currentOrderList = db.currentOrderDao().getCurrentOrderList();
         restaurantLivedata = new MutableLiveData<>();
         if (restaurantId != null && !restaurantId.isEmpty())
             retrieveRetaurant(restaurantId);
+
+        if(userName != null && !userName.isEmpty()){
+            userByUserFirebaseId = db.userDao().getUserByUserFirebaseId(userName);
+        }
     }
 
     private void retrieveRetaurant(String restaurantId){
@@ -63,4 +69,7 @@ public class CustomerMainViewModel extends ViewModel {
         return currentOrderList;
     }
     public LiveData<Restaurant> getRestaurant() { return restaurantLivedata; }
+    public LiveData<User> getUserByUserFirebaseId() {
+        return userByUserFirebaseId;
+    }
 }
