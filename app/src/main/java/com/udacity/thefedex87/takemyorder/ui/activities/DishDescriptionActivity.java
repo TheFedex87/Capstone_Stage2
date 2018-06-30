@@ -106,12 +106,10 @@ public class DishDescriptionActivity extends AppCompatActivity {
                         scaleFoodImageAnimator.setDuration(200);
                         scaleFoodImageAnimator.start();
 
-
                         PropertyValuesHolder alphaImageFoodToAnimate = PropertyValuesHolder.ofFloat(ALPHA, 1);
                         PropertyValuesHolder transXImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_X, fabPos[0] - foodImagePos[0] - parentPos[0]);
                         PropertyValuesHolder transYImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_Y, fabPos[1] - foodImagePos[1] - parentPos[1]);
-                        //PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(SCALE_X, 0.3f);
-                        //PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(SCALE_Y, 0.3f);
+
                         ObjectAnimator imageFoodToAnimateAnimation = ObjectAnimator.ofPropertyValuesHolder(foodImageToAnimate, alphaImageFoodToAnimate, transXImageFoodToAnimate, transYImageFoodToAnimate);
                         imageFoodToAnimateAnimation.setDuration(400);
                         imageFoodToAnimateAnimation.setStartDelay(100);
@@ -138,24 +136,6 @@ public class DishDescriptionActivity extends AppCompatActivity {
                             }
                         });
                         foodImageToAnimateAlphaAnimation.start();
-
-//                        foodImageToAnimate.animate().alpha(0).setDuration(100).setStartDelay(200).setListener(new AnimatorListenerAdapter() {
-//                            @Override
-//                            public void onAnimationEnd(Animator animation) {
-//                                super.onAnimationEnd(animation);
-//
-//                                animation.removeAllListeners();
-//
-//                                dishDetailsContainer.getOverlay().remove(foodImageToAnimate);
-//                                dishDescriptionFoodImageContainer.addView(foodImageToAnimate);
-//
-//                                foodImageToAnimate.animate().translationX(0).setDuration(0);
-//                                foodImageToAnimate.animate().translationY(0).setDuration(0);
-//
-//                                scaleFoodImageAnimator.reverse();
-//                            }
-//                        });
-
 
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override

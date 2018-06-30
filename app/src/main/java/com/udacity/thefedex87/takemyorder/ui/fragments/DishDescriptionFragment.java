@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -32,16 +31,13 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
-import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
-import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
-import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealIngredientJoin;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModelFactory;
-import com.udacity.thefedex87.takemyorder.utils.FavouritesManager;
+import com.udacity.thefedex87.takemyorder.room.DBManager;
 
 import javax.inject.Inject;
 
@@ -141,9 +137,9 @@ public class DishDescriptionFragment extends Fragment {
                 favouriteIconAnimation.start();
 
                 if (!isMealAFavourite) {
-                    FavouritesManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId);
+                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId);
                 } else{
-                    FavouritesManager.removeFromFavourite(db, favouriteMealFromDB);
+                    DBManager.removeFromFavourite(db, favouriteMealFromDB);
                 }
 
                 isMealAFavourite = !isMealAFavourite;

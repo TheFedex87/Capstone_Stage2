@@ -1,10 +1,16 @@
-package com.udacity.thefedex87.takemyorder.utils;
+package com.udacity.thefedex87.takemyorder.room;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.widget.ImageView;
 
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
@@ -15,11 +21,17 @@ import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 
+import static android.view.View.ALPHA;
+import static android.view.View.SCALE_X;
+import static android.view.View.SCALE_Y;
+import static android.view.View.TRANSLATION_X;
+import static android.view.View.TRANSLATION_Y;
+
 /**
  * Created by federico.creti on 29/06/2018.
  */
 
-public final class FavouritesManager {
+public final class DBManager {
     public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, String restaurantId){
         final FavouriteMeal favouriteMeal = new FavouriteMeal();
         favouriteMeal.setFoodType(food.getFoodType());

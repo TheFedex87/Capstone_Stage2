@@ -39,7 +39,7 @@ import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
-import com.udacity.thefedex87.takemyorder.utils.FavouritesManager;
+import com.udacity.thefedex87.takemyorder.room.DBManager;
 
 import java.util.List;
 
@@ -147,8 +147,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void addOrderClick(final Meal selectedMeal, final View sender, final View imageView, final ViewGroup foodImageContainer, final ImageView originalImage) {
-        //TransitionManager.go(Scene.getSceneForLayout((ViewGroup)getActivity().findViewById(R.id.food_in_menu_container), R.layout.food_in_menu_scene_2, getActivity()));
-
         sender.setEnabled(false);
 
         final ViewGroup parentViewGroup = (ViewGroup)foodInMenuContainer
@@ -158,19 +156,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
 
-
-//        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
-//
-//        Transition t = TransitionInflater.from(getContext()).inflateTransition(R.transition.test);
-//        t.setDuration(1000);
-//
-//        TransitionManager.beginDelayedTransition((ViewGroup)imageView.getParent(), t);
-//
-//        //imageView.setVisibility(View.GONE);
-//        lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-//        lp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-//        imageView.setLayoutParams(lp);
-//        //imageView.layout(500, 0, 600, 100);
 
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = 0;
@@ -239,18 +224,9 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                         imageView.animate().scaleY(1).setDuration(0).start();
 
                         scaleFoodImageAnimator.reverse();
-//                        originalImage.animate().scaleY(1f).setDuration(300).start();
-//                        originalImage.animate().scaleX(1f).setDuration(300).start();
-//                        originalImage.animate().alpha(1f).setDuration(100).start();
-
-
 
                         final AppDatabase db = AppDatabase.getInstance(getActivity());
-//                        final CurrentOrderEntry entry = new CurrentOrderEntry(0,
-//                                selectedMeal.getIngredientName(),
-//                                selectedMeal.getPrice(),
-//                                selectedMeal.getFoodType(),
-//                                selectedMeal.getMealId());
+
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {
@@ -274,10 +250,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                         });
                         translateAppBarReverseAnimator.start();
 
-
-//                animation.removeListener(this);
-//                animation.setDuration(0);
-//                ((ValueAnimator) animation).reverse();
                     }
                 });
                 moveFoodImageAnimator.start();
@@ -341,7 +313,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 //                }
 //            });
 
-            FavouritesManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId);
+            DBManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId);
         } else{
 //            AppExecutors.getInstance().diskIO().execute(new Runnable() {
 //                @Override
@@ -349,7 +321,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 //                    db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
 //                }
 //            });
-            FavouritesManager.removeFromFavourite(db, favouriteMealFromDB);
+            DBManager.removeFromFavourite(db, favouriteMealFromDB);
         }
     }
 }
