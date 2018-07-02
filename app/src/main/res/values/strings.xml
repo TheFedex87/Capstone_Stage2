@@ -33,6 +33,9 @@
     <string name="total_price">Tot.: %1$.2f €</string>
     <string name="table_number">Table: %1$s</string>
 
+    <!--Barcode Scanner Activity-->
+    <string name="open_barcode_from_file">Open QR from image</string>
+
     <!--Restaurant Details-->
     <string name="restaurant_rating">Rating:</string>
 

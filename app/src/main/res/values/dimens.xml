@@ -84,6 +84,10 @@
     <dimen name="food_in_menu_meal_in_order_counter_text_size">18sp</dimen>
     <dimen name="food_in_menu_image_food_to_animate">100dp</dimen>
 
+    <!--Barcode scanner activity-->
+    <dimen name="surface_view_margin">10dp</dimen>
+    <dimen name="load_from_file_margin">10dp</dimen>
+
 
     <dimen name="counter_circle_size">18dp</dimen>
     <dimen name="counter_circle_margin_start">18dp</dimen>

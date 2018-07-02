@@ -51,7 +51,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     public static final String USER_ID_KEY = "USER_ID_KEY";
 
     private FirebaseAuth firebaseAuth;
-    private Customer customer;
+    //private Customer customer;
     private Restaurant restaurant;
     private String restaurantId;
     private String table;
@@ -89,7 +89,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            customer = getIntent().getParcelableExtra(LoginMapsActivity.USER_INFO_KEY);
+            //customer = getIntent().getParcelableExtra(LoginMapsActivity.USER_INFO_KEY);
             restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
             table = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY);
 

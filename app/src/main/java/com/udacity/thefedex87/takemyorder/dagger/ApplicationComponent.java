@@ -1,5 +1,6 @@
 package com.udacity.thefedex87.takemyorder.dagger;
 
+import com.udacity.thefedex87.takemyorder.ui.activities.BarcodeScannerActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity;
@@ -24,6 +25,7 @@ public interface ApplicationComponent {
     void inject(CustomerMainActivity customerMainActivity);
     void inject(RestaurantDetailsActivity restaurantInfoActivity);
     void inject(MenuSingleFragment menuSingleFragment);
+    void inject(BarcodeScannerActivity barcodeScannerActivity);
 
     void inject(FoodListFragment foodListFragment);
     void inject(DishDescriptionFragment dishDescriptionFragment);

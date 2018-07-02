@@ -3,17 +3,22 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
@@ -60,6 +65,7 @@ public class LoginMapsActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
     public static final int RC_PHOTO_PICKER = 2;
     public static final int RC_PHOTO_SHOT = 3;
+    public static final int RC_LIVE_BARCODE_SCAN = 4;
 
     @BindView(R.id.map)
     ImageView map;
@@ -205,27 +211,8 @@ public class LoginMapsActivity extends AppCompatActivity {
                                                 customer.setEmail(user.getEmail());
                                                 customer.setUserName(user.getDisplayName());
 
-                                                //Since this is a user log in, we need to launch camera in order to scan the qrcode at the table.
-                                                String[] mimeTypes = {"image/jpeg", "image/png"};
-                                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                                intent.setType("image/*").putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                                                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                                                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-
-//                                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                                                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//                                                    startActivityForResult(takePictureIntent, RC_PHOTO_SHOT);
-//                                                }
-
-//                                                //Customer login
-//                                                Timber.d("Logging in user: " + user.getEmail());
-//                                                Intent intent = new Intent(context, CustomerMainActivity.class);
-//                                                Customer customer = new Customer();
-//                                                customer.setEmail(user.getEmail());
-//                                                customer.setUserFirebaseId(user.getDisplayName());
-//                                                intent.putExtra(USER_INFO_KEY, customer);
-//                                                startActivity(intent);
-
+                                                Intent intent = new Intent(LoginMapsActivity.this, BarcodeScannerActivity.class);
+                                                startActivityForResult(intent, RC_LIVE_BARCODE_SCAN);
                                             } else {
                                                 //Waiter login
                                                 AuthUI.getInstance().signOut(LoginMapsActivity.this);
@@ -260,81 +247,128 @@ public class LoginMapsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if (requestCode == RC_SIGN_IN && resultCode == RESULT_OK){
+
+//        if ((requestCode == RC_PHOTO_PICKER || requestCode == RC_PHOTO_SHOT) && resultCode == RESULT_OK) {
+//            //Create the barcode reader
+//            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(QR_CODE).build();
+//            Bitmap bitmap = null;
 //
-//        }
+//
+//            if (requestCode == RC_PHOTO_PICKER) {
+//                //Requested selection of the picture from file chooser
+//                Uri selectedImageUri = data.getData();
+//
+//                try {
+//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    Timber.e("Error parsing Bitmap " + e.getMessage());
+//                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//            } else if(requestCode == RC_PHOTO_SHOT) {
+//                //Requested selection of the picture from file camera shot
+//                Bundle extras = data.getExtras();
+//                bitmap = (Bitmap) extras.get("data");
+//            }
+//
+//            //bitmap = resizeUntilLessDesideredSize(bitmap, 2000000);
+//            bitmap = resizeBitmap(bitmap, 600, 600);
+//            //barcode.setImageBitmap(bitmap);
+//
+//            //Detect the barcode from Bitmap
+//            Frame myFrame = new Frame.Builder().setBitmap(bitmap).build();
+//            SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
+//            if (barcodes.size() == 0){
+//                //Barcode not found on picture
+//                Timber.w(getString(R.string.error_no_barcode_found));
+//                Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
+//            } else {
+//                retrieveBarCode(barcodes.valueAt(0));
+//            }
+//        } else
 
-        if ((requestCode == RC_PHOTO_PICKER || requestCode == RC_PHOTO_SHOT) && resultCode == RESULT_OK) {
-            //Create the barcode reader
-            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(QR_CODE).build();
-            Bitmap bitmap = null;
-
-
-            if (requestCode == RC_PHOTO_PICKER) {
-                //Requested selection of the picture from file chooser
-                Uri selectedImageUri = data.getData();
-
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Timber.e("Error parsing Bitmap " + e.getMessage());
-                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
-                    return;
-                }
-            } else if(requestCode == RC_PHOTO_SHOT) {
-                //Requested selection of the picture from file camera shot
-                Bundle extras = data.getExtras();
-                bitmap = (Bitmap) extras.get("data");
-            }
-
-            //Detect the barcode from Bitmap
-            Frame myFrame = new Frame.Builder().setBitmap(bitmap).build();
-            SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
-            if (barcodes.size() == 0){
-                //Barcode not found on picture
-                Timber.w(getString(R.string.error_no_barcode_found));
-                Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
-            } else {
-                //Retrieve the barcode content
-                String qrString = barcodes.get(barcodes.keyAt(0)).displayValue;
-
-                //Parse the barcode content into a JSONObject
-                JSONObject json = null;
-                try {
-                    json = new JSONObject(qrString);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Timber.e("Errore creating JSON object " + e.getMessage());
-                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                //Extract the information from the JSONObject
-                String restaurantId = null;
-                String table = null;
-                try {
-                    restaurantId = json.getString("restaurantId");
-                    table = json.getString("table");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                if (restaurantId != null || table != null) {
-                    //If information are correctly extracted goto CustomerMainActivity
-                    //Customer login
-                    Timber.d("Logging in user: " + customer.getEmail());
-                    Intent intent = new Intent(context, CustomerMainActivity.class);
-                    intent.putExtra(USER_INFO_KEY, customer);
-                    intent.putExtra(USER_RESTAURANT_KEY, restaurantId);
-                    intent.putExtra(USER_RESTAURANT_TABLE_KEY, table);
-                    startActivity(intent);
-                } else {
-                    Timber.w(getString(R.string.error_no_valid_information_from_barcode));
-                    Toast.makeText(this, getString(R.string.error_no_valid_information_from_barcode), Toast.LENGTH_LONG).show();
-                }
-            }
+        if(requestCode == RC_LIVE_BARCODE_SCAN && resultCode == RESULT_OK){
+            Barcode barcode = data.getParcelableExtra("barcode");
+            retrieveBarCode(barcode);
         }
     }
+
+    private void retrieveBarCode(Barcode barcode) {
+        //Retrieve the barcode content
+        String qrString = barcode.displayValue;
+
+        //Parse the barcode content into a JSONObject
+        JSONObject json = null;
+        try {
+            json = new JSONObject(qrString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Timber.e("Errore creating JSON object " + e.getMessage());
+            Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //Extract the information from the JSONObject
+        String restaurantId = null;
+        String table = null;
+        try {
+            restaurantId = json.getString("restaurantId");
+            table = json.getString("table");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        if (restaurantId != null || table != null) {
+            //If information are correctly extracted goto CustomerMainActivity
+            //Customer login
+            Timber.d("Logging in user: " + customer.getEmail());
+            Intent intent = new Intent(context, CustomerMainActivity.class);
+            intent.putExtra(USER_INFO_KEY, customer);
+            intent.putExtra(USER_RESTAURANT_KEY, restaurantId);
+            intent.putExtra(USER_RESTAURANT_TABLE_KEY, table);
+            startActivity(intent);
+        } else {
+            Timber.w(getString(R.string.error_no_valid_information_from_barcode));
+            Toast.makeText(this, getString(R.string.error_no_valid_information_from_barcode), Toast.LENGTH_LONG).show();
+        }
+    }
+
+//    private Bitmap resizeBitmap(Bitmap bm, int newHeight, int newWidth) {
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//        float scaleWidth = ((float) newWidth) / width;
+//        float scaleHeight = ((float) newHeight) / height;
+//        // CREATE A MATRIX FOR THE MANIPULATION
+//        Matrix matrix = new Matrix();
+//        // RESIZE THE BIT MAP
+//        matrix.postScale(scaleWidth, scaleHeight);
+//
+//        // "RECREATE" THE NEW BITMAP
+//        Bitmap resizedBitmap = Bitmap.createBitmap(
+//                bm, 0, 0, width, height, matrix, false);
+//        bm.recycle();
+//        return resizedBitmap;
+//    }
+//
+//    private Bitmap resizeUntilLessDesideredSize(Bitmap bm, int maxBytes) {
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//
+//        // CREATE A MATRIX FOR THE MANIPULATION
+//        Matrix matrix = new Matrix();
+//        // RESIZE THE BIT MAP
+//        matrix.postScale(0.8f, 0.8f);
+//
+//        // "RECREATE" THE NEW BITMAP
+//        Bitmap resizedBitmap = Bitmap.createBitmap(
+//                bm, 0, 0, width, height, matrix, false);
+//        bm.recycle();
+//
+//        if (resizedBitmap.getByteCount() <= maxBytes)
+//            return resizedBitmap;
+//        else
+//            return resizeUntilLessDesideredSize(resizedBitmap, maxBytes);
+//    }
 }

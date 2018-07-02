@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.thefedex87.takemyorder.ui.activities.BarcodeScannerActivity">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/surface_view_margin"
+        android:layout_marginEnd="@dimen/surface_view_margin"
+        android:layout_marginStart="@dimen/surface_view_margin"
+        android:layout_marginTop="@dimen/surface_view_margin"
+        app:layout_constraintBottom_toTopOf="@+id/open_barcode_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/open_camera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_photo_camera" />
+
+        <SurfaceView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/open_barcode_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/load_from_file_margin"
+        android:layout_marginBottom="@dimen/load_from_file_margin"
+        android:layout_marginEnd="@dimen/load_from_file_margin"
+        android:layout_marginStart="@dimen/load_from_file_margin"
+        android:background="@color/colorAccent"
+        android:text="@string/open_barcode_from_file"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
