@@ -4,9 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Index;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +35,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
     private String restaurantId;
     private MenuCompleteFragment menuCompleteFragment;
     private List<Meal> currentOrder;
+    private long userRoomId;
 
     private HashMap<FoodTypes, List<Meal>> favourites;
 
@@ -49,14 +48,16 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
     @BindView(R.id.couter_value)
     TextView counterValue;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites_foods);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(CustomerMainActivity.RESTAURANT_ID_KEY)){
+        if (intent != null && intent.hasExtra(CustomerMainActivity.RESTAURANT_ID_KEY)  && intent.hasExtra(CustomerMainActivity.USER_ID_KEY)){
             restaurantId = intent.getStringExtra(CustomerMainActivity.RESTAURANT_ID_KEY);
+            userRoomId = intent.getLongExtra(CustomerMainActivity.USER_ID_KEY, -1);
 
             ButterKnife.bind(this);
 
@@ -80,12 +81,16 @@ public class FavouritesFoodsActivity extends AppCompatActivity {
         }
     }
 
+    public long getUserRoomId(){
+        return userRoomId;
+    }
+
     private void setupViewModel() {
-        FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId);
+        FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
         final FavouritesViewModel favouritesViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
 
         //Using the viewmodel of this activity retrieve the list of user favourites
-        favouritesViewModel.getFavouriteMeals().observe(this, new Observer<List<FavouriteMeal>>() {
+        favouritesViewModel.getFavouriteMealsOfUser().observe(this, new Observer<List<FavouriteMeal>>() {
             @Override
             public void onChanged(@Nullable List<FavouriteMeal> favouriteMeals) {
 

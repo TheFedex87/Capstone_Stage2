@@ -79,7 +79,7 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     public void setData(final Food food, final String restaurantId){
-        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId);
+        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId, ((DishDescriptionActivity)getActivity()).getUserRoomId());
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
         dishDetailsViewModel.getFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override

@@ -50,9 +50,9 @@ public class RestaurantMenuViewModel extends ViewModel {
         retrieveRestaurantMenu();
     }
 
-    public void setFoodId(String mealId){
+    public void setFoodId(String mealId, long userRoomId){
         currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId);
-        favouriteMealByeMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
+        favouriteMealByeMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId, userRoomId);
     }
 
     public void setIngredientName(String ingredientName){

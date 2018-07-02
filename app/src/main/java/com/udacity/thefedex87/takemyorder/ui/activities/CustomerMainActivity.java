@@ -136,6 +136,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             case R.id.favourites:
                 Intent intent = new Intent(this, FavouritesFoodsActivity.class);
                 intent.putExtra(RESTAURANT_ID_KEY, restaurantId);
+                intent.putExtra(USER_ID_KEY, userRoomId);
                 startActivity(intent);
                 return true;
             case R.id.checkout_order:

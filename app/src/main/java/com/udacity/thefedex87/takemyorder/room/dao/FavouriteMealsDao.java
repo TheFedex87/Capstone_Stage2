@@ -27,8 +27,11 @@ public interface FavouriteMealsDao {
     @Query("SELECT * FROM favourite_meals")
     LiveData<List<FavouriteMeal>> getFavouriteMeals();
 
-    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId AND restaurantId = :restaurantId")
-    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId);
+    @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId WHERE favouritemeal_user_join.userId = :userRoomId")
+    LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId);
+
+    @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId WHERE favourite_meals.mealId = :mealId AND favouritemeal_user_join.userId = :userRoomId AND restaurantId = :restaurantId")
+    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId, long userRoomId);
 
     @Query("SELECT * FROM ingredient WHERE ingredientName = :ingredientName")
     LiveData<Ingredient> getIngredientByName(String ingredientName);
