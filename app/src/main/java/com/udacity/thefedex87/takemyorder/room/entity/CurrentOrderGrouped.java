@@ -5,8 +5,18 @@ package com.udacity.thefedex87.takemyorder.room.entity;
  */
 
 public class CurrentOrderGrouped {
+    String name;
     String mealId;
+    double price;
     int count;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getMealId() {
         return mealId;
@@ -14,6 +24,14 @@ public class CurrentOrderGrouped {
 
     public void setMealId(String mealId) {
         this.mealId = mealId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public int getCount() {

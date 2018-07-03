@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/food_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/checkout_food_margin_top_bottom"
+        android:layout_marginEnd="@dimen/checkout_food_name_margin_start_end"
+        android:layout_marginStart="@dimen/checkout_food_name_margin_start_end"
+        android:layout_marginTop="@dimen/checkout_food_margin_top_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/food_quantity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pizza margherita" />
+
+    <TextView
+        android:id="@+id/food_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/checkout_food_margin_top_bottom"
+        android:layout_marginEnd="@dimen/checkout_food_quantity_margin_start_end"
+        android:layout_marginTop="@dimen/checkout_food_margin_top_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/food_price"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="x 2" />
+
+    <TextView
+        android:id="@+id/food_price"
+        android:layout_width="@dimen/checkout_food_price_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/checkout_food_margin_top_bottom"
+        android:layout_marginEnd="@dimen/checkout_food_price_margin_end"
+        android:layout_marginTop="@dimen/checkout_food_margin_top_bottom"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="4.5€" />
+
+</android.support.constraint.ConstraintLayout>

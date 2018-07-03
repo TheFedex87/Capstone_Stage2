@@ -15,7 +15,6 @@
     <string name="content_description_add_to_favourite">Add or remove this food from the favourites meals of this restaurant</string>
     <string name="content_description_favourites">Show favourites foods</string>
 
-
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
     <string name="error_places_api_key_not_provided">No Places API KEY provided</string>

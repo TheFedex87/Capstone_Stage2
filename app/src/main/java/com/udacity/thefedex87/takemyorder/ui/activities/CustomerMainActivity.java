@@ -140,6 +140,8 @@ public class CustomerMainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.checkout_order:
+                Intent intentCheckoutOrder = new Intent(this, CheckoutOrderActivity.class);
+                startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:
                 return true;

@@ -35,6 +35,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.activities.FavouritesFoodsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
 
@@ -115,7 +116,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
-        restaurantMenuViewModel.setFoodId(meals.get(position).getMealId(), ((FavouritesFoodsActivity)parentActivity).getUserRoomId());
+        restaurantMenuViewModel.setFoodId(meals.get(position).getMealId(), ((UserRoomContainer)parentActivity).getUserRoomId());
         //Through the view model, retrieve the food with the meal id which is the same of the current mealid, this allow me to show the counter which show the number of this
         //food added to the current order
         restaurantMenuViewModel.getCurrentOrdserListByMealId().observe(parentActivity, new Observer<List<Meal>>() {

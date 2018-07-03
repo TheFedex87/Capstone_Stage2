@@ -81,8 +81,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.RestaurantMenuActivity" />
         </activity>
-        <activity android:name=".ui.activities.FavouritesFoodsActivity" />
-        <activity android:name=".ui.activities.BarcodeScannerActivity"></activity>
+        <activity
+            android:name=".ui.activities.FavouritesFoodsActivity"
+            android:parentActivityName=".ui.activities.CustomerMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.CustomerMainActivity" />
+        </activity>
+        <activity android:name=".ui.activities.BarcodeScannerActivity" />
+        <activity android:name=".ui.activities.CheckoutOrderActivity"></activity>
     </application>
 
 </manifest>

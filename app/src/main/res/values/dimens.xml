@@ -118,6 +118,13 @@
     <dimen name="dish_description_favourite_margin_end">16dp</dimen>
     <dimen name="dish_description_favourite_margin_start">16dp</dimen>
 
+    <!--Checkout Activity-->
+    <dimen name="checkout_food_margin_top_bottom">8dp</dimen>
+    <dimen name="checkout_food_name_margin_start_end">16dp</dimen>
+    <dimen name="checkout_food_quantity_margin_start_end">8dp</dimen>
+    <dimen name="checkout_food_price_margin_end">16dp</dimen>
+    <dimen name="checkout_food_price_width">60dp</dimen>
+
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">100dp</dimen>

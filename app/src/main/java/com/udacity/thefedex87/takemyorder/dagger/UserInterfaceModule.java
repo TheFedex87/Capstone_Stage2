@@ -8,9 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
+import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.ui.adapters.CheckoutOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
@@ -40,6 +42,7 @@ public class UserInterfaceModule {
     private FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick;
     private AppCompatActivity parentActivity;
     private List<Ingredient> ingredients;
+    private List<CurrentOrderGrouped> mealsGrouped;
 
     private FragmentManager fragmentManager;
     private LinkedHashMap<FoodTypes, List<Meal>> meals;
@@ -66,23 +69,41 @@ public class UserInterfaceModule {
         this.parentActivity = parentActivity;
     }
 
-    public UserInterfaceModule(List<Ingredient> ingredients, int linearLayoutManagerOrientation){
-        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
-        this.ingredients = ingredients;
-    }
+//    public UserInterfaceModule(List<Ingredient> ingredients, int linearLayoutManagerOrientation){
+//        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+//        this.ingredients = ingredients;
+//    }
+//
+//    public UserInterfaceModule(List<CurrentOrderGrouped> mealsGrouped, int linearLayoutManagerOrientation){
+//        this.mealsGrouped = mealsGrouped;
+//        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+//    }
 
-    public UserInterfaceModule(List<?> list){
+    public UserInterfaceModule(List<?> list, int linearLayoutManagerOrientation){
         if (list.size() == 0){
-            photoUrls = new ArrayList<>();
-            reviews = new ArrayList<>();
+            ingredients = new ArrayList<>();
+            mealsGrouped = new ArrayList<>();
         } else {
             if (list.get(0) instanceof String){
-                photoUrls = (List<String>)list;
+                ingredients = (List<Ingredient>)list;
             } else {
-                reviews = (List<RestaurantReviewModel>)list;
+                mealsGrouped = (List<CurrentOrderGrouped>)list;
             }
         }
     }
+
+//    public UserInterfaceModule(List<?> list){
+//        if (list.size() == 0){
+//            photoUrls = new ArrayList<>();
+//            reviews = new ArrayList<>();
+//        } else {
+//            if (list.get(0) instanceof String){
+//                photoUrls = (List<String>)list;
+//            } else {
+//                reviews = (List<RestaurantReviewModel>)list;
+//            }
+//        }
+//    }
 
 //    public UserInterfaceModule(List<RestaurantReviewModel> reviews){
 //        this.reviews = reviews;
@@ -132,5 +153,10 @@ public class UserInterfaceModule {
     @Provides
     public FoodTypePagerAdapter provideFoodTypePagerAdapter(Context context){
         return new FoodTypePagerAdapter(fragmentManager, meals, restaurantId, context);
+    }
+
+    @Provides
+    public CheckoutOrderAdapter provideOrderSummaryAdapter(){
+        return new CheckoutOrderAdapter(mealsGrouped);
     }
 }

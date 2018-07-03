@@ -35,7 +35,7 @@ import timber.log.Timber;
 import static android.view.View.SCALE_X;
 import static android.view.View.SCALE_Y;
 
-public class RestaurantMenuActivity extends AppCompatActivity {
+public class RestaurantMenuActivity extends AppCompatActivity implements UserRoomContainer {
     private String restaurantId;
     private MenuCompleteFragment menuCompleteFragment;
     private List<Meal> currentOrder;
