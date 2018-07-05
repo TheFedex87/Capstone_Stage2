@@ -120,10 +120,19 @@
 
     <!--Checkout Activity-->
     <dimen name="checkout_food_margin_top_bottom">8dp</dimen>
-    <dimen name="checkout_food_name_margin_start_end">16dp</dimen>
+    <dimen name="checkout_food_name_margin_start_end">24dp</dimen>
     <dimen name="checkout_food_quantity_margin_start_end">8dp</dimen>
-    <dimen name="checkout_food_price_margin_end">16dp</dimen>
+    <dimen name="checkout_food_price_margin_start_end">16dp</dimen>
+    <dimen name="checkout_food_price_margin_bottom">8dp</dimen>
     <dimen name="checkout_food_price_width">60dp</dimen>
+    <dimen name="checkout_food_list_margin_bottom">8dp</dimen>
+    <dimen name="checkout_total_price_text_size">20sp</dimen>
+    <dimen name="checkout_food_category_text_size">16sp</dimen>
+    <dimen name="checkout_food_category_margin">16dp</dimen>
+    <dimen name="checkout_nested_scroll_view_margin_bottom">40dp</dimen>
+    <dimen name="check_out_submitting_pb_margin_bottom">8dp</dimen>
+    <dimen name="check_out_submitting_text_size">20dp</dimen>
+
 
 
     <dimen name="app_bar_elevation">4dp</dimen>

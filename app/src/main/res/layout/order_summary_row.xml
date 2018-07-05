@@ -37,7 +37,7 @@
         android:layout_width="@dimen/checkout_food_price_width"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/checkout_food_margin_top_bottom"
-        android:layout_marginEnd="@dimen/checkout_food_price_margin_end"
+        android:layout_marginEnd="@dimen/checkout_food_price_margin_start_end"
         android:layout_marginTop="@dimen/checkout_food_margin_top_bottom"
         android:gravity="end"
         app:layout_constraintBottom_toBottomOf="parent"

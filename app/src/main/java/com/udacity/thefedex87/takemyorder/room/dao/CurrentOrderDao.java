@@ -36,6 +36,9 @@ public interface CurrentOrderDao {
     @Insert
     void insertFood(Meal food);
 
+    @Query("DELETE FROM current_order")
+    void deleteAllFoods();
+
     @Delete
     void deleteFood(Meal food);
 }

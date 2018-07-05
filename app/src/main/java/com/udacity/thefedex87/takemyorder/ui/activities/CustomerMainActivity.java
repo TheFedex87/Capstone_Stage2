@@ -4,11 +4,15 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +53,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
     public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
     public static final String USER_ID_KEY = "USER_ID_KEY";
+    public static final String ORDER_TOTAL_PRICE_KEY = "ORDER_TOTAL_PRICE_KEY";
 
     private FirebaseAuth firebaseAuth;
     //private Customer customer;
@@ -57,6 +62,8 @@ public class CustomerMainActivity extends AppCompatActivity {
     private String table;
 
     private long userRoomId;
+
+    private FoodListFragment foodListFragment;
 
     @BindView(R.id.add_to_order_fab)
     FloatingActionButton addToOrderFab;
@@ -98,7 +105,7 @@ public class CustomerMainActivity extends AppCompatActivity {
             setupViewModel();
 
             //Retrieve the food list fragment
-            FoodListFragment foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
+            foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
 //            Order order = new Order();
 //            order.setUserId("USERD ID TEST");
 //            foodListFragment.setOrder(order);
@@ -139,8 +146,36 @@ public class CustomerMainActivity extends AppCompatActivity {
                 intent.putExtra(USER_ID_KEY, userRoomId);
                 startActivity(intent);
                 return true;
+            case R.id.delete_current_order:
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle(getString(R.string.confirm_delete_title))
+                        .setMessage(getString(R.string.confirm_delete_text))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AppDatabase.getInstance(CustomerMainActivity.this).currentOrderDao().deleteAllFoods();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return true;
             case R.id.checkout_order:
                 Intent intentCheckoutOrder = new Intent(this, CheckoutOrderActivity.class);
+                intentCheckoutOrder.putExtra(ORDER_TOTAL_PRICE_KEY, foodListFragment.getTotalOrderList());
                 startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:

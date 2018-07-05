@@ -14,6 +14,12 @@
         app:showAsAction="ifRoom"
         android:contentDescription="@string/content_description_checkout_order"/>
 
+    <item android:id="@+id/delete_current_order"
+        android:icon="@drawable/ic_checkout"
+        android:title="@string/delete_current_order"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/content_description_delete_order"/>
+
     <item android:id="@+id/favourites"
         android:icon="@drawable/ic_favorites_white"
         android:title="@string/favourites"

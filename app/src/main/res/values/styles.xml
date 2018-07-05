@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="food_type_style">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/checkout_food_category_text_size</item>
+        <item name="android:layout_marginStart">@dimen/checkout_food_category_margin</item>
+        <item name="android:layout_marginTop">@dimen/checkout_food_category_margin</item>
+        <item name="android:layout_marginEnd">@dimen/checkout_food_category_margin</item>
+    </style>
+
 </resources>

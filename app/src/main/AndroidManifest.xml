@@ -89,7 +89,13 @@
                 android:value=".ui.activities.CustomerMainActivity" />
         </activity>
         <activity android:name=".ui.activities.BarcodeScannerActivity" />
-        <activity android:name=".ui.activities.CheckoutOrderActivity"></activity>
+        <activity android:name=".ui.activities.CheckoutOrderActivity"
+            android:label="@string/checkout_order"
+            android:parentActivityName=".ui.activities.CustomerMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.CustomerMainActivity" />
+        </activity>
     </application>
 
 </manifest>

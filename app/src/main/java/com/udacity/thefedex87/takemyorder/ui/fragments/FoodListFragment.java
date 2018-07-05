@@ -154,4 +154,6 @@ public class FoodListFragment extends Fragment {
             }
         });
     }
+
+    public double getTotalOrderList(){ return totalOrderPrice; }
 }

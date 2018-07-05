@@ -7,6 +7,7 @@
     <string name="content_description_login">Login</string>
     <string name="content_description_fab_add_order">Add new food or drink to your order</string>
     <string name="content_description_call_waiter">Call a waiter</string>
+    <string name="content_description_delete_order">Delete the current order</string>
     <string name="content_description_checkout_order">Procede to the checkout of your order</string>
     <string name="content_description_log_out">Log out from the system</string>
     <string name="content_description_food_image">Image with the current food</string>
@@ -14,6 +15,7 @@
     <string name="content_description_meals_number">Number of meals in current order</string>
     <string name="content_description_add_to_favourite">Add or remove this food from the favourites meals of this restaurant</string>
     <string name="content_description_favourites">Show favourites foods</string>
+    <string name="content_description_pay">Procede to the payment for your order</string>
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>
@@ -25,12 +27,22 @@
 
     <!--Customer Main Activity-->
     <string name="order_something">Order something</string>
+    <string name="delete_current_order">Delete current order</string>
     <string name="call_waiter">Call a waiter</string>
     <string name="checkout_order">Checkout order</string>
     <string name="log_out">Log out</string>
     <string name="favourites">Favourites</string>
-    <string name="total_price">Tot.: %1$.2f €</string>
+    <string name="total_price">%1$.2f €</string>
     <string name="table_number">Table: %1$s</string>
+    <string name="confirm_delete_title">Confirm delete</string>
+    <string name="confirm_delete_text">Confirm delete of current order?</string>
+
+    <!--Checkout order-->
+    <string name="pay">Pay order</string>
+    <string name="total">Total</string>
+    <string name="confirm_payment_title">Confirm payment</string>
+    <string name="confirm_payment_text">Do you confirm the payment for the current order?</string>
+    <string name="submitting_order">Submitting order</string>
 
     <!--Barcode Scanner Activity-->
     <string name="open_barcode_from_file">Open QR from image</string>
