@@ -33,6 +33,7 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Customer;
+import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
@@ -93,6 +94,8 @@ public class CustomerMainActivity extends AppCompatActivity {
                 getIntent().hasExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY)) {
 
             ButterKnife.bind(this);
+
+            firebaseAuth = FirebaseAuth.getInstance();
 
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -182,8 +185,31 @@ public class CustomerMainActivity extends AppCompatActivity {
                 startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference waiters = db.getReference("waitersCalls").child(restaurantId);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle(getString(R.string.confirm_call_waiter_title))
+                        .setMessage(getString(R.string.confirm_call_waiter_text))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                                DatabaseReference waitersCallRef = db.getReference("waiters_calls").child(restaurantId);
+                                WaiterCall waiterCall = new WaiterCall(table, firebaseAuth.getUid());
+
+                                waitersCallRef.push().setValue(waiterCall);
+
+                                Toast.makeText(context, getString(R.string.call_to_waiter_submitted), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
 
                 return true;
             case R.id.log_out:
@@ -238,7 +264,6 @@ public class CustomerMainActivity extends AppCompatActivity {
 
     private void signout(){
         //Signout from Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.signOut();
         Timber.d("User signed out");
         finish();

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Restaurant Details-->
+    <dimen name="restaurant_detail_photo_height">300dp</dimen>
+    <!--<dimen name="appbar_layout_width">500dp</dimen>-->
+
+
+    <!--Restaurant menu-->
+    <dimen name="restaurant_menu_grid_width">330dp</dimen>
+    <dimen name="restaurant_menu_panel_divider_width">1dp</dimen>
+</resources>

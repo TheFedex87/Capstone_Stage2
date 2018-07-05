@@ -4,6 +4,7 @@
 
     <!--Restaurant Details-->
     <dimen name="restaurant_detail_photo_height">500dp</dimen>
+    <dimen name="appbar_layout_width">@dimen/match_parent</dimen>
     <dimen name="progress_bar_size">48dp</dimen>
     <dimen name="detail_content_intent_start">48dp</dimen>
     <dimen name="detail_photo_indicator_margin_bottom">4dp</dimen>

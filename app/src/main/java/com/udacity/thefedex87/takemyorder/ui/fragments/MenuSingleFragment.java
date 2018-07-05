@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -71,7 +73,12 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     @BindView(R.id.food_list_placeholder)
     TextView foodListPlaceholder;
 
+    @Nullable
+    @BindView(R.id.divider)
+    View divider;
+
     private FoodInMenuAdapter foodInMenuAdapter;
+    private boolean twoPanelsMode;
 
     @Inject
     Context applicationContext;
@@ -126,6 +133,8 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         View viewRoot = inflater.inflate(R.layout.menu_single_fragment, container, false);
 
         ButterKnife.bind(this, viewRoot);
+
+        twoPanelsMode = !(divider == null);
 
         //Setup the recylcer view of this food category
         foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
@@ -281,18 +290,30 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void showDishDetails(Meal meal, ImageView foodImage) {
-        Intent intent = new Intent(getActivity(), DishDescriptionActivity.class);
-        Bundle b = new Bundle();
-        b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);
-        b.putString(CustomerMainActivity.RESTAURANT_ID_KEY, restaurantId);
-        b.putLong(CustomerMainActivity.USER_ID_KEY, ((RestaurantMenuActivity)getActivity()).getUserRoomId());
-        intent.putExtras(b);
+        if (!twoPanelsMode) {
+            Intent intent = new Intent(getActivity(), DishDescriptionActivity.class);
+            Bundle b = new Bundle();
+            b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);
+            b.putString(CustomerMainActivity.RESTAURANT_ID_KEY, restaurantId);
+            b.putLong(CustomerMainActivity.USER_ID_KEY, ((RestaurantMenuActivity) getActivity()).getUserRoomId());
+            intent.putExtras(b);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            Bundle transitionBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), foodImage, foodImage.getTransitionName()).toBundle();
-            startActivity(intent, transitionBundle);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Bundle transitionBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), foodImage, foodImage.getTransitionName()).toBundle();
+                startActivity(intent, transitionBundle);
+            } else {
+                startActivity(intent);
+            }
         } else {
-            startActivity(intent);
+            if (meal instanceof Food) {
+                DishDescriptionFragment dishDescriptionFragment = new DishDescriptionFragment();
+                dishDescriptionFragment.setData((Food)meal, restaurantId);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.food_detail_container, dishDescriptionFragment)
+                        .commit();
+            }
         }
     }
 

@@ -7,9 +7,10 @@
     tools:context="com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/appbar_layout_width"
         android:layout_height="@dimen/restaurant_detail_photo_height"
         android:background="?colorPrimary"
+        android:layout_gravity="center_horizontal"
         android:elevation="@dimen/app_bar_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout

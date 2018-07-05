@@ -36,6 +36,9 @@
     <string name="table_number">Table: %1$s</string>
     <string name="confirm_delete_title">Confirm delete</string>
     <string name="confirm_delete_text">Confirm delete of current order?</string>
+    <string name="confirm_call_waiter_title">Confirm call waiter</string>
+    <string name="confirm_call_waiter_text">Confirm the call to a waiter?</string>
+    <string name="call_to_waiter_submitted">Call to waiter submited, please be patient, a member of the stuff will be at your table as soon as possible</string>
 
     <!--Checkout order-->
     <string name="pay">Pay order</string>

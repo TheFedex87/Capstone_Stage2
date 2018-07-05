@@ -35,6 +35,7 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModelFactory;
@@ -52,6 +53,12 @@ import static android.view.View.ROTATION_Y;
  */
 
 public class DishDescriptionFragment extends Fragment {
+    private Food food;
+    private String restaurantId;
+
+    private boolean viewCreated;
+    private boolean dataSet;
+
     @BindView(R.id.dish_description_tv)
     TextView mealDescription;
 
@@ -79,7 +86,44 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     public void setData(final Food food, final String restaurantId){
-        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId, ((DishDescriptionActivity)getActivity()).getUserRoomId());
+        this.food = food;
+        this.restaurantId = restaurantId;
+        dataSet = true;
+
+        if (viewCreated)
+            setUi();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        TakeMyOrderApplication.appComponent().inject(this);
+
+        db = AppDatabase.getInstance(context);
+
+        networkComponent = DaggerNetworkComponent
+                .builder()
+                .applicationModule(new ApplicationModule(context))
+                .build();
+
+        super.onAttach(context);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.dish_description_fragment, container, false);
+
+        ButterKnife.bind(this, rootView);
+        viewCreated = true;
+
+        if(dataSet)
+            setUi();
+
+        return rootView;
+    }
+
+    private void setUi(){
+        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
         dishDetailsViewModel.getFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
@@ -138,7 +182,7 @@ public class DishDescriptionFragment extends Fragment {
                 favouriteIconAnimation.start();
 
                 if (!isMealAFavourite) {
-                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId, ((DishDescriptionActivity)getActivity()).getUserRoomId());
+                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
                 } else{
                     DBManager.removeFromFavourite(db, favouriteMealFromDB);
                 }
@@ -146,31 +190,5 @@ public class DishDescriptionFragment extends Fragment {
                 isMealAFavourite = !isMealAFavourite;
             }
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        TakeMyOrderApplication.appComponent().inject(this);
-
-        db = AppDatabase.getInstance(context);
-
-        networkComponent = DaggerNetworkComponent
-                .builder()
-                .applicationModule(new ApplicationModule(context))
-                .build();
-
-        super.onAttach(context);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dish_description_fragment, container, false);
-
-        ButterKnife.bind(this, rootView);
-
-
-
-        return rootView;
     }
 }

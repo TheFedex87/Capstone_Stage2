@@ -38,7 +38,7 @@ import static android.view.View.SCALE_Y;
 import static android.view.View.TRANSLATION_X;
 import static android.view.View.TRANSLATION_Y;
 
-public class DishDescriptionActivity extends AppCompatActivity {
+public class DishDescriptionActivity extends AppCompatActivity implements UserRoomContainer {
     @BindView(R.id.toolbar_container)
     CollapsingToolbarLayout collapsingToolbarLayout;
 

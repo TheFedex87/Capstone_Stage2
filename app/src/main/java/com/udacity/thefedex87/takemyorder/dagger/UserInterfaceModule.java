@@ -84,7 +84,7 @@ public class UserInterfaceModule {
             ingredients = new ArrayList<>();
             mealsGrouped = new ArrayList<>();
         } else {
-            if (list.get(0) instanceof String){
+            if (list.get(0) instanceof Ingredient){
                 ingredients = (List<Ingredient>)list;
             } else {
                 mealsGrouped = (List<CurrentOrderGrouped>)list;
