@@ -54,6 +54,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
     public static final String USER_ID_KEY = "USER_ID_KEY";
     public static final String ORDER_TOTAL_PRICE_KEY = "ORDER_TOTAL_PRICE_KEY";
+    public static final String TABLE_NUMBER_KEY = "TABLE_NUMBER_KEY";
 
     private FirebaseAuth firebaseAuth;
     //private Customer customer;
@@ -176,9 +177,14 @@ public class CustomerMainActivity extends AppCompatActivity {
             case R.id.checkout_order:
                 Intent intentCheckoutOrder = new Intent(this, CheckoutOrderActivity.class);
                 intentCheckoutOrder.putExtra(ORDER_TOTAL_PRICE_KEY, foodListFragment.getTotalOrderList());
+                intentCheckoutOrder.putExtra(TABLE_NUMBER_KEY, table);
+                intentCheckoutOrder.putExtra(RESTAURANT_ID_KEY, restaurantId);
                 startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference waiters = db.getReference("waitersCalls").child(restaurantId);
+
                 return true;
             case R.id.log_out:
                 signout();

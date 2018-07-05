@@ -22,7 +22,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -30,6 +34,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
+import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.CurrentOrderGrouped;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
@@ -37,6 +42,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.adapters.CheckoutOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CheckoutOrderViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,6 +52,12 @@ import butterknife.ButterKnife;
 
 public class CheckoutOrderActivity extends AppCompatActivity {
     private ApplicationModule applicationModule;
+    private double totPrice;
+    private String table;
+    private String restaurantId;
+    private List<Meal> currentOrder;
+
+    private FirebaseDatabase firebaseDatabase;
 
     @BindView(R.id.processing_order)
     RelativeLayout processingOrder;
@@ -98,6 +110,11 @@ public class CheckoutOrderActivity extends AppCompatActivity {
 
         applicationModule = new ApplicationModule(context);
 
+        Intent intent = getIntent();
+        totPrice = intent.getDoubleExtra(CustomerMainActivity.ORDER_TOTAL_PRICE_KEY, 0);
+        table = intent.getStringExtra(CustomerMainActivity.TABLE_NUMBER_KEY);
+        restaurantId = intent.getStringExtra(CustomerMainActivity.RESTAURANT_ID_KEY);
+
         setupUi();
 
         setupViewModel();
@@ -106,9 +123,9 @@ public class CheckoutOrderActivity extends AppCompatActivity {
     private void setupViewModel() {
         //CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), FoodTypes.STARTER);
 
-        CheckoutOrderViewModel checkoutOrderStartersViewModel = ViewModelProviders.of(this).get(CheckoutOrderViewModel.class);
-        checkoutOrderStartersViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.STARTER);
-        checkoutOrderStartersViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
+        CheckoutOrderViewModel checkoutOrderViewModel = ViewModelProviders.of(this).get(CheckoutOrderViewModel.class);
+        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.STARTER);
+        checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
                 if (currentOrdersGrouped != null && currentOrdersGrouped.size() > 0) {
@@ -118,8 +135,8 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderStartersViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.MAINDISH);
-        checkoutOrderStartersViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
+        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.MAINDISH);
+        checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
                 if (currentOrdersGrouped != null && currentOrdersGrouped.size() > 0) {
@@ -129,8 +146,8 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderStartersViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.SIDEDISH);
-        checkoutOrderStartersViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
+        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.SIDEDISH);
+        checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
                 if (currentOrdersGrouped != null && currentOrdersGrouped.size() > 0) {
@@ -140,8 +157,8 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderStartersViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DESSERT);
-        checkoutOrderStartersViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
+        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DESSERT);
+        checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
                 if (currentOrdersGrouped != null && currentOrdersGrouped.size() > 0) {
@@ -151,8 +168,8 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderStartersViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DRINK);
-        checkoutOrderStartersViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
+        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DRINK);
+        checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
                 if (currentOrdersGrouped != null && currentOrdersGrouped.size() > 0) {
@@ -161,13 +178,19 @@ public class CheckoutOrderActivity extends AppCompatActivity {
                 }
             }
         });
+
+        checkoutOrderViewModel.getCurrentOrder().observe(this, new Observer<List<Meal>>() {
+            @Override
+            public void onChanged(@Nullable List<Meal> meals) {
+                currentOrder = meals;
+            }
+        });
     }
 
     private void setupUi() {
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        double totPrice = intent.getDoubleExtra(CustomerMainActivity.ORDER_TOTAL_PRICE_KEY, 0);
+
         totalPrice.setText(getString(R.string.total_price, totPrice));
 
         setSupportActionBar(toolbar);
@@ -202,42 +225,64 @@ public class CheckoutOrderActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.pay){
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-            } else {
-                builder = new AlertDialog.Builder(this);
-            }
-            builder.setTitle(getString(R.string.confirm_payment_title))
-                    .setMessage(getString(R.string.confirm_payment_text))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            processingOrder.setVisibility(View.VISIBLE);
+            if (currentOrder.size() > 0) {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle(getString(R.string.confirm_payment_title))
+                        .setMessage(getString(R.string.confirm_payment_text))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                processingOrder.setVisibility(View.VISIBLE);
 
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                //Here should be implementet PayPal payment system (ora any other payment system), for the purpose of the app, the payment method return true
+
+                                if (getPaymentSuccedd()) {
+                                    firebaseDatabase = FirebaseDatabase.getInstance();
+                                    DatabaseReference ordersRef = firebaseDatabase.getReference("orders").child(restaurantId);
+
+                                    Order order = new Order(restaurantId, FirebaseAuth.getInstance().getUid(), table, currentOrder, new Date());
+                                    ordersRef.push().setValue(order);
+
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            AppDatabase.getInstance(CheckoutOrderActivity.this).currentOrderDao().deleteAllFoods();
+                                            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    AppDatabase.getInstance(CheckoutOrderActivity.this).currentOrderDao().deleteAllFoods();
+                                                }
+                                            });
+
+                                            Toast.makeText(context, getString(R.string.order_submitted), Toast.LENGTH_LONG).show();
+                                            finish();
                                         }
-                                    });
+                                    }, 2000);
 
-                                    finish();
+
                                 }
-                            }, 2000);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }else{
+                Toast.makeText(context, getString(R.string.nothing_on_current_order), Toast.LENGTH_LONG).show();
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean getPaymentSuccedd(){
+        //Here should be done all the operation to redirect to the payment system
+        return true;
     }
 }

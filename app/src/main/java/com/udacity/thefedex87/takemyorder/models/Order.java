@@ -1,5 +1,7 @@
 package com.udacity.thefedex87.takemyorder.models;
 
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,11 +10,27 @@ import java.util.List;
  */
 
 public class Order {
+    String restaurantId;
     String userId;
-    int tableId;
-    List<Food> foods;
-    List<Drink> drinks;
+    String tableId;
+    List<Meal> meals;
     Date orderTime;
+
+    public Order(String restaurantId, String userId, String tableId, List<Meal> meals, Date orderTime) {
+        this.restaurantId = restaurantId;
+        this.userId = userId;
+        this.tableId = tableId;
+        this.meals = meals;
+        this.orderTime = orderTime;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 
     public String getUserId() {
         return userId;
@@ -22,28 +40,20 @@ public class Order {
         this.userId = userId;
     }
 
-    public int getTableId() {
+    public String getTableId() {
         return tableId;
     }
 
-    public void setTableId(int tableId) {
+    public void setTableId(String tableId) {
         this.tableId = tableId;
     }
 
-    public List<Food> getFoods() {
-        return foods;
+    public List<Meal> getMeals() {
+        return meals;
     }
 
-    public void setFoods(List<Food> foods) {
-        this.foods = foods;
-    }
-
-    public List<Drink> getDrinks() {
-        return drinks;
-    }
-
-    public void setDrinks(List<Drink> drinks) {
-        this.drinks = drinks;
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
     }
 
     public Date getOrderTime() {

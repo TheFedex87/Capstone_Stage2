@@ -19,13 +19,15 @@ import java.util.List;
 
 public class CheckoutOrderViewModel extends AndroidViewModel {
     private AppDatabase db;
-    private  LiveData<List<CurrentOrderGrouped>> currentOrderByFoodType;
+    private LiveData<List<CurrentOrderGrouped>> currentOrderByFoodType;
+    private LiveData<List<Meal>> currentOrder;
     //private final LiveData<List<CurrentOrderGrouped>> currentOrderGroupByFoodType;
 
 
     public CheckoutOrderViewModel(@NonNull Application application) {
         super(application);
         db = AppDatabase.getInstance(application.getApplicationContext());
+        currentOrder = db.currentOrderDao().getCurrentOrderList();
     }
 
     public void setFoodType(AppDatabase db, FoodTypes foodType){
@@ -33,5 +35,6 @@ public class CheckoutOrderViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType() {return currentOrderByFoodType;}
+    public LiveData<List<Meal>> getCurrentOrder() {return currentOrder;}
     //public LiveData<List<CurrentOrderGrouped>> getCurrentOrderGroupByFoodType() { return currentOrderGroupByFoodType; }
 }
