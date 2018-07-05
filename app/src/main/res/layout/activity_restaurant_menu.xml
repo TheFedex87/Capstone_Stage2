@@ -61,7 +61,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -71,9 +71,13 @@
                 android:layout_height="match_parent"
                 android:name="com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment" />
 
+            <ProgressBar
+                android:id="@+id/menu_loading"
+                android:layout_centerInParent="true"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size" />
 
-
-        </FrameLayout>
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

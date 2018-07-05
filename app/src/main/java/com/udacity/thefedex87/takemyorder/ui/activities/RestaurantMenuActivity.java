@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,6 +59,9 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
     @BindView(R.id.activity_title)
     TextView toolbarTitle;
+
+    @BindView(R.id.menu_loading)
+    ProgressBar menuLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +157,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
         restaurantMenuViewModel.getMenu().observe(this, new Observer<HashMap<FoodTypes, List<Meal>>>() {
             @Override
             public void onChanged(@Nullable HashMap<FoodTypes, List<Meal>> foodTypesListHashMap) {
+                menuLoading.setVisibility(View.GONE);
                 menuCompleteFragment = (MenuCompleteFragment) getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
                 menuCompleteFragment.setMenu(foodTypesListHashMap, restaurantId);
                 if (currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
