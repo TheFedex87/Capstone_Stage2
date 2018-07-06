@@ -33,8 +33,6 @@ import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
-import com.udacity.thefedex87.takemyorder.ui.activities.FavouritesFoodsActivity;
-import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
@@ -116,7 +114,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
         restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
-        restaurantMenuViewModel.setFoodId(meals.get(position).getMealId(), ((UserRoomContainer)parentActivity).getUserRoomId());
+        restaurantMenuViewModel.setData(meals.get(position).getMealId(), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
+
         //Through the view model, retrieve the food with the meal id which is the same of the current mealid, this allow me to show the counter which show the number of this
         //food added to the current order
         restaurantMenuViewModel.getCurrentOrdserListByMealId().observe(parentActivity, new Observer<List<Meal>>() {
@@ -125,7 +124,6 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 if (currentOrderEntries.size() > 0){
                     holder.foodCountContainer.setVisibility(View.VISIBLE);
                     holder.subtractFood.setVisibility(View.VISIBLE);
-
 
                     if (holder.foodCount.getText().toString().isEmpty()) holder.foodCount.setText("0");
                     if (Integer.parseInt(holder.foodCount.getText().toString()) != currentOrderEntries.size()) {
@@ -143,8 +141,8 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
         });
 
-        //Check if this food is a favourite food, if it is show the icon of added to favourite otherwise the icon which allow the user to add to the favourite
-        restaurantMenuViewModel.getFavouriteMealByeMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
+        //Check if this food is a favourite food for the current user, if it is show the icon of added to favourite otherwise the icon which allow the user to add to the favourite
+        restaurantMenuViewModel.getUserFavouriteMealByMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
                 if (favouriteMeal != null){

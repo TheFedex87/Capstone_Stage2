@@ -31,7 +31,10 @@ public interface FavouriteMealsDao {
     LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId);
 
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId WHERE favourite_meals.mealId = :mealId AND favouritemeal_user_join.userId = :userRoomId AND restaurantId = :restaurantId")
-    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId, long userRoomId);
+    LiveData<FavouriteMeal> getUserFavouriteMealById(String mealId, String restaurantId, long userRoomId);
+
+    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId AND restaurantId = :restaurantId")
+    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId);
 
     @Query("SELECT * FROM ingredient WHERE ingredientName = :ingredientName")
     LiveData<Ingredient> getIngredientByName(String ingredientName);
@@ -40,6 +43,9 @@ public interface FavouriteMealsDao {
             "JOIN favourite_meals ON favourite_meals.mealId = favouritemeal_ingredient_join.mealId " +
             "WHERE favourite_meals.mealId = :favouriteMealId AND restaurantId = :restaurantId")
     LiveData<List<Ingredient>> ingredientsOfMeal(String favouriteMealId, String restaurantId);
+
+    @Query("DELETE from favouritemeal_user_join WHERE userId = :userId AND favouriteMealId = :favouriteMealId")
+    int deleteFavouriteMealUserJoin(long userId, long favouriteMealId);
 
     @Insert
     long insertFavouriteMeal(FavouriteMeal food);

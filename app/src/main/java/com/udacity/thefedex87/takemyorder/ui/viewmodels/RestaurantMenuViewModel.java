@@ -36,23 +36,27 @@ public class RestaurantMenuViewModel extends ViewModel {
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
     private LiveData<Ingredient> ingredient;
 
-    private LiveData<FavouriteMeal> favouriteMealByeMealId;
+    private LiveData<FavouriteMeal> favouriteUserMealByMealId;
+    private LiveData<FavouriteMeal> favouriteMealByMealId;
 
     private String restaurantId;
 
-
     public RestaurantMenuViewModel(AppDatabase db, String restaurantId) {
-        currentOrderList = db.currentOrderDao().getCurrentOrderList();
-        currentOrderListGrouped = db.currentOrderDao().getCurrentOrderListGrouped();
         this.db = db;
         this.restaurantId = restaurantId;
+
+        currentOrderList = db.currentOrderDao().getCurrentOrderList();
+        currentOrderListGrouped = db.currentOrderDao().getCurrentOrderListGrouped();
+
         menuLiveData = new MutableLiveData<>();
         retrieveRestaurantMenu();
     }
 
-    public void setFoodId(String mealId, long userRoomId){
+
+    public void setData(String mealId, String restaurantId, long userRoomId){
         currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId);
-        favouriteMealByeMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId, userRoomId);
+        favouriteUserMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, restaurantId, userRoomId);
+        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
     }
 
     public void setIngredientName(String ingredientName){
@@ -124,8 +128,12 @@ public class RestaurantMenuViewModel extends ViewModel {
 
     public LiveData<List<Meal>> getCurrentOrdserListByMealId() {return currentOrderListByMealId; }
 
-    public LiveData<FavouriteMeal> getFavouriteMealByeMealId(){
-        return favouriteMealByeMealId;
+    public LiveData<FavouriteMeal> getUserFavouriteMealByMealId(){
+        return favouriteUserMealByMealId;
+    }
+
+    public LiveData<FavouriteMeal> getFavouriteMealByMealId() {
+        return favouriteMealByMealId;
     }
 
     public LiveData<Ingredient> getIngredient() {return ingredient;}

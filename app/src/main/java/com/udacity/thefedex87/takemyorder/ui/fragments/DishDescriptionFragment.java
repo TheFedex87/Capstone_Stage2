@@ -34,7 +34,6 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
-import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
@@ -125,7 +124,7 @@ public class DishDescriptionFragment extends Fragment {
     private void setUi(){
         DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
-        dishDetailsViewModel.getFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
+        dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable FavouriteMeal meal) {
                 if (meal != null) {
@@ -184,7 +183,7 @@ public class DishDescriptionFragment extends Fragment {
                 if (!isMealAFavourite) {
                     DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
                 } else{
-                    DBManager.removeFromFavourite(db, favouriteMealFromDB);
+                    DBManager.removeFromFavourite(db, favouriteMealFromDB.getId(), ((UserRoomContainer)getActivity()).getUserRoomId());
                 }
 
                 isMealAFavourite = !isMealAFavourite;

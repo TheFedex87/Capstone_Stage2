@@ -7,13 +7,12 @@ import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 
-import java.util.List;
-
 /**
  * Created by federico.creti on 28/06/2018.
  */
 
 public class DishDetailsViewModel extends ViewModel {
+    private LiveData<FavouriteMeal> userFavouriteMealByMealId;
     private LiveData<FavouriteMeal> favouriteMealByMealId;
     private LiveData<Ingredient> ingredient;
 
@@ -22,11 +21,16 @@ public class DishDetailsViewModel extends ViewModel {
     public DishDetailsViewModel(AppDatabase db, String mealId, String restaurantId, long userRoomId){
         this.db = db;
 
-        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId, userRoomId);
+        userFavouriteMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, restaurantId, userRoomId);
+        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
     }
 
     public void setIngredientName(String ingredientName){
         ingredient = db.favouriteMealsDao().getIngredientByName(ingredientName);
+    }
+
+    public LiveData<FavouriteMeal> getUserFavouriteMealByMealId() {
+        return userFavouriteMealByMealId;
     }
 
     public LiveData<FavouriteMeal> getFavouriteMealByMealId() {
