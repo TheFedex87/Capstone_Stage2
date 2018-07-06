@@ -15,6 +15,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,6 +80,10 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     @BindView(R.id.divider)
     View divider;
 
+    @Nullable
+    @BindView(R.id.details_container)
+    NestedScrollView detailsContainer;
+
     private FoodInMenuAdapter foodInMenuAdapter;
     private boolean twoPanelsMode;
 
@@ -137,6 +142,9 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         ButterKnife.bind(this, viewRoot);
 
         twoPanelsMode = !(divider == null);
+
+        if(twoPanelsMode)
+            detailsContainer.setVisibility(View.GONE);
 
         //Setup the recylcer view of this food category
         foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
@@ -308,13 +316,18 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
             }
         } else {
             if (meal instanceof Food) {
-                DishDescriptionFragment dishDescriptionFragment = new DishDescriptionFragment();
-                dishDescriptionFragment.setData((Food)meal, restaurantId);
+                detailsContainer.setVisibility(View.VISIBLE);
+//                DishDescriptionFragment dishDescriptionFragment = new DishDescriptionFragment();
+//                dishDescriptionFragment.setData((Food)meal, restaurantId);
+//
+//                FragmentManager fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.food_detail_container_into_double_panel, dishDescriptionFragment)
+//                        .commit();
 
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.food_detail_container, dishDescriptionFragment)
-                        .commit();
+//                detailsContainer.setVisibility(View.VISIBLE);
+                DishDescriptionFragment dishDescriptionFragment = (DishDescriptionFragment)getChildFragmentManager().findFragmentById(R.id.food_detail_container_into_double_panel);
+                dishDescriptionFragment.setData((Food)meal, restaurantId);
             }
         }
     }

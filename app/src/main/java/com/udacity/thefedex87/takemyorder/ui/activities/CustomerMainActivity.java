@@ -247,12 +247,13 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                         @Override
                         public void run() {
                             userRoomId = AppDatabase.getInstance(context).userDao().insertUser(newUser);
+                            foodListFragment.userLoaded();
                         }
                     });
                 } else {
                     userRoomId = user.getId();
+                    foodListFragment.userLoaded();
                 }
-                foodListFragment.userLoaded();
             }
         });
     }

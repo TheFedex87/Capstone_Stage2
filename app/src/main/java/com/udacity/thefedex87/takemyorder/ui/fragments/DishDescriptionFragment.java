@@ -122,8 +122,10 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     private void setUi(){
-        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
+        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
+        //TODO: check if there is anoter way to pass new arguments at the view model
+        dishDetailsViewModel.setData(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
         dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable FavouriteMeal meal) {
@@ -131,6 +133,10 @@ public class DishDescriptionFragment extends Fragment {
                     favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_fill));
                     isMealAFavourite = true;
                     favouriteMealFromDB = meal;
+                } else {
+                    favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_empty));
+                    isMealAFavourite = false;
+                    favouriteMealFromDB = null;
                 }
             }
         });

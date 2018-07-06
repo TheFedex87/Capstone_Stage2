@@ -18,9 +18,14 @@ public class DishDetailsViewModel extends ViewModel {
 
     private AppDatabase db;
 
-    public DishDetailsViewModel(AppDatabase db, String mealId, String restaurantId, long userRoomId){
+    public DishDetailsViewModel(AppDatabase db, String mealId, long userRoomId){
         this.db = db;
 
+        userFavouriteMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, userRoomId);
+        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId);
+    }
+
+    public void setData(String mealId, long userRoomId){
         userFavouriteMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, userRoomId);
         favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId);
     }
