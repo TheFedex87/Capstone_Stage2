@@ -33,8 +33,8 @@ public class CustomerMainViewModel extends ViewModel {
     private MutableLiveData<Restaurant> restaurantLivedata;
     private LiveData<User> userByUserFirebaseId;
 
-    public CustomerMainViewModel(AppDatabase db, String restaurantId, String userName) {
-        currentOrderList = db.currentOrderDao().getCurrentOrderList();
+    public CustomerMainViewModel(AppDatabase db, String restaurantId, String userName, long userRoomId) {
+        currentOrderList = db.currentOrderDao().getCurrentOrderList(userRoomId);
         restaurantLivedata = new MutableLiveData<>();
         if (restaurantId != null && !restaurantId.isEmpty())
             retrieveRetaurant(restaurantId);

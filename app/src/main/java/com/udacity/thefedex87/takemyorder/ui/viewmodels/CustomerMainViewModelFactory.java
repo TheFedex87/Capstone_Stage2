@@ -13,14 +13,16 @@ public class CustomerMainViewModelFactory extends ViewModelProvider.NewInstanceF
     private final AppDatabase db;
     private final String restaurantId;
     private final String userName;
+    private final long userRoomId;
 
-    public CustomerMainViewModelFactory(AppDatabase db, String restaurantId, String userName){
+    public CustomerMainViewModelFactory(AppDatabase db, String restaurantId, String userName, long userRoomId){
         this.db = db;
         this.restaurantId = restaurantId;
         this.userName = userName;
+        this.userRoomId = userRoomId;
     }
 
     public <T extends ViewModel>T create(Class<T> modelClass){
-        return (T) new CustomerMainViewModel(db, restaurantId, userName);
+        return (T) new CustomerMainViewModel(db, restaurantId, userName, userRoomId);
     }
 }

@@ -50,7 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class CustomerMainActivity extends AppCompatActivity {
+public class CustomerMainActivity extends AppCompatActivity implements UserRoomContainer {
     public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
     public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
     public static final String USER_ID_KEY = "USER_ID_KEY";
@@ -89,7 +89,6 @@ public class CustomerMainActivity extends AppCompatActivity {
         Timber.d("Opened CustomerMainActivity");
 
         if (getIntent() != null &&
-                getIntent().hasExtra(LoginMapsActivity.USER_INFO_KEY) &&
                 getIntent().hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY) &&
                 getIntent().hasExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY)) {
 
@@ -100,23 +99,17 @@ public class CustomerMainActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            //customer = getIntent().getParcelableExtra(LoginMapsActivity.USER_INFO_KEY);
             restaurantId = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_KEY);
             table = getIntent().getStringExtra(LoginMapsActivity.USER_RESTAURANT_TABLE_KEY);
-
 
             //Setup view model (used in this activity to retrieve the restaurant from Firebase)
             setupViewModel();
 
             //Retrieve the food list fragment
             foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
-//            Order order = new Order();
-//            order.setUserId("USERD ID TEST");
-//            foodListFragment.setOrder(order);
 
             //Assign the table to the fragment
             foodListFragment.setTableNumber(table);
-
 
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -164,7 +157,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                                     @Override
                                     public void run() {
-                                        AppDatabase.getInstance(CustomerMainActivity.this).currentOrderDao().deleteAllFoods();
+                                        AppDatabase.getInstance(CustomerMainActivity.this).currentOrderDao().deleteAllFoods(userRoomId);
                                     }
                                 });
                             }
@@ -182,6 +175,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                 intentCheckoutOrder.putExtra(ORDER_TOTAL_PRICE_KEY, foodListFragment.getTotalOrderList());
                 intentCheckoutOrder.putExtra(TABLE_NUMBER_KEY, table);
                 intentCheckoutOrder.putExtra(RESTAURANT_ID_KEY, restaurantId);
+                intentCheckoutOrder.putExtra(USER_ID_KEY, userRoomId);
                 startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:
@@ -222,7 +216,7 @@ public class CustomerMainActivity extends AppCompatActivity {
 
     private void setupViewModel(){
         //Retrieve the restaurant using VIewModel
-        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId, FirebaseAuth.getInstance().getUid());
+        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId, FirebaseAuth.getInstance().getUid(), userRoomId);
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
             @Override
@@ -258,6 +252,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                 } else {
                     userRoomId = user.getId();
                 }
+                foodListFragment.userLoaded();
             }
         });
     }

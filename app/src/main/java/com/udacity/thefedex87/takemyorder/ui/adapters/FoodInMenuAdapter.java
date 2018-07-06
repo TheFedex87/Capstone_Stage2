@@ -112,7 +112,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             holder.foodDescription.setText(food.getDescription());
         }
 
-        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId);
+        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
         restaurantMenuViewModel.setData(meals.get(position).getMealId(), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
 

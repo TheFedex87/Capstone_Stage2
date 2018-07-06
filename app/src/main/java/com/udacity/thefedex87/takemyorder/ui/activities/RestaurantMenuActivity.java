@@ -97,7 +97,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
     private void setupViewModel(final String restaurantId){
         //Retreive the ViewModel for this activity
-        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId);
+        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
         RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
 
         //Get the current order from ViewModel

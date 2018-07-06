@@ -17,24 +17,23 @@ import java.util.List;
  * Created by feder on 03/07/2018.
  */
 
-public class CheckoutOrderViewModel extends AndroidViewModel {
+public class CheckoutOrderViewModel extends ViewModel {
     private AppDatabase db;
     private LiveData<List<CurrentOrderGrouped>> currentOrderByFoodType;
     private LiveData<List<Meal>> currentOrder;
-    //private final LiveData<List<CurrentOrderGrouped>> currentOrderGroupByFoodType;
+    private long userRoomId;
 
 
-    public CheckoutOrderViewModel(@NonNull Application application) {
-        super(application);
-        db = AppDatabase.getInstance(application.getApplicationContext());
-        currentOrder = db.currentOrderDao().getCurrentOrderList();
+    public CheckoutOrderViewModel(AppDatabase db, long userRoomId) {
+        this.userRoomId = userRoomId;
+        this.db = db;
+        currentOrder = db.currentOrderDao().getCurrentOrderList(userRoomId);
     }
 
-    public void setFoodType(AppDatabase db, FoodTypes foodType){
-        currentOrderByFoodType = db.currentOrderDao().getCurrentOrderByFoodType(foodType);
+    public void setFoodType(FoodTypes foodType){
+        currentOrderByFoodType = db.currentOrderDao().getCurrentOrderByFoodType(foodType, userRoomId);
     }
 
     public LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType() {return currentOrderByFoodType;}
     public LiveData<List<Meal>> getCurrentOrder() {return currentOrder;}
-    //public LiveData<List<CurrentOrderGrouped>> getCurrentOrderGroupByFoodType() { return currentOrderGroupByFoodType; }
 }

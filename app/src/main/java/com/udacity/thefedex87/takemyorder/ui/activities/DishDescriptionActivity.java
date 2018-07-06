@@ -139,6 +139,7 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
                         });
                         foodImageToAnimateAlphaAnimation.start();
 
+                        food.setUserId(userRoomId);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {

@@ -32,7 +32,7 @@ public class RestaurantMenuViewModel extends ViewModel {
     private AppDatabase db;
     private LiveData<List<Meal>> currentOrderList;
     private LiveData<List<Meal>> currentOrderListByMealId;
-    private LiveData<List<CurrentOrderGrouped>> currentOrderListGrouped;
+
     private MutableLiveData<HashMap<FoodTypes, List<Meal>>> menuLiveData;
     private LiveData<Ingredient> ingredient;
 
@@ -41,12 +41,11 @@ public class RestaurantMenuViewModel extends ViewModel {
 
     private String restaurantId;
 
-    public RestaurantMenuViewModel(AppDatabase db, String restaurantId) {
+    public RestaurantMenuViewModel(AppDatabase db, String restaurantId, long userRoomId) {
         this.db = db;
         this.restaurantId = restaurantId;
 
-        currentOrderList = db.currentOrderDao().getCurrentOrderList();
-        currentOrderListGrouped = db.currentOrderDao().getCurrentOrderListGrouped();
+        currentOrderList = db.currentOrderDao().getCurrentOrderList(userRoomId);
 
         menuLiveData = new MutableLiveData<>();
         retrieveRestaurantMenu();
@@ -54,9 +53,9 @@ public class RestaurantMenuViewModel extends ViewModel {
 
 
     public void setData(String mealId, String restaurantId, long userRoomId){
-        currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId);
-        favouriteUserMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, restaurantId, userRoomId);
-        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
+        currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId, userRoomId);
+        favouriteUserMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, userRoomId);
+        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId);
     }
 
     public void setIngredientName(String ingredientName){
@@ -123,8 +122,6 @@ public class RestaurantMenuViewModel extends ViewModel {
     }
 
     public LiveData<HashMap<FoodTypes, List<Meal>>> getMenu() { return menuLiveData; }
-
-    public LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped() { return currentOrderListGrouped; }
 
     public LiveData<List<Meal>> getCurrentOrdserListByMealId() {return currentOrderListByMealId; }
 

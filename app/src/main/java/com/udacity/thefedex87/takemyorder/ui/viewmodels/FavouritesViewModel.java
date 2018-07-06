@@ -15,7 +15,6 @@ import java.util.List;
  */
 
 public class FavouritesViewModel extends ViewModel {
-    private LiveData<List<FavouriteMeal>> favouriteMeals;
     private LiveData<List<FavouriteMeal>> favouriteMealsOfUser;
     private LiveData<List<Meal>> currentOrderList;
     private LiveData<List<Ingredient>> ingredientsOfMeal;
@@ -26,16 +25,14 @@ public class FavouritesViewModel extends ViewModel {
     public FavouritesViewModel(AppDatabase db, String restaurantId, long userId){
         this.db = db;
         this.restaurantId = restaurantId;
-        favouriteMeals = db.favouriteMealsDao().getFavouriteMeals();
         favouriteMealsOfUser = db.favouriteMealsDao().getFavouriteMealsOfUser(userId);
-        currentOrderList = db.currentOrderDao().getCurrentOrderList();
+        currentOrderList = db.currentOrderDao().getCurrentOrderList(userId);
     }
 
     public void setMealId(String mealId){
-        ingredientsOfMeal = db.favouriteMealsDao().ingredientsOfMeal(mealId, restaurantId);
+        ingredientsOfMeal = db.favouriteMealsDao().ingredientsOfMeal(mealId);
     }
 
-    public LiveData<List<FavouriteMeal>> getFavouriteMeals() { return favouriteMeals; }
     public LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser() { return favouriteMealsOfUser; }
     public LiveData<List<Meal>> getCurrentOrderList() {
         return currentOrderList;

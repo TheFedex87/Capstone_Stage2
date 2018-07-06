@@ -25,6 +25,8 @@ import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
@@ -84,10 +86,7 @@ public class FoodListFragment extends Fragment {
         this.tableNumber.setText(getString(R.string.table_number, tableNumber));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void userLoaded(){
         setupViewModel();
     }
 
@@ -134,7 +133,7 @@ public class FoodListFragment extends Fragment {
 
     public void setupViewModel(){
         //Setup the CustomerMainViewModel in order to observe the current order
-        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null);
+        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null, ((UserRoomContainer)getActivity()).getUserRoomId());
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override
@@ -146,6 +145,7 @@ public class FoodListFragment extends Fragment {
                     foodListPlaceholder.setVisibility(View.VISIBLE);
 
                 totalOrderPrice = 0;
+
                 //Calculate total price of order
                 for(Meal meal : currentOrderEntries){
                     totalOrderPrice += meal.getPrice();

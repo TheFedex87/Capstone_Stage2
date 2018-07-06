@@ -12,13 +12,15 @@ import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 public class RestaurantMenuViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final AppDatabase db;
     private final String restaurantId;
+    private final long userRoomId;
 
-    public RestaurantMenuViewModelFactory(AppDatabase db, String restaurantId){
+    public RestaurantMenuViewModelFactory(AppDatabase db, String restaurantId, long userRoomId){
         this.db = db;
         this.restaurantId = restaurantId;
+        this.userRoomId = userRoomId;
     }
 
     public <T extends ViewModel>T create(Class<T> modelClass){
-        return (T) new RestaurantMenuViewModel(db, restaurantId);
+        return (T) new RestaurantMenuViewModel(db, restaurantId, userRoomId);
     }
 }

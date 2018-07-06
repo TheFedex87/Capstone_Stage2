@@ -41,6 +41,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.adapters.CheckoutOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CheckoutOrderViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.CheckoutOrderViewModelFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -55,6 +56,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
     private double totPrice;
     private String table;
     private String restaurantId;
+    private long userRoomId;
     private List<Meal> currentOrder;
 
     private FirebaseDatabase firebaseDatabase;
@@ -114,6 +116,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
         totPrice = intent.getDoubleExtra(CustomerMainActivity.ORDER_TOTAL_PRICE_KEY, 0);
         table = intent.getStringExtra(CustomerMainActivity.TABLE_NUMBER_KEY);
         restaurantId = intent.getStringExtra(CustomerMainActivity.RESTAURANT_ID_KEY);
+        userRoomId = intent.getLongExtra(CustomerMainActivity.USER_ID_KEY, 0);
 
         setupUi();
 
@@ -121,10 +124,10 @@ public class CheckoutOrderActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        //CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), FoodTypes.STARTER);
+        CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId);
 
-        CheckoutOrderViewModel checkoutOrderViewModel = ViewModelProviders.of(this).get(CheckoutOrderViewModel.class);
-        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.STARTER);
+        CheckoutOrderViewModel checkoutOrderViewModel = ViewModelProviders.of(this, checkoutOrderViewModelFactory).get(CheckoutOrderViewModel.class);
+        checkoutOrderViewModel.setFoodType(FoodTypes.STARTER);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
@@ -135,7 +138,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.MAINDISH);
+        checkoutOrderViewModel.setFoodType(FoodTypes.MAINDISH);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
@@ -146,7 +149,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.SIDEDISH);
+        checkoutOrderViewModel.setFoodType(FoodTypes.SIDEDISH);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
@@ -157,7 +160,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DESSERT);
+        checkoutOrderViewModel.setFoodType(FoodTypes.DESSERT);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
@@ -168,7 +171,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
-        checkoutOrderViewModel.setFoodType(AppDatabase.getInstance(context), FoodTypes.DRINK);
+        checkoutOrderViewModel.setFoodType(FoodTypes.DRINK);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
             public void onChanged(@Nullable List<CurrentOrderGrouped> currentOrdersGrouped) {
@@ -254,7 +257,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
                                             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    AppDatabase.getInstance(CheckoutOrderActivity.this).currentOrderDao().deleteAllFoods();
+                                                    AppDatabase.getInstance(CheckoutOrderActivity.this).currentOrderDao().deleteAllFoods(userRoomId);
                                                 }
                                             });
 

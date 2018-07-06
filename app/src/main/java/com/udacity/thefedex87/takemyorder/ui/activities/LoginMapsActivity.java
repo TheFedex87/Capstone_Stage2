@@ -325,7 +325,7 @@ public class LoginMapsActivity extends AppCompatActivity {
             //Customer login
             Timber.d("Logging in user: " + customer.getEmail());
             Intent intent = new Intent(context, CustomerMainActivity.class);
-            intent.putExtra(USER_INFO_KEY, customer);
+            //intent.putExtra(USER_INFO_KEY, customer);
             intent.putExtra(USER_RESTAURANT_KEY, restaurantId);
             intent.putExtra(USER_RESTAURANT_TABLE_KEY, table);
             startActivity(intent);

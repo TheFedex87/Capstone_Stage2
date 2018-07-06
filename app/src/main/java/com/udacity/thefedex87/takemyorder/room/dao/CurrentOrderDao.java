@@ -18,26 +18,25 @@ import java.util.List;
 
 @Dao
 public interface CurrentOrderDao {
-    @Query("SELECT * FROM current_order")
-    LiveData<List<Meal>> getCurrentOrderList();
+    //Select the current order for the logged user
+    @Query("SELECT * FROM current_order WHERE userId = :userRoomId")
+    LiveData<List<Meal>> getCurrentOrderList(long userRoomId);
 
-    @Query("SELECT * FROM current_order WHERE mealId = :mealId")
-    LiveData<List<Meal>> getCurrentOrderListByMealId(String mealId);
+    //Get the list of the order with the same MealId, it used to count the number of meal of the same tyoe
+    @Query("SELECT * FROM current_order WHERE mealId = :mealId AND userId = :userRoomId")
+    LiveData<List<Meal>> getCurrentOrderListByMealId(String mealId, long userRoomId);
 
-    @Query("SELECT price, mealId, COUNT(mealId) AS count FROM current_order GROUP BY mealId")
-    LiveData<List<CurrentOrderGrouped>> getCurrentOrderListGrouped();
-
-    @Query("SELECT *, COUNT(mealId) AS count FROM current_order WHERE foodType = :foodType GROUP BY mealId")
-    LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType(FoodTypes foodType);
-
-//    @Query("SELECT * FROM current_order GROUP BY foodType")
-//    LiveData<List<CurrentOrderGrouped>> getCurrentOrderGroupedByFoodType();
+    //Get the list of meal inside current order, by foodType (starter, main dishes,...) and grouped by meal id in order to count
+    //the number of meal with the same type
+    @Query("SELECT *, COUNT(mealId) AS count FROM current_order WHERE foodType = :foodType AND userId = :userRoomId GROUP BY mealId")
+    LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType(FoodTypes foodType, long userRoomId);
 
     @Insert
     void insertFood(Meal food);
 
-    @Query("DELETE FROM current_order")
-    void deleteAllFoods();
+    //Delete all foods inside current order for the logged user
+    @Query("DELETE FROM current_order WHERE userId = :userId")
+    void deleteAllFoods(long userId);
 
     @Delete
     void deleteFood(Meal food);

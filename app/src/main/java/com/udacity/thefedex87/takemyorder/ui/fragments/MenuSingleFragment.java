@@ -168,6 +168,8 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
 
+        selectedMeal.setUserId(((UserRoomContainer)getActivity()).getUserRoomId());
+
 
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = 0;
@@ -183,7 +185,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         final int[] icMenuPos = new int[2];
 
-
         final int[] foodIcoPos = new int[2];
         imageView.getLocationOnScreen(foodIcoPos);
 
@@ -191,7 +192,6 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         PropertyValuesHolder translationAppBar = PropertyValuesHolder.ofFloat(TRANSLATION_Y, statusBarHeight - appBarPos[1]);
 
         final ObjectAnimator translateAppBarAnimator = ObjectAnimator.ofPropertyValuesHolder(appBar, translationAppBar);
-        //if(appBarPos[1] < statusBarHeight){
 
         translateAppBarAnimator.setDuration(50);
         translateAppBarAnimator.start();
@@ -267,7 +267,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                 moveFoodImageAnimator.start();
             }
         });
-        //}
+
     }
 
     @Override
@@ -322,32 +322,16 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     @Override
     public void addRemoveFavourite(Food food, final FavouriteMeal favouriteMealFromDB, ViewModel viewModel) {
         if (favouriteMealFromDB == null) {
-//            final FavouriteMeal favouriteMeal = new FavouriteMeal();
-//            favouriteMeal.setFoodType(food.getFoodType());
-//            favouriteMeal.setImageName(food.getImageName());
-//            favouriteMeal.setMealId(food.getMealId());
-//            favouriteMeal.setName(food.getName());
-//            favouriteMeal.setPrice(food.getPrice());
-//            favouriteMeal.setRestaurantId(restaurantId);
-//            favouriteMeal.setDescription(food.getDescription());
-//
-//            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    db.favouriteMealsDao().insertFavouriteMeal(favouriteMeal);
-//                }
-//            });
-
-            DBManager.saveFavouritesIntoDB(db, viewModel, getActivity(), food, restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
+            DBManager.saveFavouritesIntoDB(db,
+                    viewModel,
+                    getActivity(),
+                    food,
+                    restaurantId,
+                    ((UserRoomContainer)getActivity()).getUserRoomId());
         } else{
-//            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                    db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
-//                }
-//            });
-
-            DBManager.removeFromFavourite(db, favouriteMealFromDB.getId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+            DBManager.removeFromFavourite(db,
+                    favouriteMealFromDB.getId(),
+                    ((UserRoomContainer)getActivity()).getUserRoomId());
         }
     }
 }

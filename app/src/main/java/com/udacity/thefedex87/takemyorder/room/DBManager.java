@@ -26,8 +26,8 @@ public final class DBManager {
     public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, final String restaurantId, final long userId){
         final LiveData<FavouriteMeal> favouriteMealLiveData;
 
+        //Cast the ViewModel to the specific ViewModel
         if (viewModel instanceof DishDetailsViewModel) {
-
             favouriteMealLiveData = ((DishDetailsViewModel) viewModel).getFavouriteMealByMealId();
         }
         else if(viewModel instanceof RestaurantMenuViewModel) {
@@ -37,7 +37,8 @@ public final class DBManager {
             favouriteMealLiveData = null;
         }
 
-        //Check if the food is already into the DB of favourites, if so I add only the join beetween userId and mealId
+        //Check if the food is already into the DB of favourites, if so I add only the join beetween userId and mealId, otherwise
+        //I add the meal into the DB of favourites
         favouriteMealLiveData.observe(lifecycleOwner, new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
