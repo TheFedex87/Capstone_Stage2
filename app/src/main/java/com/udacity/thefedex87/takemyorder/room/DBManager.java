@@ -26,8 +26,10 @@ public final class DBManager {
     public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, final String restaurantId, final long userId){
         final LiveData<FavouriteMeal> favouriteMealLiveData;
 
+        //TODO: check if there is a way to set new data to viewmodel without use setter method
         //Cast the ViewModel to the specific ViewModel
         if (viewModel instanceof DishDetailsViewModel) {
+            ((DishDetailsViewModel) viewModel).setData(food.getMealId(), -1);
             favouriteMealLiveData = ((DishDetailsViewModel) viewModel).getFavouriteMealByMealId();
         }
         else if(viewModel instanceof RestaurantMenuViewModel) {

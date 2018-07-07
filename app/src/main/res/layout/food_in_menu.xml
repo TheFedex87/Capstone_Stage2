@@ -122,7 +122,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/food_image_container"
                 tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula lorem suscipit pulvinar feugiat. Sed maximus feugiat tellus, sed iaculis libero consequat eu. Sed ultrices tempus eros a ornare. " />
 
-            <!--TODO: Aggiungere un pulsante -1 che toglie un prodotto di un determinato cibo-->
             <TextView
                 android:id="@+id/add_to_current_order"
                 android:layout_width="wrap_content"

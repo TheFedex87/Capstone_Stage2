@@ -28,9 +28,11 @@ import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
@@ -122,9 +124,17 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     private void setUi(){
-        DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+        //DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+
+        DishDetailsViewModelFactory dishDetailsViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(context))
+                .viewModelModule(new ViewModelModule(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId()))
+                .build()
+                .getDishDetailsViewModelFactory();
+
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
-        //TODO: check if there is anoter way to pass new arguments at the view model
+        //TODO: check if there is another way to pass new arguments at the view model
         dishDetailsViewModel.setData(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
         dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override

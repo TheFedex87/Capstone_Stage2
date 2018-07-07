@@ -19,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
@@ -97,7 +100,15 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
     private void setupViewModel(final String restaurantId){
         //Retreive the ViewModel for this activity
-        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
+        //RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
+
+        RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
+                .viewModelModule(new ViewModelModule(restaurantId, null, userRoomId))
+                .build()
+                .getRestaurantMenuViewModelFactory();
+
         RestaurantMenuViewModel restaurantMenuViewModel = ViewModelProviders.of(this, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
 
         //Get the current order from ViewModel

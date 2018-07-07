@@ -27,7 +27,9 @@ import com.squareup.picasso.Callback;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.models.Drink;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
@@ -112,7 +114,14 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             holder.foodDescription.setText(food.getDescription());
         }
 
-        restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
+        //restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
+        restaurantMenuViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(context))
+                .viewModelModule(new ViewModelModule(restaurantId, null, ((UserRoomContainer)parentActivity).getUserRoomId()))
+                .build()
+                .getRestaurantMenuViewModelFactory();
+
         restaurantMenuViewModel = ViewModelProviders.of(parentActivity, restaurantMenuViewModelFactory).get(RestaurantMenuViewModel.class);
         restaurantMenuViewModel.setData(meals.get(position).getMealId(), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
 

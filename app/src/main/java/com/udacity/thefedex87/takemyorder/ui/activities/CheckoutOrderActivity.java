@@ -31,8 +31,10 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
@@ -124,7 +126,13 @@ public class CheckoutOrderActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId);
+        //CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId);
+        CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(context))
+                .viewModelModule(new ViewModelModule(userRoomId))
+                .build()
+                .getCheckoutOrderViewModelFactory();
 
         CheckoutOrderViewModel checkoutOrderViewModel = ViewModelProviders.of(this, checkoutOrderViewModelFactory).get(CheckoutOrderViewModel.class);
         checkoutOrderViewModel.setFoodType(FoodTypes.STARTER);

@@ -19,8 +19,10 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.models.Order;
@@ -133,7 +135,14 @@ public class FoodListFragment extends Fragment {
 
     public void setupViewModel(){
         //Setup the CustomerMainViewModel in order to observe the current order
-        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null, ((UserRoomContainer)getActivity()).getUserRoomId());
+        //CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null, ((UserRoomContainer)getActivity()).getUserRoomId());
+        CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(applicationContext))
+                .viewModelModule(new ViewModelModule(((UserRoomContainer)getActivity()).getUserRoomId()))
+                .build()
+                .getCustomerMainViewModelFactory();
+
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override

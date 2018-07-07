@@ -31,6 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Customer;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.WaiterCall;
@@ -216,7 +219,15 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
     private void setupViewModel(){
         //Retrieve the restaurant using VIewModel
-        CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId, FirebaseAuth.getInstance().getUid(), userRoomId);
+        //CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId, FirebaseAuth.getInstance().getUid(), userRoomId);
+
+        CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(context))
+                .viewModelModule(new ViewModelModule(restaurantId, FirebaseAuth.getInstance().getUid(), userRoomId))
+                .build()
+                .getCustomerMainViewModelFactory();
+
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
             @Override

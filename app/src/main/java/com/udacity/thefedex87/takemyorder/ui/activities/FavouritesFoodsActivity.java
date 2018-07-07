@@ -16,6 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
@@ -99,7 +102,15 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     }
 
     private void setupViewModel() {
-        FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
+        //FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
+
+        FavouritesViewModelFactory favouritesViewModelFactory = DaggerViewModelComponent
+                .builder()
+                .applicationModule(new ApplicationModule(getApplicationContext()))
+                .viewModelModule(new ViewModelModule(restaurantId, userRoomId))
+                .build()
+                .getFavouritesViewModelFactory();
+
         final FavouritesViewModel favouritesViewModel = ViewModelProviders.of(this, favouritesViewModelFactory).get(FavouritesViewModel.class);
 
         //Using the viewmodel of this activity retrieve the list of user favourites
