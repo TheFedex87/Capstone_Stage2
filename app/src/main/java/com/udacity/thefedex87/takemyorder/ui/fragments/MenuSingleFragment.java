@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +35,10 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
-import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMealUserJoin;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
-import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.room.DBManager;
@@ -50,7 +47,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -85,7 +81,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     NestedScrollView detailsContainer;
 
     private FoodInMenuAdapter foodInMenuAdapter;
-    private boolean twoPanelsMode;
+    private boolean isTwoPanelsMode;
 
     @Inject
     Context applicationContext;
@@ -141,9 +137,9 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         ButterKnife.bind(this, viewRoot);
 
-        twoPanelsMode = !(divider == null);
+        isTwoPanelsMode = !(divider == null);
 
-        if(twoPanelsMode)
+        if(isTwoPanelsMode)
             detailsContainer.setVisibility(View.GONE);
 
         //Setup the recylcer view of this food category
@@ -152,6 +148,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());
         foodInMenuAdapter.setMeals(meals);
         foodInMenuAdapter.setRestaurantId(restaurantId);
+        foodInMenuAdapter.setIsTwoPanelsMode(isTwoPanelsMode);
 
         if (meals != null) {
             if (meals.size() > 0)
@@ -169,15 +166,23 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     public void addOrderClick(final Meal selectedMeal, final View sender, final View imageView, final ViewGroup foodImageContainer, final ImageView originalImage) {
         sender.setEnabled(false);
 
-        final ViewGroup parentViewGroup = (ViewGroup)foodInMenuContainer
-                .getParent().getParent().getParent().getParent()
-                .getParent().getParent();
+        final ViewGroup parentViewGroup;
+
+        if(!isTwoPanelsMode){
+            parentViewGroup = (ViewGroup)foodInMenuContainer
+                    .getParent().getParent().getParent().getParent()
+                    .getParent().getParent();
+        } else {
+            parentViewGroup = (ViewGroup)foodInMenuContainer
+                    .getParent().getParent().getParent().getParent()
+                    .getParent().getParent().getParent();
+        }
+
         parentViewGroup.getOverlay().add(imageView);
         final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
 
         selectedMeal.setUserId(((UserRoomContainer)getActivity()).getUserRoomId());
-
 
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = 0;
@@ -300,7 +305,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void showDishDetails(Meal meal, ImageView foodImage) {
-        if (!twoPanelsMode) {
+        if (!isTwoPanelsMode) {
             Intent intent = new Intent(getActivity(), DishDescriptionActivity.class);
             Bundle b = new Bundle();
             b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, meal);

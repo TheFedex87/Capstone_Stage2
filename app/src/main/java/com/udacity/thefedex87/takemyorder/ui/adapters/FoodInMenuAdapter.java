@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +67,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     private String restaurantId;
 
+    private boolean isTwoPanelsMode;
+
+    private int selectedIndex = -1;
+
     public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity){
         this.parentActivity = parentActivity;
         this.context = context;
@@ -84,6 +89,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     public void setMeals(List<Meal> meals){
         this.meals = meals;
         notifyDataSetChanged();
+    }
+
+    public void setIsTwoPanelsMode(boolean isTwoPanelsMode){
+        this.isTwoPanelsMode = isTwoPanelsMode;
     }
 
     public void setRestaurantId(String restaurantId){
@@ -112,6 +121,14 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
             Food food = (Food) meals.get(position);
             holder.foodDescription.setText(food.getDescription());
+        }
+
+        if(isTwoPanelsMode){
+            if (selectedIndex == position){
+                holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+            } else {
+                holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            }
         }
 
         //restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
@@ -210,6 +227,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     class FoodInMenuViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.food_in_menu_container)
+        LinearLayout foodInMenuContainer;
+
         @BindView(R.id.food_image_container)
         RelativeLayout foodImageContainer;
 
@@ -260,6 +280,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 @Override
                 public void onClick(View view) {
                     foodInMenuActionClick.addOrderClick(meals.get(getAdapterPosition()), view, foodImageToAnimate, foodImageContainer, foodImage);
+                    selectedIndex = getAdapterPosition();
+                    if (isTwoPanelsMode){
+                        notifyDataSetChanged();
+                    }
                 }
             });
 
@@ -267,6 +291,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 @Override
                 public void onClick(View v) {
                     foodInMenuActionClick.subtractFood(meals.get(getAdapterPosition()));
+                    selectedIndex = getAdapterPosition();
+                    if (isTwoPanelsMode){
+                        notifyDataSetChanged();
+                    }
                 }
             });
 
@@ -274,6 +302,21 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                 @Override
                 public void onClick(View v) {
                     foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
+                    selectedIndex = getAdapterPosition();
+                    if (isTwoPanelsMode){
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
+            foodInMenuContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedIndex = getAdapterPosition();
+                    if (isTwoPanelsMode){
+                        foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
+                        notifyDataSetChanged();
+                    }
                 }
             });
         }

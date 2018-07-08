@@ -134,7 +134,7 @@ public class DishDescriptionFragment extends Fragment {
                 .getDishDetailsViewModelFactory();
 
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
-        //TODO: check if there is another way to pass new arguments at the view model
+        //TODO: check if there is another way to pass new arguments at the view model, CHECK USING TRANSORMATIONS!!!
         dishDetailsViewModel.setData(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
         dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
             @Override
