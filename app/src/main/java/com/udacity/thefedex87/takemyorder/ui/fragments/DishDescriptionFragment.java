@@ -23,6 +23,7 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -30,6 +31,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkModule;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
@@ -46,6 +48,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.ROTATION_Y;
 
@@ -71,6 +74,14 @@ public class DishDescriptionFragment extends Fragment {
 
     @BindView(R.id.favourite_food)
     ImageView favouriteMealImage;
+
+    @Nullable
+    @BindView(R.id.dish_description_meal_image)
+    ImageView foodImage;
+
+    @Nullable
+    @BindView(R.id.food_image_to_animate)
+    CircleImageView foodImageToAnimate;
 
     @Inject
     Context context;
@@ -151,13 +162,27 @@ public class DishDescriptionFragment extends Fragment {
             }
         });
 
+        ApplicationModule applicationModule = new ApplicationModule(context);
+
         userInterfaceComponent = DaggerUserInterfaceComponent
                 .builder()
                 .userInterfaceModule(new UserInterfaceModule(food.getIngredients(), LinearLayoutManager.VERTICAL))
-                .applicationModule(new ApplicationModule(context))
+                .applicationModule(applicationModule)
                 .build();
 
         mealDescription.setText(food.getDescription());
+
+        if (foodImage != null){
+            Picasso picasso = DaggerNetworkComponent
+                    .builder()
+                    .applicationModule(applicationModule)
+                    .build().getPicasso();
+
+            String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + food.getMealId() +  "?alt=media";
+
+            picasso.load(imagePath).into(foodImage);
+            picasso.load(imagePath).into(foodImageToAnimate);
+        }
 
         foodPrice.setText(food.getPrice() + " €");
 

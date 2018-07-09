@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
+import com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuSingleFragment;
 
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         for(MenuSingleFragment menuSingleFragment : fragments){
             setCurrentOrderToFragment(currentOrder, menuSingleFragment);
         }
+    }
+
+    public Meal getSelectedMeal(int selectedTab) {
+        return fragments[selectedTab].getSelectedMeal();
+    }
+
+    public DishDescriptionFragment getCurrentTabFragment(int tabPosition){
+        return fragments[tabPosition].getSelectedDishDescriptionFragment();
     }
 
     @Override

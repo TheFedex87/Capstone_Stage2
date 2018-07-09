@@ -148,7 +148,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                 }
 
                 menuCompleteFragment.setMenu(favourites, restaurantId);
-                if(currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
+                //if(currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
             }
         });
 

@@ -91,6 +91,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         notifyDataSetChanged();
     }
 
+    public Meal getSelectedMeal(){
+        return meals.get(selectedIndex);
+    }
+
     public void setIsTwoPanelsMode(boolean isTwoPanelsMode){
         this.isTwoPanelsMode = isTwoPanelsMode;
     }
@@ -111,23 +115,25 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     @Override
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
 
-        //If this meal is a drink, hide the add to favourite icon and the detials icon
-        if (meals.get(position) instanceof Drink){
-            holder.favouriteFood.setVisibility(View.GONE);
-            holder.showDishDetails.setVisibility(View.GONE);
-        } else if(meals.get(position) instanceof Food){
-            holder.favouriteFood.setVisibility(View.VISIBLE);
-            holder.showDishDetails.setVisibility(View.VISIBLE);
+        if (!isTwoPanelsMode) {
+            //If this meal is a drink, hide the add to favourite icon and the detials icon
+            if (meals.get(position) instanceof Drink) {
+                holder.favouriteFood.setVisibility(View.GONE);
+                holder.showDishDetails.setVisibility(View.GONE);
+            } else if (meals.get(position) instanceof Food) {
+                holder.favouriteFood.setVisibility(View.VISIBLE);
+                holder.showDishDetails.setVisibility(View.VISIBLE);
 
-            Food food = (Food) meals.get(position);
-            holder.foodDescription.setText(food.getDescription());
+                Food food = (Food) meals.get(position);
+                holder.foodDescription.setText(food.getDescription());
+            }
         }
 
         if(isTwoPanelsMode){
             if (selectedIndex == position){
                 holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
             } else {
-                holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+                holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
             }
         }
 
@@ -149,7 +155,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
                 if (currentOrderEntries.size() > 0){
                     holder.foodCountContainer.setVisibility(View.VISIBLE);
-                    holder.subtractFood.setVisibility(View.VISIBLE);
+                    if(!isTwoPanelsMode) holder.subtractFood.setVisibility(View.VISIBLE);
 
                     if (holder.foodCount.getText().toString().isEmpty()) holder.foodCount.setText("0");
                     if (Integer.parseInt(holder.foodCount.getText().toString()) != currentOrderEntries.size()) {
@@ -162,54 +168,67 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                     }
                 } else {
                     holder.foodCountContainer.setVisibility(View.GONE);
-                    holder.subtractFood.setVisibility(View.GONE);
+                    if(!isTwoPanelsMode) holder.subtractFood.setVisibility(View.GONE);
                 }
             }
         });
 
         //Check if this food is a favourite food for the current user, if it is show the icon of added to favourite otherwise the icon which allow the user to add to the favourite
-        restaurantMenuViewModel.getUserFavouriteMealByMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
-            @Override
-            public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
-                if (favouriteMeal != null){
-                    holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_fill));
-                } else {
-                    holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_empty));
-                }
-
-                //Set the clicklistener fot the add/remove to favourite, passing it the favouriteMeal, if it is null, the food is not into favourite
-                holder.favouriteFood.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        foodInMenuActionClick.addRemoveFavourite((Food)meals.get(position), favouriteMeal, restaurantMenuViewModel);
+        if (!isTwoPanelsMode) {
+            restaurantMenuViewModel.getUserFavouriteMealByMealId().observe(parentActivity, new Observer<FavouriteMeal>() {
+                @Override
+                public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
+                    if (favouriteMeal != null) {
+                        holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_fill));
+                    } else {
+                        holder.favouriteFood.setImageDrawable(ContextCompat.getDrawable(parentActivity, R.drawable.ic_favorite_empty));
                     }
-                });
-            }
-        });
 
-        holder.foodInMenuName.setText(meals.get(position).getName());
-        holder.foodPrice.setText(meals.get(position).getPrice() + "€");
-
-        //If the food as a set image, I load it using picasso
-        if(meals.get(position).getImageName() != null && !meals.get(position).getImageName().isEmpty()){
-            holder.foodImageProgressBar.setVisibility(View.VISIBLE);
-            String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meals.get(position).getMealId() +  "?alt=media";
-            networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImage, new Callback() {
-                @Override
-                public void onSuccess() {
-                    holder.foodImageProgressBar.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onError() {
-                    holder.foodImageProgressBar.setVisibility(View.GONE);
+                    //Set the clicklistener fot the add/remove to favourite, passing it the favouriteMeal, if it is null, the food is not into favourite
+                    holder.favouriteFood.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            foodInMenuActionClick.addRemoveFavourite((Food) meals.get(position), favouriteMeal, restaurantMenuViewModel);
+                        }
+                    });
                 }
             });
-            networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImageToAnimate);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ViewCompat.setTransitionName(holder.foodImage, "foodTransition");
+        holder.foodInMenuName.setText(meals.get(position).getName());
+
+        if (!isTwoPanelsMode) {
+            holder.foodPrice.setText(meals.get(position).getPrice() + "€");
+        }
+
+        //If the food as a set image, I load it using picasso
+        if (!isTwoPanelsMode) {
+            if (meals.get(position).getImageName() != null && !meals.get(position).getImageName().isEmpty()) {
+                holder.foodImageProgressBar.setVisibility(View.VISIBLE);
+                String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meals.get(position).getMealId() + "?alt=media";
+                networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.foodImageProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.foodImageProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                networkInterfaceComponent.getPicasso().load(imagePath).fit().into(holder.foodImageToAnimate);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ViewCompat.setTransitionName(holder.foodImage, "foodTransition");
+            }
+        }
+
+        if (isTwoPanelsMode && selectedIndex < 0){
+            selectedIndex = 0;
+            foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);
+            holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
         }
     }
 
@@ -230,42 +249,53 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         @BindView(R.id.food_in_menu_container)
         LinearLayout foodInMenuContainer;
 
+        @Nullable
         @BindView(R.id.food_image_container)
         RelativeLayout foodImageContainer;
 
         @BindView(R.id.food_in_menu_name)
         TextView foodInMenuName;
 
+        @Nullable
         @BindView(R.id.food_price)
         TextView foodPrice;
 
+        @Nullable
         @BindView(R.id.food_image)
         ImageView foodImage;
 
+        @Nullable
         @BindView(R.id.food_image_to_animate)
         CircleImageView foodImageToAnimate;
 
+        @Nullable
         @BindView(R.id.food_description)
         TextView foodDescription;
 
+        @Nullable
         @BindView(R.id.food_image_pb)
         ProgressBar foodImageProgressBar;
 
+        @Nullable
         @BindView(R.id.add_to_current_order)
         TextView addToCurrentOrder;
 
+        @Nullable
         @BindView(R.id.meal_in_order_counter_container)
         FrameLayout foodCountContainer;
 
         @BindView(R.id.food_id_count_in_current_order)
         TextView foodCount;
 
+        @Nullable
         @BindView(R.id.show_food_details)
         TextView showDishDetails;
 
+        @Nullable
         @BindView(R.id.subtract_food)
         TextView subtractFood;
 
+        @Nullable
         @BindView(R.id.favourite_food)
         ImageView favouriteFood;
 
@@ -276,49 +306,57 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
             ButterKnife.bind(this, itemView);
 
-            addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    foodInMenuActionClick.addOrderClick(meals.get(getAdapterPosition()), view, foodImageToAnimate, foodImageContainer, foodImage);
-                    selectedIndex = getAdapterPosition();
-                    if (isTwoPanelsMode){
-                        notifyDataSetChanged();
+            if (!isTwoPanelsMode) {
+                addToCurrentOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        foodInMenuActionClick.addOrderClick(meals.get(getAdapterPosition()), view, foodImageToAnimate, foodImageContainer, foodImage);
+                        selectedIndex = getAdapterPosition();
+                        if (isTwoPanelsMode) {
+                            notifyDataSetChanged();
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            subtractFood.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    foodInMenuActionClick.subtractFood(meals.get(getAdapterPosition()));
-                    selectedIndex = getAdapterPosition();
-                    if (isTwoPanelsMode){
-                        notifyDataSetChanged();
+            if (!isTwoPanelsMode) {
+                subtractFood.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        foodInMenuActionClick.subtractFood(meals.get(getAdapterPosition()));
+                        selectedIndex = getAdapterPosition();
+                        if (isTwoPanelsMode) {
+                            notifyDataSetChanged();
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            showDishDetails.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
-                    selectedIndex = getAdapterPosition();
-                    if (isTwoPanelsMode){
-                        notifyDataSetChanged();
-                    }
-                }
-            });
-
-            foodInMenuContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    selectedIndex = getAdapterPosition();
-                    if (isTwoPanelsMode){
+            if (!isTwoPanelsMode) {
+                showDishDetails.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
-                        notifyDataSetChanged();
+                        selectedIndex = getAdapterPosition();
+                        if (isTwoPanelsMode) {
+                            notifyDataSetChanged();
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            if (isTwoPanelsMode) {
+                foodInMenuContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        selectedIndex = getAdapterPosition();
+                        if (isTwoPanelsMode) {
+                            foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
+                            notifyDataSetChanged();
+                        }
+                    }
+                });
+            }
         }
     }
 }

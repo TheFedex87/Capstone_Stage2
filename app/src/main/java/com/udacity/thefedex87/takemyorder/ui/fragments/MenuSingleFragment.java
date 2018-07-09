@@ -89,6 +89,8 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     private AppDatabase db;
 
+    private DishDescriptionFragment dishDescriptionFragment;
+
     private UserInterfaceComponent userInterfaceComponent;
     public MenuSingleFragment(){
         db = AppDatabase.getInstance(getActivity());
@@ -107,6 +109,14 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
             else
                 foodListPlaceholder.setVisibility(View.VISIBLE);
         }
+    }
+
+    public Meal getSelectedMeal(){
+        return foodInMenuAdapter.getSelectedMeal();
+    }
+
+    public DishDescriptionFragment getSelectedDishDescriptionFragment(){
+        return dishDescriptionFragment;
     }
 
     public void setRestaurantId(String restaurantId){
@@ -331,7 +341,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 //                        .commit();
 
 //                detailsContainer.setVisibility(View.VISIBLE);
-                DishDescriptionFragment dishDescriptionFragment = (DishDescriptionFragment)getChildFragmentManager().findFragmentById(R.id.food_detail_container_into_double_panel);
+                dishDescriptionFragment = (DishDescriptionFragment)getChildFragmentManager().findFragmentById(R.id.food_detail_container_into_double_panel);
                 dishDescriptionFragment.setData((Food)meal, restaurantId);
             }
         }

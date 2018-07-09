@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/restaurant_menu_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity">
@@ -80,5 +81,17 @@
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_to_order_fab"
+        android:layout_width="@dimen/fab_width"
+        android:layout_height="@dimen/fab_height"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:elevation="@dimen/fab_elevation"
+        android:contentDescription="@string/content_description_fab_add_order"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|end"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

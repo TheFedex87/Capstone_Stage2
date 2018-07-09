@@ -7,6 +7,9 @@
 
 
     <!--Restaurant menu-->
-    <dimen name="restaurant_menu_grid_width">330dp</dimen>
+    <dimen name="restaurant_menu_grid_width">250dp</dimen>
     <dimen name="restaurant_menu_panel_divider_width">1dp</dimen>
+    <dimen name="food_in_menu_title_text_size">14sp</dimen>
+    <dimen name="food_in_menu_meal_in_order_counter_size">18dp</dimen>
+    <dimen name="food_in_menu_meal_in_order_counter_text_size">12sp</dimen>
 </resources>

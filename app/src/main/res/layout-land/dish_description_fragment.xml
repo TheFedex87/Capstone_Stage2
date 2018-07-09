@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/dish_description_food_image_container"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <ImageView
+            android:id="@+id/dish_description_meal_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dish_description_image_height"
+            android:scaleType="centerCrop" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/food_image_to_animate"
+            android:layout_width="@dimen/login_maps_icons_margin_bottom"
+            android:layout_height="@dimen/login_maps_icons_margin_bottom"
+            android:layout_centerInParent="true"
+            android:alpha="0"
+            android:src="@drawable/ic_food"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorAccent"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/favourite_food"
+        android:layout_width="@dimen/dish_description_favourite_size"
+        android:layout_height="@dimen/dish_description_favourite_size"
+        android:layout_marginEnd="@dimen/dish_description_favourite_margin_end"
+        android:layout_marginTop="@dimen/dish_description_favourite_margin_start"
+        android:contentDescription="@string/content_description_add_to_favourite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dish_description_food_image_container"
+        app:srcCompat="@drawable/ic_favorite_empty"
+        android:tint="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/food_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dish_description_price_margin_start"
+        android:textSize="@dimen/dish_description_price_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/favourite_food"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/favourite_food"
+        tools:text="14.5 €" />
+
+    <TextView
+        android:id="@+id/dish_description_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dish_description_margin_end"
+        android:layout_marginStart="@dimen/dish_description_margin_start"
+        android:layout_marginTop="8dp"
+        android:focusableInTouchMode="true"
+        android:textSize="@dimen/dish_description_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favourite_food"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent faucibus mi sed iaculis hendrerit.
+            Vestibulum non aliquam ipsum, eu maximus dolor. In maximus mi sed est ornare, et congue ante rutrum." />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ingredients_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dish_description_ingredients_margin_top_bottom"
+        android:layout_marginEnd="@dimen/dish_description_ingredients_margin_end"
+        android:layout_marginStart="@dimen/dish_description_ingredients_margin_start"
+        android:layout_marginTop="@dimen/dish_description_ingredients_margin_top_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dish_description_tv" />
+
+
+
+
+</android.support.constraint.ConstraintLayout>

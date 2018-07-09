@@ -105,6 +105,14 @@ public class MenuCompleteFragment extends Fragment {
             foodTypesTabs.getTabAt(selectedTab).select();
     }
 
+    public Meal getSelectedMeal(){
+        return foodTypePagerAdapter.getSelectedMeal(foodTypesTabs.getSelectedTabPosition());
+    }
+
+    public Fragment getCurrentTabFragment(){
+        return foodTypePagerAdapter.getCurrentTabFragment(foodTypesTabs.getSelectedTabPosition());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

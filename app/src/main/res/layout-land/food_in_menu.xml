@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/food_in_menu_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/food_in_menu_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/food_in_menu_title_container_height"
+            android:layout_marginEnd="@dimen/food_in_menu_title_container_margin_start_end"
+            android:layout_marginStart="@dimen/food_in_menu_title_container_margin_start_end"
+            android:layout_marginTop="@dimen/food_in_menu_title_container_margin_top_bottom"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/food_in_menu_title_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/food_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Food name" />
+
+
+        <FrameLayout
+            android:id="@+id/meal_in_order_counter_container"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:background="@drawable/circle"
+                android:layout_width="@dimen/food_in_menu_meal_in_order_counter_size"
+                android:layout_height="@dimen/food_in_menu_meal_in_order_counter_size" />
+
+            <TextView
+                android:id="@+id/food_id_count_in_current_order"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="3"
+                android:textAlignment="center"
+                android:textSize="@dimen/food_in_menu_meal_in_order_counter_text_size"
+                android:textColor="@color/white"/>
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>
