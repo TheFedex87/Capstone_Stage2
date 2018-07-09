@@ -30,6 +30,14 @@
             android:src="@drawable/ic_food"
             app:civ_border_width="2dp"
             app:civ_border_color="@color/colorAccent"/>
+
+        <ProgressBar
+            android:id="@+id/dish_details_pb"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <ImageView

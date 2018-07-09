@@ -282,10 +282,10 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         TextView addToCurrentOrder;
 
         @Nullable
-        @BindView(R.id.meal_in_order_counter_container)
+        @BindView(R.id.counter_container)
         FrameLayout foodCountContainer;
 
-        @BindView(R.id.food_id_count_in_current_order)
+        @BindView(R.id.couter_value)
         TextView foodCount;
 
         @Nullable

@@ -104,10 +104,13 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         //If for this category the are not foods, show the text "No foods for this category"
         if (foodListPlaceholder != null) {
-            if (meals.size() > 0)
+            if (meals.size() > 0) {
                 foodListPlaceholder.setVisibility(View.GONE);
-            else
+                if (divider != null) divider.setVisibility(View.VISIBLE);
+            } else {
                 foodListPlaceholder.setVisibility(View.VISIBLE);
+                if (divider != null) divider.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -161,10 +164,13 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         foodInMenuAdapter.setIsTwoPanelsMode(isTwoPanelsMode);
 
         if (meals != null) {
-            if (meals.size() > 0)
+            if (meals.size() > 0) {
                 foodListPlaceholder.setVisibility(View.GONE);
-            else
+                if (divider != null) divider.setVisibility(View.VISIBLE);
+            } else {
                 foodListPlaceholder.setVisibility(View.VISIBLE);
+                if (divider != null) divider.setVisibility(View.GONE);
+            }
         }
 
         return viewRoot;

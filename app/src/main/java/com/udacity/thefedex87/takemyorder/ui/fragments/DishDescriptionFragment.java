@@ -21,8 +21,10 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
@@ -83,6 +85,10 @@ public class DishDescriptionFragment extends Fragment {
     @Nullable
     @BindView(R.id.food_image_to_animate)
     CircleImageView foodImageToAnimate;
+
+    @Nullable
+    @BindView(R.id.dish_details_pb)
+    ProgressBar dishDetailsProgressBar;
 
     @Inject
     Context context;
@@ -185,6 +191,7 @@ public class DishDescriptionFragment extends Fragment {
         }
 
         if (foodImage != null){
+            dishDetailsProgressBar.setVisibility(View.VISIBLE);
             Picasso picasso = DaggerNetworkComponent
                     .builder()
                     .applicationModule(applicationModule)
@@ -192,7 +199,17 @@ public class DishDescriptionFragment extends Fragment {
 
             String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meal.getMealId() +  "?alt=media";
 
-            picasso.load(imagePath).into(foodImage);
+            picasso.load(imagePath).into(foodImage, new Callback() {
+                @Override
+                public void onSuccess() {
+                    dishDetailsProgressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError() {
+                    dishDetailsProgressBar.setVisibility(View.GONE);
+                }
+            });
             picasso.load(imagePath).into(foodImageToAnimate);
         }
 

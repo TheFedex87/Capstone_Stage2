@@ -17,30 +17,31 @@
         android:layout_height="@dimen/food_in_menu_icon_toolbar_size"
         android:contentDescription="@string/content_description_menu_icon"/>
 
-    <FrameLayout
-        android:id="@+id/counter_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/counter_circle_margin_start"
-        android:layout_marginTop="@dimen/counter_circle_margin_top"
-        android:visibility="visible">
-        <ImageView
-            android:layout_width="@dimen/counter_circle_size"
-            android:layout_height="@dimen/counter_circle_size"
-            android:background="@drawable/circle"
-            android:tint="@color/colorAccent"
-            android:contentDescription="@string/content_description_meals_number"/>
+    <include layout="@layout/circle_counter" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/counter_container"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="@dimen/counter_circle_margin_start"-->
+        <!--android:layout_marginTop="@dimen/counter_circle_margin_top"-->
+        <!--android:visibility="visible">-->
+        <!--<ImageView-->
+            <!--android:layout_width="@dimen/counter_circle_size"-->
+            <!--android:layout_height="@dimen/counter_circle_size"-->
+            <!--android:background="@drawable/circle"-->
+            <!--android:tint="@color/colorAccent"-->
+            <!--android:contentDescription="@string/content_description_meals_number"/>-->
 
-        <TextView
-            android:id="@+id/couter_value"
-            android:layout_width="@dimen/counter_circle_size"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:textSize="@dimen/counter_circle_text_size"
-            android:layout_marginTop="@dimen/counter_circle_text_marging_top"
-            android:textColor="@color/white"
-            tools:text="3"/>
-    </FrameLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/couter_value"-->
+            <!--android:layout_width="@dimen/counter_circle_size"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textSize="@dimen/counter_circle_text_size"-->
+            <!--android:layout_marginTop="@dimen/counter_circle_text_marging_top"-->
+            <!--android:textColor="@color/white"-->
+            <!--tools:text="3"/>-->
+    <!--</FrameLayout>-->
 
 
 </FrameLayout>

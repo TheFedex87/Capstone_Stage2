@@ -62,26 +62,30 @@
                     android:contentDescription="@string/content_description_food_image"
                     />
 
-                <FrameLayout
-                    android:id="@+id/meal_in_order_counter_container"
+                <!--<FrameLayout-->
+                    <!--android:id="@+id/meal_in_order_counter_container"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<ImageView-->
+                        <!--android:background="@drawable/circle"-->
+                        <!--android:layout_width="@dimen/food_in_menu_meal_in_order_counter_size"-->
+                        <!--android:layout_height="@dimen/food_in_menu_meal_in_order_counter_size" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/food_id_count_in_current_order"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--tools:text="3"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:textSize="@dimen/food_in_menu_meal_in_order_counter_text_size"-->
+                        <!--android:textColor="@color/white"/>-->
+                <!--</FrameLayout>-->
+                <include layout="@layout/circle_counter"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/circle"
-                        android:layout_width="@dimen/food_in_menu_meal_in_order_counter_size"
-                        android:layout_height="@dimen/food_in_menu_meal_in_order_counter_size" />
-
-                    <TextView
-                        android:id="@+id/food_id_count_in_current_order"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:text="3"
-                        android:textAlignment="center"
-                        android:textSize="@dimen/food_in_menu_meal_in_order_counter_text_size"
-                        android:textColor="@color/white"/>
-                </FrameLayout>
+                    android:layout_height="wrap_content"/>
 
 
                 <de.hdodenhof.circleimageview.CircleImageView

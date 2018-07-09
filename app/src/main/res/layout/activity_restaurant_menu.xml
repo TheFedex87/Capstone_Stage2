@@ -37,10 +37,10 @@
                     android:layout_height="match_parent">
 
                     <include layout="@layout/food_in_order_counter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true" />
 
                     <TextView
                         android:id="@+id/activity_title"

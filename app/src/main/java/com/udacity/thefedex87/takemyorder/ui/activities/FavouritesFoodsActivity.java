@@ -59,6 +59,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     private MenuCompleteFragment menuCompleteFragment;
     private List<Meal> currentOrder;
     private long userRoomId;
+    private boolean addingOrder;
 
     private HashMap<FoodTypes, List<Meal>> favourites;
 
@@ -222,76 +223,85 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
 
             @Override
             public void onClick(View view) {
-                final Meal meal = menuCompleteFragment.getSelectedMeal();
-                if (meal != null) {
+                if(!addingOrder) {
+                    final Meal meal = menuCompleteFragment.getSelectedMeal();
+                    if (meal != null) {
+                        addingOrder = true;
+                        final AppDatabase db = AppDatabase.getInstance(FavouritesFoodsActivity.this);
 
-                    final AppDatabase db = AppDatabase.getInstance(FavouritesFoodsActivity.this);
+                        //ButterKnife.bind(this, menuCompleteFragment.getCurrentTabFragment().getView());
+                        View viewRoot = menuCompleteFragment.getCurrentTabFragment().getView();
+                        dishDescriptionFoodImageContainer = viewRoot.findViewById(R.id.dish_description_food_image_container);
+                        dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);
+                        foodImageToAnimate = viewRoot.findViewById(R.id.food_image_to_animate);
 
-                    //ButterKnife.bind(this, menuCompleteFragment.getCurrentTabFragment().getView());
-                    View viewRoot = menuCompleteFragment.getCurrentTabFragment().getView();
-                    dishDescriptionFoodImageContainer = viewRoot.findViewById(R.id.dish_description_food_image_container);
-                    dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);
-                    foodImageToAnimate = viewRoot.findViewById(R.id.food_image_to_animate);
+                        rootContainer.getOverlay().add(foodImageToAnimate);
 
-                    rootContainer.getOverlay().add(foodImageToAnimate);
+                        final int[] parentPos = new int[2];
+                        rootContainer.getLocationOnScreen(parentPos);
 
-                    final int[] parentPos = new int[2];
-                    rootContainer.getLocationOnScreen(parentPos);
+                        final int[] fabPos = new int[2];
+                        addToOrderFab.getLocationOnScreen(fabPos);
 
-                    final int[] fabPos = new int[2];
-                    addToOrderFab.getLocationOnScreen(fabPos);
+                        final int[] foodImagePos = new int[2];
+                        foodImageToAnimate.getLocationOnScreen(foodImagePos);
 
-                    final int[] foodImagePos = new int[2];
-                    foodImageToAnimate.getLocationOnScreen(foodImagePos);
+                        PropertyValuesHolder alphaFoodImage = PropertyValuesHolder.ofFloat(ALPHA, 0);
+                        PropertyValuesHolder scaleXFoodImage = PropertyValuesHolder.ofFloat(SCALE_X, 0.2f);
+                        PropertyValuesHolder scaleYFoodImage = PropertyValuesHolder.ofFloat(SCALE_Y, 0.2f);
+                        final ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(dishDescriptionMealImage, alphaFoodImage, scaleXFoodImage, scaleYFoodImage);
+                        scaleFoodImageAnimator.setDuration(200);
+                        scaleFoodImageAnimator.start();
 
-                    PropertyValuesHolder alphaFoodImage = PropertyValuesHolder.ofFloat(ALPHA, 0);
-                    PropertyValuesHolder scaleXFoodImage = PropertyValuesHolder.ofFloat(SCALE_X, 0.2f);
-                    PropertyValuesHolder scaleYFoodImage = PropertyValuesHolder.ofFloat(SCALE_Y, 0.2f);
-                    final ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(dishDescriptionMealImage, alphaFoodImage, scaleXFoodImage, scaleYFoodImage);
-                    scaleFoodImageAnimator.setDuration(200);
-                    scaleFoodImageAnimator.start();
+                        PropertyValuesHolder alphaImageFoodToAnimate = PropertyValuesHolder.ofFloat(ALPHA, 1);
+                        PropertyValuesHolder transXImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_X, fabPos[0] - foodImagePos[0] - parentPos[0]);
+                        PropertyValuesHolder transYImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_Y, fabPos[1] - foodImagePos[1] - parentPos[1]);
 
-                    PropertyValuesHolder alphaImageFoodToAnimate = PropertyValuesHolder.ofFloat(ALPHA, 1);
-                    PropertyValuesHolder transXImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_X, fabPos[0] - foodImagePos[0] - parentPos[0]);
-                    PropertyValuesHolder transYImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_Y, fabPos[1] - foodImagePos[1] - parentPos[1]);
-
-                    ObjectAnimator imageFoodToAnimateAnimation = ObjectAnimator.ofPropertyValuesHolder(foodImageToAnimate, alphaImageFoodToAnimate, transXImageFoodToAnimate, transYImageFoodToAnimate);
-                    imageFoodToAnimateAnimation.setDuration(400);
-                    imageFoodToAnimateAnimation.setStartDelay(100);
-                    imageFoodToAnimateAnimation.start();
+                        ObjectAnimator imageFoodToAnimateAnimation = ObjectAnimator.ofPropertyValuesHolder(foodImageToAnimate, alphaImageFoodToAnimate, transXImageFoodToAnimate, transYImageFoodToAnimate);
+                        imageFoodToAnimateAnimation.setDuration(400);
+                        imageFoodToAnimateAnimation.setStartDelay(100);
+                        imageFoodToAnimateAnimation.start();
 
 
-                    ObjectAnimator foodImageToAnimateAlphaAnimation = ObjectAnimator.ofFloat(foodImageToAnimate, ALPHA, 0);
-                    foodImageToAnimateAlphaAnimation.setDuration(100);
-                    foodImageToAnimateAlphaAnimation.setStartDelay(400);
-                    foodImageToAnimateAlphaAnimation.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
+                        ObjectAnimator foodImageToAnimateAlphaAnimation = ObjectAnimator.ofFloat(foodImageToAnimate, ALPHA, 0);
+                        foodImageToAnimateAlphaAnimation.setDuration(100);
+                        foodImageToAnimateAlphaAnimation.setStartDelay(400);
+                        foodImageToAnimateAlphaAnimation.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
 
-                            animation.removeListener(this);
+                                animation.removeListener(this);
 
-                            rootContainer.getOverlay().remove(foodImageToAnimate);
-                            dishDescriptionFoodImageContainer.addView(foodImageToAnimate);
+                                rootContainer.getOverlay().remove(foodImageToAnimate);
+                                dishDescriptionFoodImageContainer.addView(foodImageToAnimate);
 
-                            foodImageToAnimate.animate().translationX(0).setDuration(0);
-                            foodImageToAnimate.animate().translationY(0).setDuration(0);
+                                foodImageToAnimate.animate().translationX(0).setDuration(0);
+                                foodImageToAnimate.animate().translationY(0).setDuration(0);
 
-                            scaleFoodImageAnimator.reverse();
-                        }
-                    });
-                    foodImageToAnimateAlphaAnimation.start();
+                                scaleFoodImageAnimator.reverse();
+                                scaleFoodImageAnimator.addListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        addingOrder = false;
+                                    }
+                                });
+                            }
+                        });
+                        foodImageToAnimateAlphaAnimation.start();
 
-                    meal.setUserId(userRoomId);
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.currentOrderDao().insertFood(meal);
-                        }
-                    });
-                } else {
-                    Timber.w(getString(R.string.no_food_selected));
-                    Toast.makeText(FavouritesFoodsActivity.this, getString(R.string.no_food_selected), Toast.LENGTH_LONG).show();
+                        meal.setUserId(userRoomId);
+                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.currentOrderDao().insertFood(meal);
+                            }
+                        });
+                    } else {
+                        Timber.w(getString(R.string.no_food_selected));
+                        Toast.makeText(FavouritesFoodsActivity.this, getString(R.string.no_food_selected), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
