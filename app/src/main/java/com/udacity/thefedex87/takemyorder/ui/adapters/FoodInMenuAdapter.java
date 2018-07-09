@@ -92,6 +92,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     }
 
     public Meal getSelectedMeal(){
+        if (selectedIndex < 0) return null;
         return meals.get(selectedIndex);
     }
 
@@ -225,11 +226,11 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
         }
 
-        if (isTwoPanelsMode && selectedIndex < 0){
-            selectedIndex = 0;
-            foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);
-            holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
-        }
+//        if (isTwoPanelsMode && selectedIndex < 0){
+//            selectedIndex = 0;
+//            foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);
+//            holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+//        }
     }
 
     @Override

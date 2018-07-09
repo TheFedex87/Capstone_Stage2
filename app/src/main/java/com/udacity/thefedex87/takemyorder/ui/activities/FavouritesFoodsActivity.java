@@ -1,24 +1,34 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
 import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
+import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
@@ -35,6 +45,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
+
+import static android.view.View.ALPHA;
+import static android.view.View.SCALE_X;
+import static android.view.View.SCALE_Y;
+import static android.view.View.TRANSLATION_X;
+import static android.view.View.TRANSLATION_Y;
 
 public class FavouritesFoodsActivity extends AppCompatActivity implements UserRoomContainer {
     private String restaurantId;
@@ -43,6 +61,9 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     private long userRoomId;
 
     private HashMap<FoodTypes, List<Meal>> favourites;
+
+    @BindView(R.id.root_container)
+    CoordinatorLayout rootContainer;
 
     @BindView(R.id.menu_icon_container)
     FrameLayout menuIconContainer;
@@ -60,6 +81,9 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     CollapsingToolbarLayout
     collapsingToolbarLayout;
 
+    @Nullable
+    @BindView(R.id.add_to_order_fab)
+    FloatingActionButton addToOrderFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +173,11 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
 
                 menuCompleteFragment.setMenu(favourites, restaurantId);
                 //if(currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
+
+                //If we are in a two panels layout
+                if (addToOrderFab != null){
+                    setupFab();
+                }
             }
         });
 
@@ -175,6 +204,95 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                 counterAnimation.setTarget(counterContainer);
 
                 counterAnimation.start();
+            }
+        });
+    }
+
+    private void setupFab(){
+
+        addToOrderFab.setOnClickListener(new View.OnClickListener() {
+            @BindView(R.id.dish_description_meal_image)
+            ImageView dishDescriptionMealImage;
+
+            @BindView(R.id.dish_description_food_image_container)
+            RelativeLayout dishDescriptionFoodImageContainer;
+
+            @BindView(R.id.food_image_to_animate)
+            CircleImageView foodImageToAnimate;
+
+            @Override
+            public void onClick(View view) {
+                final Meal meal = menuCompleteFragment.getSelectedMeal();
+                if (meal != null) {
+
+                    final AppDatabase db = AppDatabase.getInstance(FavouritesFoodsActivity.this);
+
+                    //ButterKnife.bind(this, menuCompleteFragment.getCurrentTabFragment().getView());
+                    View viewRoot = menuCompleteFragment.getCurrentTabFragment().getView();
+                    dishDescriptionFoodImageContainer = viewRoot.findViewById(R.id.dish_description_food_image_container);
+                    dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);
+                    foodImageToAnimate = viewRoot.findViewById(R.id.food_image_to_animate);
+
+                    rootContainer.getOverlay().add(foodImageToAnimate);
+
+                    final int[] parentPos = new int[2];
+                    rootContainer.getLocationOnScreen(parentPos);
+
+                    final int[] fabPos = new int[2];
+                    addToOrderFab.getLocationOnScreen(fabPos);
+
+                    final int[] foodImagePos = new int[2];
+                    foodImageToAnimate.getLocationOnScreen(foodImagePos);
+
+                    PropertyValuesHolder alphaFoodImage = PropertyValuesHolder.ofFloat(ALPHA, 0);
+                    PropertyValuesHolder scaleXFoodImage = PropertyValuesHolder.ofFloat(SCALE_X, 0.2f);
+                    PropertyValuesHolder scaleYFoodImage = PropertyValuesHolder.ofFloat(SCALE_Y, 0.2f);
+                    final ObjectAnimator scaleFoodImageAnimator = ObjectAnimator.ofPropertyValuesHolder(dishDescriptionMealImage, alphaFoodImage, scaleXFoodImage, scaleYFoodImage);
+                    scaleFoodImageAnimator.setDuration(200);
+                    scaleFoodImageAnimator.start();
+
+                    PropertyValuesHolder alphaImageFoodToAnimate = PropertyValuesHolder.ofFloat(ALPHA, 1);
+                    PropertyValuesHolder transXImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_X, fabPos[0] - foodImagePos[0] - parentPos[0]);
+                    PropertyValuesHolder transYImageFoodToAnimate = PropertyValuesHolder.ofFloat(TRANSLATION_Y, fabPos[1] - foodImagePos[1] - parentPos[1]);
+
+                    ObjectAnimator imageFoodToAnimateAnimation = ObjectAnimator.ofPropertyValuesHolder(foodImageToAnimate, alphaImageFoodToAnimate, transXImageFoodToAnimate, transYImageFoodToAnimate);
+                    imageFoodToAnimateAnimation.setDuration(400);
+                    imageFoodToAnimateAnimation.setStartDelay(100);
+                    imageFoodToAnimateAnimation.start();
+
+
+                    ObjectAnimator foodImageToAnimateAlphaAnimation = ObjectAnimator.ofFloat(foodImageToAnimate, ALPHA, 0);
+                    foodImageToAnimateAlphaAnimation.setDuration(100);
+                    foodImageToAnimateAlphaAnimation.setStartDelay(400);
+                    foodImageToAnimateAlphaAnimation.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+
+                            animation.removeListener(this);
+
+                            rootContainer.getOverlay().remove(foodImageToAnimate);
+                            dishDescriptionFoodImageContainer.addView(foodImageToAnimate);
+
+                            foodImageToAnimate.animate().translationX(0).setDuration(0);
+                            foodImageToAnimate.animate().translationY(0).setDuration(0);
+
+                            scaleFoodImageAnimator.reverse();
+                        }
+                    });
+                    foodImageToAnimateAlphaAnimation.start();
+
+                    meal.setUserId(userRoomId);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.currentOrderDao().insertFood(meal);
+                        }
+                    });
+                } else {
+                    Timber.w(getString(R.string.no_food_selected));
+                    Toast.makeText(FavouritesFoodsActivity.this, getString(R.string.no_food_selected), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

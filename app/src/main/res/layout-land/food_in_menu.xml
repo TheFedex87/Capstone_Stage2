@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/food_in_menu_margin">
 
         <TextView
             android:id="@+id/food_in_menu_name"

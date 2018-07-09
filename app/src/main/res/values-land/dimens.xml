@@ -12,4 +12,5 @@
     <dimen name="food_in_menu_title_text_size">14sp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_size">18dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_text_size">12sp</dimen>
+    <dimen name="food_in_menu_margin">5dp</dimen>
 </resources>

@@ -24,6 +24,7 @@
     <string name="error_no_valid_information_from_barcode">Error trying to extrapolating information from barcode</string>
     <string name="error_loading_bitmap">QR-COde reading error</string>
     <string name="error_invalid_id_restaurant">Invalid ID restaurant</string>
+    <string name="no_food_selected">No food selected</string>
 
     <!--Customer Main Activity-->
     <string name="order_something">Order something</string>

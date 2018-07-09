@@ -92,9 +92,9 @@
 
     <dimen name="counter_circle_size">18dp</dimen>
     <dimen name="counter_circle_margin_end">5dp</dimen>
-    <dimen name="counter_circle_margin_start">18dp</dimen>
+    <dimen name="counter_circle_margin_start">16dp</dimen>
     <dimen name="counter_circle_margin_top">0dp</dimen>
-    <dimen name="counter_circle_text_size">14sp</dimen>
+    <dimen name="counter_circle_text_size">12sp</dimen>
     <dimen name="counter_circle_text_marging_start">0dp</dimen>
     <dimen name="counter_circle_text_marging_top">0dp</dimen>
 

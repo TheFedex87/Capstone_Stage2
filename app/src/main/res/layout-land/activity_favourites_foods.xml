@@ -39,8 +39,8 @@
                     <include layout="@layout/food_in_order_counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
 
                     <TextView
                         android:id="@+id/activity_title"
@@ -62,7 +62,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -72,14 +72,7 @@
                 android:layout_height="match_parent"
                 android:name="com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment" />
 
-            <ProgressBar
-                android:id="@+id/menu_loading"
-                android:layout_centerInParent="true"
-                android:layout_width="@dimen/progress_bar_size"
-                android:layout_height="@dimen/progress_bar_size" />
-
-        </RelativeLayout>
-
+        </FrameLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
@@ -92,6 +85,4 @@
         android:contentDescription="@string/content_description_fab_add_order"
         android:src="@drawable/ic_add"
         android:layout_gravity="bottom|end"/>
-
-
 </android.support.design.widget.CoordinatorLayout>
