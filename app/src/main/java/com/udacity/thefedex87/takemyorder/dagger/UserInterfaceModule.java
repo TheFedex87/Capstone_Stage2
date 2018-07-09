@@ -80,7 +80,7 @@ public class UserInterfaceModule {
 //    }
 
     public UserInterfaceModule(List<?> list, int linearLayoutManagerOrientation){
-        if (list.size() == 0){
+        if (list == null || list.size() == 0){
             ingredients = new ArrayList<>();
             mealsGrouped = new ArrayList<>();
         } else {

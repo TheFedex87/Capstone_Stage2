@@ -38,6 +38,7 @@ import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
@@ -57,7 +58,7 @@ import static android.view.View.ROTATION_Y;
  */
 
 public class DishDescriptionFragment extends Fragment {
-    private Food food;
+    private Meal meal;
     private String restaurantId;
 
     private boolean viewCreated;
@@ -97,8 +98,8 @@ public class DishDescriptionFragment extends Fragment {
     public DishDescriptionFragment(){
     }
 
-    public void setData(final Food food, final String restaurantId){
-        this.food = food;
+    public void setData(final Meal meal, final String restaurantId){
+        this.meal = meal;
         this.restaurantId = restaurantId;
         dataSet = true;
 
@@ -140,37 +141,48 @@ public class DishDescriptionFragment extends Fragment {
         DishDetailsViewModelFactory dishDetailsViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
-                .viewModelModule(new ViewModelModule(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId()))
+                .viewModelModule(new ViewModelModule(meal.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId()))
                 .build()
                 .getDishDetailsViewModelFactory();
 
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
-        //TODO: check if there is another way to pass new arguments at the view model, CHECK USING TRANSORMATIONS!!!
-        dishDetailsViewModel.setData(food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
-        dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
-            @Override
-            public void onChanged(@Nullable FavouriteMeal meal) {
-                if (meal != null) {
-                    favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_fill));
-                    isMealAFavourite = true;
-                    favouriteMealFromDB = meal;
-                } else {
-                    favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_empty));
-                    isMealAFavourite = false;
-                    favouriteMealFromDB = null;
+        if(meal instanceof Food) {
+            //TODO: check if there is another way to pass new arguments at the view model, CHECK USING TRANSORMATIONS!!!
+            dishDetailsViewModel.setData(meal.getMealId(), ((UserRoomContainer) getActivity()).getUserRoomId());
+            dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
+                @Override
+                public void onChanged(@Nullable FavouriteMeal meal) {
+                    if (meal != null) {
+                        favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_fill));
+                        isMealAFavourite = true;
+                        favouriteMealFromDB = meal;
+                    } else {
+                        favouriteMealImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_favorite_empty));
+                        isMealAFavourite = false;
+                        favouriteMealFromDB = null;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            favouriteMealImage.setVisibility(View.GONE);
+
+        }
 
         ApplicationModule applicationModule = new ApplicationModule(context);
 
-        userInterfaceComponent = DaggerUserInterfaceComponent
-                .builder()
-                .userInterfaceModule(new UserInterfaceModule(food.getIngredients(), LinearLayoutManager.VERTICAL))
-                .applicationModule(applicationModule)
-                .build();
+        if (meal instanceof Food) {
+            userInterfaceComponent = DaggerUserInterfaceComponent
+                    .builder()
+                    .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
+                    .applicationModule(applicationModule)
+                    .build();
 
-        mealDescription.setText(food.getDescription());
+            mealDescription.setText(((Food) meal).getDescription());
+
+            ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+            DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
+            ingredientsList.setAdapter(dishIngredientsAdapter);
+        }
 
         if (foodImage != null){
             Picasso picasso = DaggerNetworkComponent
@@ -178,57 +190,55 @@ public class DishDescriptionFragment extends Fragment {
                     .applicationModule(applicationModule)
                     .build().getPicasso();
 
-            String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + food.getMealId() +  "?alt=media";
+            String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meal.getMealId() +  "?alt=media";
 
             picasso.load(imagePath).into(foodImage);
             picasso.load(imagePath).into(foodImageToAnimate);
         }
 
-        foodPrice.setText(food.getPrice() + " €");
+        foodPrice.setText(meal.getPrice() + " €");
 
-        ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
-        DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
-        ingredientsList.setAdapter(dishIngredientsAdapter);
 
         //Setup favourite meal icon
-        favouriteMealImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final float destRotation = isMealAFavourite ? 0 : 360;
-                final Drawable destDrawable = isMealAFavourite ?
-                        ContextCompat.getDrawable(context, R.drawable.ic_favorite_empty) :
-                        ContextCompat.getDrawable(context, R.drawable.ic_favorite_fill);
+        if (meal instanceof Food) {
+            favouriteMealImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final float destRotation = isMealAFavourite ? 0 : 360;
+                    final Drawable destDrawable = isMealAFavourite ?
+                            ContextCompat.getDrawable(context, R.drawable.ic_favorite_empty) :
+                            ContextCompat.getDrawable(context, R.drawable.ic_favorite_fill);
 
 
+                    final Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), android.R
+                            .interpolator.fast_out_slow_in);
 
-                final Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), android.R
-                        .interpolator.fast_out_slow_in);
+                    PropertyValuesHolder favouriteIconRotation = PropertyValuesHolder.ofFloat(ROTATION_Y, 180);
+                    ObjectAnimator favouriteIconAnimation = ObjectAnimator.ofPropertyValuesHolder(favouriteMealImage, favouriteIconRotation);
+                    favouriteIconAnimation.setDuration(150);
+                    favouriteIconAnimation.setInterpolator(interpolator);
+                    favouriteIconAnimation.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            animation.removeListener(this);
 
-                PropertyValuesHolder favouriteIconRotation = PropertyValuesHolder.ofFloat(ROTATION_Y, 180);
-                ObjectAnimator favouriteIconAnimation = ObjectAnimator.ofPropertyValuesHolder(favouriteMealImage, favouriteIconRotation);
-                favouriteIconAnimation.setDuration(150);
-                favouriteIconAnimation.setInterpolator(interpolator);
-                favouriteIconAnimation.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        animation.removeListener(this);
+                            favouriteMealImage.setImageDrawable(destDrawable);
 
-                        favouriteMealImage.setImageDrawable(destDrawable);
+                            favouriteMealImage.animate().setInterpolator(interpolator).setDuration(150).rotationY(destRotation).start();
+                        }
+                    });
+                    favouriteIconAnimation.start();
 
-                        favouriteMealImage.animate().setInterpolator(interpolator).setDuration(150).rotationY(destRotation).start();
+                    if (!isMealAFavourite) {
+                        DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), (Food) meal, restaurantId, ((UserRoomContainer) getActivity()).getUserRoomId());
+                    } else {
+                        DBManager.removeFromFavourite(db, favouriteMealFromDB.getId(), ((UserRoomContainer) getActivity()).getUserRoomId());
                     }
-                });
-                favouriteIconAnimation.start();
 
-                if (!isMealAFavourite) {
-                    DBManager.saveFavouritesIntoDB(db, dishDetailsViewModel, getActivity(), food, restaurantId, ((UserRoomContainer)getActivity()).getUserRoomId());
-                } else{
-                    DBManager.removeFromFavourite(db, favouriteMealFromDB.getId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+                    isMealAFavourite = !isMealAFavourite;
                 }
-
-                isMealAFavourite = !isMealAFavourite;
-            }
-        });
+            });
+        }
     }
 }

@@ -330,7 +330,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                 startActivity(intent);
             }
         } else {
-            if (meal instanceof Food) {
+            //if (meal instanceof Food) {
                 detailsContainer.setVisibility(View.VISIBLE);
 //                DishDescriptionFragment dishDescriptionFragment = new DishDescriptionFragment();
 //                dishDescriptionFragment.setData((Food)meal, restaurantId);
@@ -342,8 +342,8 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
 //                detailsContainer.setVisibility(View.VISIBLE);
                 dishDescriptionFragment = (DishDescriptionFragment)getChildFragmentManager().findFragmentById(R.id.food_detail_container_into_double_panel);
-                dishDescriptionFragment.setData((Food)meal, restaurantId);
-            }
+                dishDescriptionFragment.setData(meal, restaurantId);
+            //}
         }
     }
 

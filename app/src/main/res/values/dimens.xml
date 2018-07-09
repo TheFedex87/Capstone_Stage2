@@ -65,7 +65,7 @@
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
     <dimen name="food_in_menu_card_margin">15dp</dimen>
-    <dimen name="food_in_menu_icon_toolbar_size">30dp</dimen>
+    <dimen name="food_in_menu_icon_toolbar_size">24dp</dimen>
     <dimen name="food_in_menu_icon_toolbar_margin_end">8dp</dimen>
     <dimen name="food_in_menu_icon_toolbar_margin_top">4dp</dimen>
     <dimen name="food_in_menu_card_corner_radius">4dp</dimen>
@@ -91,9 +91,10 @@
 
 
     <dimen name="counter_circle_size">18dp</dimen>
+    <dimen name="counter_circle_margin_end">5dp</dimen>
     <dimen name="counter_circle_margin_start">18dp</dimen>
     <dimen name="counter_circle_margin_top">0dp</dimen>
-    <dimen name="counter_circle_text_size">12sp</dimen>
+    <dimen name="counter_circle_text_size">14sp</dimen>
     <dimen name="counter_circle_text_marging_start">0dp</dimen>
     <dimen name="counter_circle_text_marging_top">0dp</dimen>
 

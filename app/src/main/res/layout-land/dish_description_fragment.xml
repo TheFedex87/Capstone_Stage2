@@ -41,6 +41,7 @@
         android:contentDescription="@string/content_description_add_to_favourite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dish_description_food_image_container"
+        app:layout_constraintBottom_toBottomOf="@+id/food_price"
         app:srcCompat="@drawable/ic_favorite_empty"
         android:tint="@color/colorAccent"/>
 
@@ -51,9 +52,9 @@
         android:layout_marginStart="@dimen/dish_description_price_margin_start"
         android:textSize="@dimen/dish_description_price_text_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/favourite_food"
+        android:layout_marginTop="@dimen/dish_description_price_margin_top"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/favourite_food"
+        app:layout_constraintTop_toBottomOf="@+id/dish_description_food_image_container"
         tools:text="14.5 €" />
 
     <TextView
