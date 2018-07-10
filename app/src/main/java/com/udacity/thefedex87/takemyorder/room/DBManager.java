@@ -39,7 +39,7 @@ public final class DBManager {
             favouriteMealLiveData = null;
         }
 
-        //Check if the food is already into the DB of favourites, if so I add only the join beetween userId and mealId, otherwise
+        //Check if the toolbar_bg_2 is already into the DB of favourites, if so I add only the join beetween userId and mealId, otherwise
         //I add the meal into the DB of favourites
         favouriteMealLiveData.observe(lifecycleOwner, new Observer<FavouriteMeal>() {
             @Override

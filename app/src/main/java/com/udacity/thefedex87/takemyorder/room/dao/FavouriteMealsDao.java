@@ -29,12 +29,12 @@ public interface FavouriteMealsDao {
             "WHERE favouritemeal_user_join.userId = :userRoomId")
     LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId);
 
-    //Get a user favourite meal by it's id. This is used to check if a specific food is a favourite for the logged user
+    //Get a user favourite meal by it's id. This is used to check if a specific toolbar_bg_2 is a favourite for the logged user
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
             "WHERE favourite_meals.mealId = :mealId AND favouritemeal_user_join.userId = :userRoomId")
     LiveData<FavouriteMeal> getUserFavouriteMealById(String mealId, long userRoomId);
 
-    //Get the food with specific foodId from the favourite list, this is used to see if a food is already inside the table of
+    //Get the toolbar_bg_2 with specific foodId from the favourite list, this is used to see if a toolbar_bg_2 is already inside the table of
     //favourites meals
     @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId")
     LiveData<FavouriteMeal> getFavouriteMealById(String mealId);

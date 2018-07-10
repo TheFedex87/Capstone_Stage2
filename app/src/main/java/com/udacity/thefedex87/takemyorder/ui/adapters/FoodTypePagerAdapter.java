@@ -56,7 +56,7 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = (Fragment)super.instantiateItem(container, position);
         fragments[position] = (MenuSingleFragment)fragment;
         List keys = new ArrayList(meals.keySet());
-        //Set the meals for the current tab (food type)
+        //Set the meals for the current tab (toolbar_bg_2 type)
         ((MenuSingleFragment)fragment).setMeals(meals.get(keys.get(position)));
         ((MenuSingleFragment)fragment).setRestaurantId(restaurantId);
         setCurrentOrderToFragment(currentOrder, (MenuSingleFragment)fragment);

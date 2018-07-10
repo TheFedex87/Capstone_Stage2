@@ -108,7 +108,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
             //Setup view model (used in this activity to retrieve the restaurant from Firebase)
             setupViewModel();
 
-            //Retrieve the food list fragment
+            //Retrieve the toolbar_bg_2 list fragment
             foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
 
             //Assign the table to the fragment
@@ -237,8 +237,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                     Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    collapsingToolbarLayout.setTitleEnabled(false);
-                    toolbar.setTitle(restaurant.getName());
+                    //collapsingToolbarLayout.setTitleEnabled(false);
+                    collapsingToolbarLayout.setTitle(restaurant.getName());
                 }
             }
         });

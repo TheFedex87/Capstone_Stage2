@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.SparseArray;
 import android.view.View;
@@ -73,6 +74,9 @@ public class LoginMapsActivity extends AppCompatActivity {
     @BindView(R.id.login)
     ImageView login;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Inject
     Context context;
 
@@ -132,6 +136,9 @@ public class LoginMapsActivity extends AppCompatActivity {
 
     private void initUi(){
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override

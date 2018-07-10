@@ -12,16 +12,24 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:alpha="0.85">
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            app:titleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_toolbar_height"
             android:elevation="@dimen/app_bar_elevation"
-            app:title="@string/app_name">
+            app:title="@string/app_name"
+            android:background="@color/white"
+            app:titleTextColor="@color/white">
 
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/logo" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -35,30 +43,46 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/login_bg"
+        android:alpha="0.4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
         android:id="@+id/map"
         android:layout_width="@dimen/login_maps_icons_width"
         android:layout_height="@dimen/login_maps_icons_height"
-        android:layout_marginBottom="@dimen/login_maps_icons_margin_bottom"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/content_description_map"
+        android:src="@drawable/map"
+        app:layout_constraintBottom_toTopOf="@+id/login"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_place"
-        android:tint="@color/colorPrimary"
-        android:contentDescription="@string/content_description_map"/>
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
 
 
     <ImageView
         android:id="@+id/login"
         android:layout_width="@dimen/login_maps_icons_width"
         android:layout_height="@dimen/login_maps_icons_height"
-        android:layout_marginBottom="@dimen/login_maps_icons_margin_bottom"
-        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_login_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        android:src="@drawable/ic_login"
-        android:tint="@color/colorPrimary"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="283dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="main_toolbar_height">112dp</dimen>
+    <dimen name="main_toolbar_height">140dp</dimen>
 
     <!--Restaurant Details-->
     <dimen name="restaurant_detail_photo_height">500dp</dimen>
@@ -65,7 +65,8 @@
     <dimen name="food_in_menu_card_height">250dp</dimen>
     <dimen name="food_in_menu_card_width">300dp</dimen>
     <dimen name="food_in_menu_card_margin">15dp</dimen>
-    <dimen name="food_in_menu_icon_toolbar_size">24dp</dimen>
+    <dimen name="food_in_menu_expanded_height">300dp</dimen>
+    <dimen name="food_in_menu_icon_toolbar_size">36dp</dimen>
     <dimen name="food_in_menu_icon_toolbar_margin_end">8dp</dimen>
     <dimen name="food_in_menu_icon_toolbar_margin_top">4dp</dimen>
     <dimen name="food_in_menu_card_corner_radius">4dp</dimen>
@@ -92,7 +93,7 @@
 
     <dimen name="counter_circle_size">18dp</dimen>
     <dimen name="counter_circle_margin_end">5dp</dimen>
-    <dimen name="counter_circle_margin_start">16dp</dimen>
+    <dimen name="counter_circle_margin_start">27dp</dimen>
     <dimen name="counter_circle_margin_top">0dp</dimen>
     <dimen name="counter_circle_text_size">12sp</dimen>
     <dimen name="counter_circle_text_marging_start">0dp</dimen>
@@ -138,7 +139,7 @@
 
 
     <dimen name="app_bar_elevation">4dp</dimen>
-    <dimen name="login_maps_icons_width">100dp</dimen>
-    <dimen name="login_maps_icons_height">100dp</dimen>
+    <dimen name="login_maps_icons_width">140dp</dimen>
+    <dimen name="login_maps_icons_height">140dp</dimen>
     <dimen name="login_maps_icons_margin_bottom">56dp</dimen>
 </resources>

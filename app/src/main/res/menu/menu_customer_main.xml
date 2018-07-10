@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/call_waiter"
-        android:icon="@drawable/ic_call_waiter"
+        android:icon="@drawable/ic_waiter"
         android:title="@string/call_waiter"
         app:showAsAction="ifRoom"
         android:contentDescription="@string/content_description_call_waiter"/>
@@ -21,7 +21,7 @@
         android:contentDescription="@string/content_description_delete_order"/>
 
     <item android:id="@+id/favourites"
-        android:icon="@drawable/ic_favorites_white"
+        android:icon="@drawable/ic_favourites"
         android:title="@string/favourites"
         app:showAsAction="ifRoom"
         android:contentDescription="@string/content_description_favourites"/>

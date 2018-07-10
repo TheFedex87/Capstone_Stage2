@@ -142,7 +142,7 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     private void setUi(){
-        //DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), food.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+        //DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), toolbar_bg_2.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
 
         DishDetailsViewModelFactory dishDetailsViewModelFactory = DaggerViewModelComponent
                 .builder()

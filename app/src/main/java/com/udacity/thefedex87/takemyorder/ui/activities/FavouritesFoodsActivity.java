@@ -159,7 +159,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                     food.setPrice(favouriteMeal.getPrice());
                     food.setDescription(favouriteMeal.getDescription());
 
-                    //Using the viewmodle, extract the list of the ingredient of this meal, and assign it the food entity
+                    //Using the viewmodle, extract the list of the ingredient of this meal, and assign it the toolbar_bg_2 entity
                     favouritesViewModel.setMealId(favouriteMeal.getMealId());
                     final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
                     ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
