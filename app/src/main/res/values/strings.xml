@@ -43,12 +43,13 @@
 
     <!--Checkout order-->
     <string name="pay">Pay order</string>
-    <string name="total">Total</string>
+    <string name="total">Total:</string>
     <string name="confirm_payment_title">Confirm payment</string>
     <string name="confirm_payment_text">Do you confirm the payment for the current order?</string>
     <string name="submitting_order">Submitting order</string>
     <string name="order_submitted">Order has been submitted</string>
-    <string name="nothing_on_current_order">The current order is emptyu</string>
+    <string name="nothing_on_current_order">The current order is empty</string>
+    <string name="receipt_header">RECEIPT</string>
 
     <!--Barcode Scanner Activity-->
     <string name="open_barcode_from_file">Open QR from image</string>

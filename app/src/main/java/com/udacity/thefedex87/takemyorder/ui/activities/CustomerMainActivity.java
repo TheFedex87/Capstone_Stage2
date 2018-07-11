@@ -12,14 +12,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,8 +81,11 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.toolbar_container)
-    CollapsingToolbarLayout collapsingToolbarLayout;
+//    @BindView(R.id.toolbar_container)
+//    CollapsingToolbarLayout collapsingToolbarLayout;
+//
+//    @BindView(R.id.order_container_nsv)
+//    NestedScrollView orderContainer;
 
     @Inject
     Context context;
@@ -124,6 +132,15 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                     startActivity(intent);
                 }
             });
+
+//            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//            Display display = wm.getDefaultDisplay();
+//            DisplayMetrics metrics = new DisplayMetrics();
+//            display.getMetrics(metrics);
+//            int width = metrics.widthPixels;
+//            int height = metrics.heightPixels;
+//            orderContainer.getLayoutParams().height = height-100;
+//            orderContainer.requestLayout();
         } else{
             Timber.d("Some important key not passed to the activity");
             finish();
@@ -238,7 +255,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                     finish();
                 } else {
                     //collapsingToolbarLayout.setTitleEnabled(false);
-                    collapsingToolbarLayout.setTitle(restaurant.getName());
+                    //collapsingToolbarLayout.setTitle(restaurant.getName());
+                    toolbar.setTitle(restaurant.getName());
                 }
             }
         });

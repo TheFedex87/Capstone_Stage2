@@ -44,6 +44,7 @@
     <dimen name="total_order_price_margin_top">16dp</dimen>
     <dimen name="table_number_margine_start">16dp</dimen>
     <dimen name="table_number_margine_top">16dp</dimen>
+    <dimen name="food_divider_margin_top">4dp</dimen>
 
 
     <!--Food in order-->
@@ -135,6 +136,9 @@
     <dimen name="checkout_nested_scroll_view_margin_bottom">40dp</dimen>
     <dimen name="check_out_submitting_pb_margin_bottom">8dp</dimen>
     <dimen name="check_out_submitting_text_size">20dp</dimen>
+    <dimen name="check_out_receipt_margin_top">16dp</dimen>
+    <dimen name="check_out_receipt_list_margin_bottom">8dp</dimen>
+    <dimen name="check_out_receipt_text_size">30sp</dimen>
 
 
 

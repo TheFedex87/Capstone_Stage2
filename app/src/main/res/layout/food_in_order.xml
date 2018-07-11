@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/food_name_margin_start_end"
-        android:layout_marginStart="@dimen/food_name_margin_start_end"
         android:layout_marginTop="@dimen/food_name_margin_top"
         android:textColor="@color/black"
         android:textSize="@dimen/food_name_text_size"
@@ -38,12 +37,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/food_price_margin_bottom"
-        android:layout_marginEnd="@dimen/food_price_margin_end"
         android:layout_marginTop="@dimen/food_price_margin_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="@dimen/food_price_text_size"
         tools:text="Food price"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/darkGrey"
+        android:layout_marginTop="@dimen/food_divider_margin_top"
+        app:layout_constraintLeft_toLeftOf="@id/food_name"
+        app:layout_constraintRight_toRightOf="@id/food_price"
+        app:layout_constraintTop_toBottomOf="@id/food_type"/>
 
 </android.support.constraint.ConstraintLayout>
