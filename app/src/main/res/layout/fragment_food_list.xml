@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/login_bg"
-        android:alpha="0.5"/>
+        android:alpha="0.2"/>
 
     <ImageView
         android:focusableInTouchMode="true"
@@ -23,7 +23,8 @@
         android:layout_gravity="center"
         android:scaleType="fitXY"
         android:layout_margin="10dp"
-        android:src="@drawable/customer_bg_4" />
+        android:src="@drawable/customer_bg_4"
+        android:elevation="5dp"/>
 
     <!--<ImageView-->
         <!--android:layout_width="match_parent"-->
@@ -38,7 +39,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:elevation="6dp">
 
         <View
             android:layout_width="0dp"

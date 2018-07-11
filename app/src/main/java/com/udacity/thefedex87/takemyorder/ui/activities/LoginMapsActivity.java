@@ -2,27 +2,19 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.SparseArray;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,14 +27,12 @@ import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
-import com.udacity.thefedex87.takemyorder.mock.PostMockData;
 import com.udacity.thefedex87.takemyorder.models.Customer;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,8 +42,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
-
-import static com.google.android.gms.vision.barcode.Barcode.QR_CODE;
 
 public class LoginMapsActivity extends AppCompatActivity {
     //Keys
@@ -74,8 +62,11 @@ public class LoginMapsActivity extends AppCompatActivity {
     @BindView(R.id.login)
     ImageView login;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.header)
+    RelativeLayout header;
+
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
 
     @Inject
     Context context;
@@ -137,8 +128,8 @@ public class LoginMapsActivity extends AppCompatActivity {
     private void initUi(){
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,52 +239,78 @@ public class LoginMapsActivity extends AppCompatActivity {
                 firebaseAuth.addAuthStateListener(authStateListener);
             }
         });
+
+
+        setupEntryAnimation();
+
+    }
+
+    private void setupEntryAnimation(){
+        float toolBarHeight = getResources().getDimension(R.dimen.main_toolbar_height);
+        //header.animate().translationY(-toolBarHeight).setDuration(0).start();
+
+        int startAngle = -15;
+        int endAngle = 15;
+
+        //Animation animation = AnimationUtils.loadAnimation(this, R.anim.pendulum_animation);
+        //header.setAnimation(animation);
+        //animation.start();
+
+        RotateAnimation rotateAnimation = new RotateAnimation(0, -15, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.1f);
+        rotateAnimation.setFillAfter(true);
+        rotateAnimation.setDuration(0);
+        header.startAnimation(rotateAnimation);
+        //header.animate().rotation(-15).setDuration(0).start();
+        pendulumAnimation(startAngle, endAngle, header, true, 6);
+    }
+
+    private void pendulumAnimation(final float startAngle, final float endAngle, final View view, final boolean CCW, final float reduction){
+
+
+//        RotateAnimation rotateAnim = new RotateAnimation(startAngle , endAngle , Animation.RELATIVE_TO_PARENT , x ,
+//                Animation.RELATIVE_TO_PARENT , 10);
+
+        final RotateAnimation rotateAnimation = new RotateAnimation(startAngle, endAngle, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.1f);
+        rotateAnimation.setFillAfter(true);
+        rotateAnimation.setDuration(200);
+        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if ((endAngle >= 0 && CCW) || (endAngle <= 0 && !CCW)) {
+                    if(CCW) {
+                        pendulumAnimation(endAngle,startAngle + reduction, view,false,  reduction > 1 ? reduction - 1f : reduction);
+                    } else {
+                        pendulumAnimation(endAngle,startAngle - reduction, view,true, reduction > 1 ? reduction - 1f : reduction);
+                    }
+                } else {
+                    RotateAnimation rotateAnimation = new RotateAnimation(endAngle, 0, Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF, 0.1f);
+                    rotateAnimation.setFillAfter(true);
+                    rotateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
+                            .interpolator.fast_out_slow_in));
+                    rotateAnimation.setDuration(200);
+                    header.startAnimation(rotateAnimation);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        header.startAnimation(rotateAnimation);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-//        if ((requestCode == RC_PHOTO_PICKER || requestCode == RC_PHOTO_SHOT) && resultCode == RESULT_OK) {
-//            //Create the barcode reader
-//            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).setBarcodeFormats(QR_CODE).build();
-//            Bitmap bitmap = null;
-//
-//
-//            if (requestCode == RC_PHOTO_PICKER) {
-//                //Requested selection of the picture from file chooser
-//                Uri selectedImageUri = data.getData();
-//
-//                try {
-//                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    Timber.e("Error parsing Bitmap " + e.getMessage());
-//                    Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//            } else if(requestCode == RC_PHOTO_SHOT) {
-//                //Requested selection of the picture from file camera shot
-//                Bundle extras = data.getExtras();
-//                bitmap = (Bitmap) extras.get("data");
-//            }
-//
-//            //bitmap = resizeUntilLessDesideredSize(bitmap, 2000000);
-//            bitmap = resizeBitmap(bitmap, 600, 600);
-//            //barcode.setImageBitmap(bitmap);
-//
-//            //Detect the barcode from Bitmap
-//            Frame myFrame = new Frame.Builder().setBitmap(bitmap).build();
-//            SparseArray<Barcode> barcodes = barcodeDetector.detect(myFrame);
-//            if (barcodes.size() == 0){
-//                //Barcode not found on picture
-//                Timber.w(getString(R.string.error_no_barcode_found));
-//                Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
-//            } else {
-//                retrieveBarCode(barcodes.valueAt(0));
-//            }
-//        } else
 
         if(requestCode == RC_LIVE_BARCODE_SCAN && resultCode == RESULT_OK){
             Barcode barcode = data.getParcelableExtra("barcode");
