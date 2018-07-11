@@ -1,5 +1,10 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -42,6 +49,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
+
+import static android.view.View.ROTATION;
+import static android.view.View.TRANSLATION_Y;
 
 public class LoginMapsActivity extends AppCompatActivity {
     //Keys
@@ -246,66 +256,52 @@ public class LoginMapsActivity extends AppCompatActivity {
     }
 
     private void setupEntryAnimation(){
-        float toolBarHeight = getResources().getDimension(R.dimen.main_toolbar_height);
-        //header.animate().translationY(-toolBarHeight).setDuration(0).start();
+        float startAngle = -30;
+        header.animate().rotation(startAngle).setDuration(0).start();
+        header.animate().translationY(-140).setDuration(0).start();
 
-        int startAngle = -15;
-        int endAngle = 15;
+//        AnimatorSet headerEntryAnimation = (AnimatorSet) AnimatorInflater
+//                .loadAnimator(this, R.animator.pendulum);
+//        headerEntryAnimation.setTarget(header);
+//        headerEntryAnimation.start();
 
-        //Animation animation = AnimationUtils.loadAnimation(this, R.anim.pendulum_animation);
-        //header.setAnimation(animation);
-        //animation.start();
+        ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(header, TRANSLATION_Y, 0);
+        translateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
+                .interpolator.fast_out_slow_in));
+        translateAnimation.setDuration(1500);
 
-        RotateAnimation rotateAnimation = new RotateAnimation(0, -15, Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.1f);
-        rotateAnimation.setFillAfter(true);
-        rotateAnimation.setDuration(0);
-        header.startAnimation(rotateAnimation);
-        //header.animate().rotation(-15).setDuration(0).start();
-        pendulumAnimation(startAngle, endAngle, header, true, 6);
+        AnimatorSet headerEntryAnimation = new AnimatorSet();
+
+        headerEntryAnimation.playSequentially(buildPendulumObjectAnimator(startAngle, header));
+        headerEntryAnimation.play(translateAnimation);
+        headerEntryAnimation.start();
     }
 
-    private void pendulumAnimation(final float startAngle, final float endAngle, final View view, final boolean CCW, final float reduction){
+    private List<Animator> buildPendulumObjectAnimator(float startAngle, View target){
+        List<Animator> animations = new ArrayList<>();
+        float angle = startAngle;
+        float reduction = 10;
+        boolean CW = false;
+        while(true) {
+            angle = angle * -1;
+            if(angle > 0)
+                angle -= reduction;
+            else
+                angle += reduction;
 
+            if (reduction > 0.5)
+                reduction *= 0.6;
 
-//        RotateAnimation rotateAnim = new RotateAnimation(startAngle , endAngle , Animation.RELATIVE_TO_PARENT , x ,
-//                Animation.RELATIVE_TO_PARENT , 10);
-
-        final RotateAnimation rotateAnimation = new RotateAnimation(startAngle, endAngle, Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.1f);
-        rotateAnimation.setFillAfter(true);
-        rotateAnimation.setDuration(200);
-        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if ((endAngle >= 0 && CCW) || (endAngle <= 0 && !CCW)) {
-                    if(CCW) {
-                        pendulumAnimation(endAngle,startAngle + reduction, view,false,  reduction > 1 ? reduction - 1f : reduction);
-                    } else {
-                        pendulumAnimation(endAngle,startAngle - reduction, view,true, reduction > 1 ? reduction - 1f : reduction);
-                    }
-                } else {
-                    RotateAnimation rotateAnimation = new RotateAnimation(endAngle, 0, Animation.RELATIVE_TO_SELF, 0.5f,
-                            Animation.RELATIVE_TO_SELF, 0.1f);
-                    rotateAnimation.setFillAfter(true);
-                    rotateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
-                            .interpolator.fast_out_slow_in));
-                    rotateAnimation.setDuration(200);
-                    header.startAnimation(rotateAnimation);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        header.startAnimation(rotateAnimation);
+            ObjectAnimator animation = ObjectAnimator.ofFloat(target, ROTATION, angle);
+            animation.setDuration(200);
+            animations.add(animation);
+            if((angle > 0 && CW) || (angle < 0 && !CW)) break;
+            CW = !CW;
+        }
+        ObjectAnimator animation = ObjectAnimator.ofFloat(target, ROTATION, -angle);
+        animation.setDuration(200);
+        animations.add(animation);
+        return animations;
     }
 
     @Override

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <set android:ordering="together">
+        <objectAnimator android:propertyName="translationY"
+            android:valueType="floatType"
+            android:valueFrom="-140"
+            android:valueTo="0"
+            android:duration="800" />
+
+        <set android:ordering="sequentially">
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-30"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:valueTo="28"
+                android:duration="700" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="28"
+                android:valueTo="-26"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-26"
+                android:valueTo="24"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="24"
+                android:valueTo="-22"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-22"
+                android:valueTo="20"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="20"
+                android:valueTo="-18"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-18"
+                android:valueTo="16"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="16"
+                android:valueTo="-14"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-14"
+                android:valueTo="12"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="12"
+                android:valueTo="-10"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-10"
+                android:valueTo="8"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="8"
+                android:valueTo="-6"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-6"
+                android:valueTo="4"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="4"
+                android:valueTo="-2"
+                android:duration="400" />
+
+            <objectAnimator android:propertyName="rotation"
+                android:valueType="floatType"
+                android:valueFrom="-2"
+                android:valueTo="0"
+                android:duration="400" />
+        </set>
+    </set>
+</set>
