@@ -39,7 +39,9 @@ public class WaiterViewModel extends ViewModel {
                 if(dataSnapshot != null){
                     List<WaiterCall> waiterCalls = new ArrayList<>();
                     for(DataSnapshot waiterCallSnapshot : dataSnapshot.getChildren()) {
-                        waiterCalls.add(waiterCallSnapshot.getValue(WaiterCall.class));
+                        WaiterCall waiterCall = waiterCallSnapshot.getValue(WaiterCall.class);
+                        waiterCall.setId(waiterCallSnapshot.getKey());
+                        waiterCalls.add(waiterCall);
                     }
                     calls.setValue(waiterCalls);
                     //calls.postValue(waiterCalls);

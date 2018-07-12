@@ -5,7 +5,9 @@ import com.udacity.thefedex87.takemyorder.ui.activities.CheckoutOrderActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantDetailsActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.WaiterMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment;
 import com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment;
@@ -29,9 +31,12 @@ public interface ApplicationComponent {
     void inject(MenuSingleFragment menuSingleFragment);
     void inject(BarcodeScannerActivity barcodeScannerActivity);
     void inject(CheckoutOrderActivity checkoutOrderActivity);
+    void inject(WaiterMainActivity waiterMainActivity);
 
     void inject(FoodListFragment foodListFragment);
     void inject(DishDescriptionFragment dishDescriptionFragment);
 
     void inject(MenuCompleteFragment menuCompleteFragment);
+
+    void inject(WaiterPagerAdapter waiterPagerAdapter);
 }

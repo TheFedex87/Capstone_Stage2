@@ -19,6 +19,8 @@ import com.udacity.thefedex87.takemyorder.ui.adapters.FoodTypePagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterCallsAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -50,16 +52,24 @@ public class UserInterfaceModule {
 
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
+        this(linearLayoutManagerOrientation);
         this.photoUrls = photoUrls;
         this.reviews = reviews;
         this.imageLoadingState = imageLoadingState;
+    }
+
+    public UserInterfaceModule(int linearLayoutManagerOrientation){
         this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
     }
 
-    public UserInterfaceModule(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, String restaurantId) {
+    public UserInterfaceModule(FragmentManager fragmentManager, String restaurantId){
         this.fragmentManager = fragmentManager;
-        this.meals = meals;
         this.restaurantId = restaurantId;
+    }
+
+    public UserInterfaceModule(FragmentManager fragmentManager, LinkedHashMap<FoodTypes, List<Meal>> meals, String restaurantId) {
+        this(fragmentManager, restaurantId);
+        this.meals = meals;
     }
 
     //TODO: creare un costruttore apposito per FoodInMenuActionClick
@@ -158,5 +168,17 @@ public class UserInterfaceModule {
     @Provides
     public CheckoutOrderAdapter provideOrderSummaryAdapter(){
         return new CheckoutOrderAdapter(mealsGrouped);
+    }
+
+    @Singleton
+    @Provides
+    public WaiterPagerAdapter provideWaiterPagerAdapter(){
+        return new WaiterPagerAdapter(fragmentManager, restaurantId);
+    }
+
+    @Singleton
+    @Provides
+    public WaiterCallsAdapter provideWaiterCallsAdapter(){
+        return new WaiterCallsAdapter();
     }
 }

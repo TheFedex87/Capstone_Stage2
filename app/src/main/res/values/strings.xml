@@ -72,5 +72,7 @@
     <!--Waiter Activity-->
     <string name="waiter_ready_orders">Ready orders</string>
     <string name="waiter_calls">Customer\'s calls</string>
+    <string name="waiter_calls_not_present">There isn\'t any request</string>
+    <string name="waiter_order_ready_not_present">No ready orders</string>
 
 </resources>

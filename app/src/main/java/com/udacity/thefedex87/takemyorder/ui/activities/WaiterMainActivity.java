@@ -2,6 +2,7 @@ package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -11,12 +12,19 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
+import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +46,9 @@ public class WaiterMainActivity extends AppCompatActivity {
     @BindView(R.id.waiter_pager)
     ViewPager waiterPager;
 
+    @Inject
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,25 +58,17 @@ public class WaiterMainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        TakeMyOrderApplication.appComponent().inject(this);
+
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)){
             restaurantId = intent.getStringExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY);
 
             setupUi();
-            setupViewModel();
         }
     }
 
-    private void setupViewModel() {
-        waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
-        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-        waiterViewModel.getRestaurant().observe(this, new Observer<List<WaiterCall>>() {
-            @Override
-            public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
-                int f = 4;
-            }
-        });
-    }
+
 
     private void setupUi() {
         if (waiterTabs != null){
@@ -91,6 +94,15 @@ public class WaiterMainActivity extends AppCompatActivity {
 
                 }
             });
+
+            WaiterPagerAdapter waiterPagerAdapter = DaggerUserInterfaceComponent
+                    .builder()
+                    .applicationModule(new ApplicationModule(context))
+                    .userInterfaceModule(new UserInterfaceModule(getSupportFragmentManager(), restaurantId))
+                    .build()
+                    .getWaiterPagerAdapter();
+
+            waiterPager.setAdapter(waiterPagerAdapter);
         }
     }
 }
