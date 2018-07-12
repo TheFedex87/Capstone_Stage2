@@ -74,5 +74,7 @@
     <string name="waiter_calls">Customer\'s calls</string>
     <string name="waiter_calls_not_present">There isn\'t any request</string>
     <string name="waiter_order_ready_not_present">No ready orders</string>
+    <string name="waiter_call_text">There is a request at table: %1$s</string>
+    <string name="waiter_order_ready_text">There is an order ready for table: %1$s</string>
 
 </resources>

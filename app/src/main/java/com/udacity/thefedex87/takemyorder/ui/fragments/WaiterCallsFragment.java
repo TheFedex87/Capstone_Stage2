@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -33,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by feder on 12/07/2018.
  */
 
-public class WaiterCallsFragment extends Fragment {
+public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.WaiterCallsAdapterClick {
     private List<WaiterCall> calls;
     private String restaurantId;
 
@@ -64,7 +65,7 @@ public class WaiterCallsFragment extends Fragment {
     private void setupViewModel(String restaurantId) {
         WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
         WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-        waiterViewModel.getRestaurant().observe(this, new Observer<List<WaiterCall>>() {
+        waiterViewModel.getWaiterCalls().observe(this, new Observer<List<WaiterCall>>() {
             @Override
             public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
                 waiterCallsAdapter.swapCalls(waiterCalls);
@@ -97,7 +98,7 @@ public class WaiterCallsFragment extends Fragment {
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
-                .userInterfaceModule(new UserInterfaceModule(LinearLayoutManager.VERTICAL))
+                .userInterfaceModule(new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
                 .build();
 
         waiterCallsAdapter = userInterfaceComponent.getWaiterCallsAdapter();
@@ -111,5 +112,10 @@ public class WaiterCallsFragment extends Fragment {
             setupViewModel(restaurantId);
 
         return rootView;
+    }
+
+    @Override
+    public void takeCallClick(WaiterCall call) {
+        Toast.makeText(context, call.getId(), Toast.LENGTH_LONG).show();
     }
 }

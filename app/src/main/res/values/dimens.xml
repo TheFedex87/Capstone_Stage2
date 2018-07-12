@@ -142,6 +142,15 @@
     <dimen name="check_out_receipt_text_size">30sp</dimen>
 
 
+    <!--Waiter Activity-->
+    <dimen name="take_request_text_size">20sp</dimen>
+    <dimen name="take_request_margin">8dp</dimen>
+    <dimen name="take_request_icon_size">50dp</dimen>
+    <dimen name="take_request_icon_margin_top">8dp</dimen>
+    <dimen name="take_request_icon_margin_end">16dp</dimen>
+    <dimen name="take_request_icon_margin_bottom">8dp</dimen>
+
+
 
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="login_maps_icons_width">140dp</dimen>

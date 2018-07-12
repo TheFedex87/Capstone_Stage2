@@ -10,8 +10,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
+import com.udacity.thefedex87.takemyorder.models.WaiterReadyOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,44 @@ import java.util.List;
 
 public class WaiterViewModel extends ViewModel {
     private final String CALLS_ROOT = "waiters_calls";
+    private final String READY_ORDERS_ROOT = "orders";
+
     private MutableLiveData<List<WaiterCall>> calls;
+    private MutableLiveData<List<WaiterReadyOrder>> readyOrders;
 
     public WaiterViewModel(String restaurantId){
         calls = new MutableLiveData<>();
-        retrieveRestaurant(restaurantId);
+        readyOrders = new MutableLiveData<>();
+        retrieveWaiterCalls(restaurantId);
+        retrieveWaiterReadyOrders(restaurantId);
     }
 
-    private void retrieveRestaurant(String restaurantId){
+    private void retrieveWaiterReadyOrders(String restaurantId){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference waiterCallReference = db.getReference(READY_ORDERS_ROOT + "/" +restaurantId);
+        waiterCallReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //TODO: manage if restaurant does not exists
+                if(dataSnapshot != null){
+                    List<WaiterReadyOrder> waiterReadyOrders = new ArrayList<>();
+                    for(DataSnapshot waiterReadyOrderSnapshot : dataSnapshot.getChildren()) {
+                        WaiterReadyOrder waiterReadyOrder = waiterReadyOrderSnapshot.getValue(WaiterReadyOrder.class);
+                        waiterReadyOrder.setId(waiterReadyOrderSnapshot.getKey());
+                        waiterReadyOrders.add(waiterReadyOrder);
+                    }
+                    readyOrders.setValue(waiterReadyOrders);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void retrieveWaiterCalls(String restaurantId){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference waiterCallReference = db.getReference(CALLS_ROOT + "/" +restaurantId);
         waiterCallReference.addValueEventListener(new ValueEventListener() {
@@ -44,7 +74,6 @@ public class WaiterViewModel extends ViewModel {
                         waiterCalls.add(waiterCall);
                     }
                     calls.setValue(waiterCalls);
-                    //calls.postValue(waiterCalls);
                 }
             }
 
@@ -55,5 +84,6 @@ public class WaiterViewModel extends ViewModel {
         });
     }
 
-    public LiveData<List<WaiterCall>> getRestaurant() { return calls; }
+    public LiveData<List<WaiterCall>> getWaiterCalls() { return calls; }
+    public LiveData<List<WaiterReadyOrder>> getWaiterReadyOrders() {return readyOrders;}
 }

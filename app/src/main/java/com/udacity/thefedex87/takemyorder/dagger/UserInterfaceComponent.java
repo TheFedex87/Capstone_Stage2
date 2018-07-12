@@ -12,6 +12,7 @@ import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterCallsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterReadyOrdersAdapter;
 
 import javax.inject.Singleton;
 
@@ -38,4 +39,5 @@ public interface UserInterfaceComponent {
 
     WaiterPagerAdapter getWaiterPagerAdapter();
     WaiterCallsAdapter getWaiterCallsAdapter();
+    WaiterReadyOrdersAdapter getWaiterReadyOrdersAdapter();
 }

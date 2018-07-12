@@ -9,23 +9,40 @@
 
     <TextView
         android:id="@+id/waiter_call_text"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/take_request_margin"
+        android:layout_marginStart="@dimen/take_request_margin"
+        android:layout_marginTop="@dimen/take_request_margin"
+        android:textSize="@dimen/take_request_text_size"
+        app:layout_constraintEnd_toStartOf="@+id/take_request"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Call from table 4" />
 
     <TextView
         android:id="@+id/waiter_call_id"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/take_request_margin"
+        android:layout_marginEnd="@dimen/take_request_margin"
+        android:layout_marginStart="@dimen/take_request_margin"
+        android:layout_marginTop="@dimen/take_request_margin"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/take_request"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/waiter_call_text"
         tools:text="-Ljdb7578ndfHbHB7494u" />
+
+    <ImageView
+        android:id="@+id/take_request"
+        android:layout_width="@dimen/take_request_icon_size"
+        android:layout_height="@dimen/take_request_icon_size"
+        android:layout_marginBottom="@dimen/take_request_icon_margin_bottom"
+        android:layout_marginEnd="@dimen/take_request_icon_margin_end"
+        android:layout_marginTop="@dimen/take_request_icon_margin_top"
+        android:background="@drawable/ic_take_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

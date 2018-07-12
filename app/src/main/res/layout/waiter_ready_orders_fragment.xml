@@ -5,10 +5,12 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/waiter_ready_orders_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
     <TextView
+        android:id="@+id/no_ready_orders_text"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

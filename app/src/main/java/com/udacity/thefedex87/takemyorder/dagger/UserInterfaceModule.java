@@ -21,6 +21,7 @@ import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterCallsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
+import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterReadyOrdersAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -50,6 +51,8 @@ public class UserInterfaceModule {
     private LinkedHashMap<FoodTypes, List<Meal>> meals;
     private String restaurantId;
 
+    private WaiterCallsAdapter.WaiterCallsAdapterClick waiterCallsAdapterClick;
+
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
         this(linearLayoutManagerOrientation);
@@ -60,6 +63,11 @@ public class UserInterfaceModule {
 
     public UserInterfaceModule(int linearLayoutManagerOrientation){
         this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
+    }
+
+    public UserInterfaceModule(int linearLayoutManagerOrientation, WaiterCallsAdapter.WaiterCallsAdapterClick waiterCallsAdapterClick){
+        this(linearLayoutManagerOrientation);
+        this.waiterCallsAdapterClick = waiterCallsAdapterClick;
     }
 
     public UserInterfaceModule(FragmentManager fragmentManager, String restaurantId){
@@ -179,6 +187,12 @@ public class UserInterfaceModule {
     @Singleton
     @Provides
     public WaiterCallsAdapter provideWaiterCallsAdapter(){
-        return new WaiterCallsAdapter();
+        return new WaiterCallsAdapter(waiterCallsAdapterClick);
+    }
+
+    @Singleton
+    @Provides
+    public WaiterReadyOrdersAdapter provideWaiterReadyOrdersAdapter(){
+        return new WaiterReadyOrdersAdapter();
     }
 }
