@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="header_height">140dp</dimen>
-    <dimen name="header_elevation">140dp</dimen>
+    <dimen name="header_elevation">8dp</dimen>
 
     <!--Restaurant Details-->
     <dimen name="restaurant_detail_photo_height">500dp</dimen>

@@ -69,4 +69,8 @@
     <string name="subtract_food">-1</string>
     <string name="menu">Menu</string>
 
+    <!--Waiter Activity-->
+    <string name="waiter_ready_orders">Ready orders</string>
+    <string name="waiter_calls">Customer\'s calls</string>
+
 </resources>

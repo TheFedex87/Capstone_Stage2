@@ -34,6 +34,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.Customer;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
+import com.udacity.thefedex87.takemyorder.models.Waiter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +61,8 @@ public class LoginMapsActivity extends AppCompatActivity {
     public final static String USER_INFO_KEY = "USER_INFO_KEY";
     public final static String USER_RESTAURANT_KEY = "USER_RESTAURANT_KEY";
     public final static String USER_RESTAURANT_TABLE_KEY = "USER_RESTAURANT_TABLE_KEY";
+
+    public final static String WAITER_RESTAURANT_KEY = "WAITER_RESTAURANT_KEY";
 
     //Activity results
     public static final int RC_SIGN_IN = 1;
@@ -204,7 +207,13 @@ public class LoginMapsActivity extends AppCompatActivity {
                                             } else {
                                                 //Waiter login
                                                 //AuthUI.getInstance().signOut(LoginMapsActivity.this);
+                                                Waiter waiter = null;
+                                                for(DataSnapshot waiterSnapshot : dataSnapshot.getChildren()){
+                                                    waiter = waiterSnapshot.getValue(Waiter.class);
+                                                }
+
                                                 Intent intent = new Intent(LoginMapsActivity.this, WaiterMainActivity.class);
+                                                intent.putExtra(WAITER_RESTAURANT_KEY, waiter.getRestaurantId());
                                                 startActivity(intent);
                                             }
                                         }

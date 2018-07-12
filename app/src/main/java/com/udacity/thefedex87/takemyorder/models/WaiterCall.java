@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel;
+package com.udacity.thefedex87.takemyorder.models;
 
 /**
  * Created by feder on 05/07/2018.
@@ -7,6 +7,10 @@ package com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel;
 public class WaiterCall {
     private String tableId;
     private String userId;
+
+    public WaiterCall(){
+
+    }
 
     public WaiterCall(String tableId, String userId) {
         this.tableId = tableId;
