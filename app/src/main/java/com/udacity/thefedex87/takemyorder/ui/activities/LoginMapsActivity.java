@@ -1,21 +1,19 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -51,6 +49,9 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 import static android.view.View.ROTATION;
+import static android.view.View.SCALE_X;
+import static android.view.View.SCALE_Y;
+import static android.view.View.TRANSLATION_X;
 import static android.view.View.TRANSLATION_Y;
 
 public class LoginMapsActivity extends AppCompatActivity {
@@ -194,27 +195,6 @@ public class LoginMapsActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             //If dataSnapshot.getValue() is equal to null, a customer is logging into the system
                                             if (dataSnapshot.getValue() == null){
-//                                                AlertDialog.Builder builder;
-//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                                                    builder = new AlertDialog.Builder(LoginMapsActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-//                                                } else {
-//                                                    builder = new AlertDialog.Builder(LoginMapsActivity.this);
-//                                                }
-//                                                builder.setTitle("Delete entry")
-//                                                        .setMessage("Are you sure you want to delete this entry?")
-//                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                                            public void onClick(DialogInterface dialog, int which) {
-//                                                                // continue with delete
-//                                                            }
-//                                                        })
-//                                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                                                            public void onClick(DialogInterface dialog, int which) {
-//                                                                // do nothing
-//                                                            }
-//                                                        })
-//                                                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                                                        .show();
-
                                                 customer = new Customer();
                                                 customer.setEmail(user.getEmail());
                                                 customer.setUserName(user.getDisplayName());
@@ -223,7 +203,9 @@ public class LoginMapsActivity extends AppCompatActivity {
                                                 startActivityForResult(intent, RC_LIVE_BARCODE_SCAN);
                                             } else {
                                                 //Waiter login
-                                                AuthUI.getInstance().signOut(LoginMapsActivity.this);
+                                                //AuthUI.getInstance().signOut(LoginMapsActivity.this);
+                                                Intent intent = new Intent(LoginMapsActivity.this, WaiterMainActivity.class);
+                                                startActivity(intent);
                                             }
                                         }
 
@@ -256,28 +238,89 @@ public class LoginMapsActivity extends AppCompatActivity {
     }
 
     private void setupEntryAnimation(){
-        float startAngle = -30;
-        header.animate().rotation(startAngle).setDuration(0).start();
-        header.animate().translationY(-140).setDuration(0).start();
-
-//        AnimatorSet headerEntryAnimation = (AnimatorSet) AnimatorInflater
-//                .loadAnimator(this, R.animator.pendulum);
-//        headerEntryAnimation.setTarget(header);
+//        float startAngle = -30;
+//        header.animate().rotation(startAngle).setDuration(0).start();
+//        header.animate().translationY(-140).setDuration(0).start();
+//
+////        AnimatorSet headerEntryAnimation = (AnimatorSet) AnimatorInflater
+////                .loadAnimator(this, R.animator.pendulum);
+////        headerEntryAnimation.setTarget(header);
+////        headerEntryAnimation.start();
+//
+//        ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(header, TRANSLATION_Y, 0);
+//        translateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
+//                .interpolator.fast_out_slow_in));
+//        translateAnimation.setDuration(1500);
+//
+//        AnimatorSet headerEntryAnimation = new AnimatorSet();
+//        headerEntryAnimation.playSequentially(buildPendulumAnimations(startAngle, header));
+//        headerEntryAnimation.play(translateAnimation);
 //        headerEntryAnimation.start();
 
-        ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(header, TRANSLATION_Y, 0);
-        translateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
-                .interpolator.fast_out_slow_in));
-        translateAnimation.setDuration(1500);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        header.animate().translationX(-width).setDuration(0).start();
+        map.animate().scaleX(0).setDuration(0).start();
+        map.animate().scaleY(0).setDuration(0).start();
+        login.animate().scaleX(0).setDuration(0).start();
+        login.animate().scaleY(0).setDuration(0).start();
 
-        AnimatorSet headerEntryAnimation = new AnimatorSet();
+        AnimatorSet headerEntyAnimation = new AnimatorSet();
+        headerEntyAnimation.playTogether(buildBrakeAnimations(header));
+        headerEntyAnimation.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
 
-        headerEntryAnimation.playSequentially(buildPendulumObjectAnimator(startAngle, header));
-        headerEntryAnimation.play(translateAnimation);
-        headerEntryAnimation.start();
+                AnimatorSet animatorSetScaleMap = new AnimatorSet();
+                ObjectAnimator scaleMapXAnimation = ObjectAnimator.ofFloat(map, SCALE_X, 1);
+                ObjectAnimator scaleMapYAnimation = ObjectAnimator.ofFloat(map, SCALE_Y, 1);
+                animatorSetScaleMap.playTogether(scaleMapXAnimation, scaleMapYAnimation);
+                animatorSetScaleMap.setDuration(350);
+
+                AnimatorSet animatorSetScaleLogin = new AnimatorSet();
+                ObjectAnimator scaleLoginXAnimation = ObjectAnimator.ofFloat(login, SCALE_X, 1);
+                ObjectAnimator scaleLoginYAnimation = ObjectAnimator.ofFloat(login, SCALE_Y, 1);
+                animatorSetScaleLogin.playTogether(scaleLoginXAnimation, scaleLoginYAnimation);
+                animatorSetScaleLogin.setDuration(350);
+
+                AnimatorSet animatorScale = new AnimatorSet();
+                animatorScale.playSequentially(animatorSetScaleMap, animatorSetScaleLogin);
+                animatorScale.start();
+            }
+        });
+        headerEntyAnimation.start();
     }
 
-    private List<Animator> buildPendulumObjectAnimator(float startAngle, View target){
+    private List<Animator> buildBrakeAnimations(View target){
+        List<Animator> animations = new ArrayList<>();
+        ObjectAnimator translateX = ObjectAnimator.ofFloat(target, TRANSLATION_X, 100);
+//        translateX.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
+//                .interpolator.fas));
+        translateX.setDuration(800);
+        animations.add(translateX);
+
+        ObjectAnimator rotate = ObjectAnimator.ofFloat(target, ROTATION, 10);
+        rotate.setStartDelay(600);
+        rotate.setDuration(200);
+        animations.add(rotate);
+
+        ObjectAnimator rotateBack = ObjectAnimator.ofFloat(target, ROTATION, 0);
+        rotateBack.setStartDelay(800);
+        rotateBack.setDuration(300);
+        animations.add(rotateBack);
+
+        ObjectAnimator translateBack = ObjectAnimator.ofFloat(target, TRANSLATION_X, 0);
+        translateBack.setStartDelay(800);
+        translateBack.setDuration(300);
+        animations.add(translateBack);
+
+        return animations;
+    }
+
+    private List<Animator> buildPendulumAnimations(float startAngle, View target){
         List<Animator> animations = new ArrayList<>();
         float angle = startAngle;
         float reduction = 10;

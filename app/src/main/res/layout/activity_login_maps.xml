@@ -34,7 +34,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/app_bg_2"
+        android:background="@drawable/app_bg"
         android:alpha="0.4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,21 +44,29 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <RelativeLayout
-        android:id="@+id/header"
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_toolbar_height"
+        android:layout_height="@dimen/header_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/white"
-        android:alpha="0.85">
+        android:alpha="0.85"
+        android:elevation="@dimen/header_elevation">
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/header_height"
+            android:background="@color/transparent"
+            android:alpha="1">
 
-        <ImageView
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/logo"
-            />
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_2"
+                />
+        </RelativeLayout>
     </RelativeLayout>
 
     <android.support.constraint.Guideline
