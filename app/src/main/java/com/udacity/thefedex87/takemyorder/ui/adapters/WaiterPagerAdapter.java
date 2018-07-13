@@ -38,15 +38,26 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        if (fragment instanceof WaiterCallsFragment)
+            ((WaiterCallsFragment)fragment).setRestaurantId(restaurantId);
+        else if(fragment instanceof  WaiterReadyOrderFragment){
+            ((WaiterReadyOrderFragment)fragment).setRestaurantId(restaurantId);
+        }
+        return fragment;
+    }
+
+    @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
                 WaiterCallsFragment waiterCallsFragment = (WaiterCallsFragment) Fragment.instantiate(context, WaiterCallsFragment.class.getName());
-                waiterCallsFragment.setRestaurantId(restaurantId);
+                //waiterCallsFragment.setRestaurantId(restaurantId);
                 return waiterCallsFragment;
             case 1:
                 WaiterReadyOrderFragment waiterReadyOrderFragment = (WaiterReadyOrderFragment)Fragment.instantiate(context, WaiterReadyOrderFragment.class.getName());
-                waiterReadyOrderFragment.setRestaurantId(restaurantId);
+                //waiterReadyOrderFragment.setRestaurantId(restaurantId);
                 return waiterReadyOrderFragment;
             default:
                 return null;

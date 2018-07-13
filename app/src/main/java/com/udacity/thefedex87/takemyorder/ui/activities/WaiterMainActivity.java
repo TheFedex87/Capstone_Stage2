@@ -23,6 +23,8 @@ import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
+import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterCallsFragment;
+import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterReadyOrderFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
@@ -35,6 +37,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class WaiterMainActivity extends AppCompatActivity {
+    private final String RESTAURANT_KEY = "RESTAURANT_KEY";
 
     private String restaurantId;
     private WaiterViewModelFactory waiterViewModelFactory;
@@ -66,12 +69,14 @@ public class WaiterMainActivity extends AppCompatActivity {
 
         TakeMyOrderApplication.appComponent().inject(this);
 
+
         Intent intent = getIntent();
-        if(intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)){
+        if (intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)) {
             restaurantId = intent.getStringExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY);
 
             setupUi();
         }
+
     }
 
     @Override
@@ -93,14 +98,20 @@ public class WaiterMainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(RESTAURANT_KEY, restaurantId);
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupUi() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.waiter_main_title, firebaseAuth.getCurrentUser().getDisplayName()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (waiterTabs != null){
-            waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_ready_orders)));
             waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_calls)));
+            waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_ready_orders)));
 
             waiterTabs.setTabGravity(TabLayout.GRAVITY_FILL);
             waiterTabs.setTabMode(TabLayout.MODE_FIXED);
@@ -130,6 +141,11 @@ public class WaiterMainActivity extends AppCompatActivity {
                     .getWaiterPagerAdapter();
 
             waiterPager.setAdapter(waiterPagerAdapter);
+
+
+        } else {
+            ((WaiterCallsFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calls)).setRestaurantId(restaurantId);
+            ((WaiterReadyOrderFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_ready_orders)).setRestaurantId(restaurantId);
         }
     }
 

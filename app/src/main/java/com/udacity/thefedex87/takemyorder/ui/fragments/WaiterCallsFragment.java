@@ -82,10 +82,6 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
         });
     }
 
-    public void setWaiterCalls(List<WaiterCall> calls){
-        this.calls = calls;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

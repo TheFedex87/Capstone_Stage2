@@ -81,10 +81,6 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
         });
     }
 
-    public void setWaiterReadyOrders(List<WaiterReadyOrder> readyOrders){
-        this.readyOrders = readyOrders;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
