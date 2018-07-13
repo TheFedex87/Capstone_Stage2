@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
@@ -33,7 +38,7 @@ import butterknife.ButterKnife;
  * Created by feder on 12/07/2018.
  */
 
-public class WaiterReadyOrderFragment extends Fragment {
+public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrdersAdapter.WaiterReadyOrderAdapterClick {
     private List<WaiterReadyOrder> readyOrders;
     private String restaurantId;
 
@@ -97,7 +102,7 @@ public class WaiterReadyOrderFragment extends Fragment {
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
-                .userInterfaceModule(new UserInterfaceModule(LinearLayoutManager.VERTICAL))
+                .userInterfaceModule(new UserInterfaceModule(LinearLayoutManager.VERTICAL, this))
                 .build();
 
         waiterReadyOrdersAdapter = userInterfaceComponent.getWaiterReadyOrdersAdapter();
@@ -111,5 +116,24 @@ public class WaiterReadyOrderFragment extends Fragment {
             setupViewModel(restaurantId);
 
         return rootView;
+    }
+
+    @Override
+    public void takeReadyOrderClick(WaiterReadyOrder readyOrder) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference callsReference = db.getReference("orders/" + restaurantId + "/" + readyOrder.getId());
+        callsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot callSnapshot : dataSnapshot.getChildren()){
+                    callSnapshot.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

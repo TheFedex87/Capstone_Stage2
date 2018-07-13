@@ -52,6 +52,7 @@ public class UserInterfaceModule {
     private String restaurantId;
 
     private WaiterCallsAdapter.WaiterCallsAdapterClick waiterCallsAdapterClick;
+    private WaiterReadyOrdersAdapter.WaiterReadyOrderAdapterClick waiterReadyOrderAdapterClick;
 
 
     public UserInterfaceModule(List<String> photoUrls, List<RestaurantReviewModel> reviews, RestaurantPhotoAdapter.ImageLoadingState imageLoadingState, int linearLayoutManagerOrientation){
@@ -68,6 +69,11 @@ public class UserInterfaceModule {
     public UserInterfaceModule(int linearLayoutManagerOrientation, WaiterCallsAdapter.WaiterCallsAdapterClick waiterCallsAdapterClick){
         this(linearLayoutManagerOrientation);
         this.waiterCallsAdapterClick = waiterCallsAdapterClick;
+    }
+
+    public UserInterfaceModule(int linearLayoutManagerOrientation, WaiterReadyOrdersAdapter.WaiterReadyOrderAdapterClick waiterReadyOrderAdapterClick){
+        this(linearLayoutManagerOrientation);
+        this.waiterReadyOrderAdapterClick = waiterReadyOrderAdapterClick;
     }
 
     public UserInterfaceModule(FragmentManager fragmentManager, String restaurantId){
@@ -193,6 +199,6 @@ public class UserInterfaceModule {
     @Singleton
     @Provides
     public WaiterReadyOrdersAdapter provideWaiterReadyOrdersAdapter(){
-        return new WaiterReadyOrdersAdapter();
+        return new WaiterReadyOrdersAdapter(waiterReadyOrderAdapterClick);
     }
 }

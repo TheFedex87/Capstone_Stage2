@@ -1075,6 +1075,7 @@ public final class PostMockData {
         waiter.setLastName("Pardi");
         waiter.setUserName("l.pardi45");
         waiter.setPassword("lpardi45pwd");
+        waiter.setEmail("lpardi45@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1082,6 +1083,7 @@ public final class PostMockData {
         waiter.setLastName("Burdi");
         waiter.setUserName("b.burdi56");
         waiter.setPassword("bburdi12pwd");
+        waiter.setEmail("bburdi12@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1089,6 +1091,7 @@ public final class PostMockData {
         waiter.setLastName("Taddei");
         waiter.setUserName("f.taddei36");
         waiter.setPassword("ftaddei36pwd");
+        waiter.setEmail("ftaddei36@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1096,6 +1099,7 @@ public final class PostMockData {
         waiter.setLastName("Richard");
         waiter.setUserName("j.richard81");
         waiter.setPassword("jrichard81pwd");
+        waiter.setEmail("jrichard81@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1103,6 +1107,7 @@ public final class PostMockData {
         waiter.setLastName("Sarti");
         waiter.setUserName("a.sarti55");
         waiter.setPassword("asarti55pwd");
+        waiter.setEmail("asarti55@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1110,6 +1115,7 @@ public final class PostMockData {
         waiter.setLastName("Ventura");
         waiter.setUserName("a.ventura69");
         waiter.setPassword("aventura69pwd");
+        waiter.setEmail("aventura69@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1117,6 +1123,7 @@ public final class PostMockData {
         waiter.setLastName("Misciotti");
         waiter.setUserName("c.misciotti70");
         waiter.setPassword("cmisciotti70pwd");
+        waiter.setEmail("cmisciotti70@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1124,6 +1131,7 @@ public final class PostMockData {
         waiter.setLastName("Vanti");
         waiter.setUserName("m.vanti99");
         waiter.setPassword("mvanti99pwd");
+        waiter.setEmail("mvanti99@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1131,6 +1139,7 @@ public final class PostMockData {
         waiter.setLastName("Rossi");
         waiter.setUserName("v.rossi46");
         waiter.setPassword("vrossi46pwd");
+        waiter.setEmail("vrossi46@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1146,6 +1155,7 @@ public final class PostMockData {
         waiter.setLastName("Franchi");
         waiter.setUserName("f.franchi59");
         waiter.setPassword("ffranchi59pwd");
+        waiter.setEmail("ffranchi59@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1153,6 +1163,7 @@ public final class PostMockData {
         waiter.setLastName("Miner");
         waiter.setUserName("m.miner23");
         waiter.setPassword("mminer23pwd");
+        waiter.setEmail("mminer23@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1160,6 +1171,7 @@ public final class PostMockData {
         waiter.setLastName("Zanchi");
         waiter.setUserName("a.zanchi88");
         waiter.setPassword("azanchi88pwd");
+        waiter.setEmail("azanchi88@fakemail.com");
         waiters.add(waiter);
 
         waiter = new Waiter();
@@ -1167,6 +1179,7 @@ public final class PostMockData {
         waiter.setLastName("Stark");
         waiter.setUserName("b.stark60");
         waiter.setPassword("bstark60pwd");
+        waiter.setEmail("bstark60@fakemail.com");
         waiters.add(waiter);
 
         return waiters;

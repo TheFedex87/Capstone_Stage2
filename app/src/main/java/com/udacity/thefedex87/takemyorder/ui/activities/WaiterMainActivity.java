@@ -10,7 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -34,6 +38,7 @@ public class WaiterMainActivity extends AppCompatActivity {
 
     private String restaurantId;
     private WaiterViewModelFactory waiterViewModelFactory;
+    private FirebaseAuth firebaseAuth;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -55,6 +60,7 @@ public class WaiterMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiter_main);
 
         Timber.i("Waiter logged");
+        firebaseAuth = FirebaseAuth.getInstance();
 
         ButterKnife.bind(this);
 
@@ -68,9 +74,30 @@ public class WaiterMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_waiter, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.log_out:
+                signout();
+                finish();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void setupUi() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.waiter_main_title, firebaseAuth.getCurrentUser().getDisplayName()));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (waiterTabs != null){
             waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_ready_orders)));
             waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_calls)));
@@ -104,5 +131,12 @@ public class WaiterMainActivity extends AppCompatActivity {
 
             waiterPager.setAdapter(waiterPagerAdapter);
         }
+    }
+
+    private void signout(){
+        //Signout from Firebase
+        firebaseAuth.signOut();
+        Timber.d("User signed out");
+        finish();
     }
 }

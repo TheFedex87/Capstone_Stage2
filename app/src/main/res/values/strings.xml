@@ -70,6 +70,7 @@
     <string name="menu">Menu</string>
 
     <!--Waiter Activity-->
+    <string name="waiter_main_title">TakeMyOrder - Waiter: %1$s</string>
     <string name="waiter_ready_orders">Ready orders</string>
     <string name="waiter_calls">Customer\'s calls</string>
     <string name="waiter_calls_not_present">There isn\'t any request</string>

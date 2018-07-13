@@ -27,6 +27,10 @@ public class WaiterReadyOrdersAdapter extends RecyclerView.Adapter<WaiterReadyOr
     private Context context;
     private WaiterReadyOrderAdapterClick waiterReadyOrderAdapterClick;
 
+    public WaiterReadyOrdersAdapter(WaiterReadyOrderAdapterClick waiterReadyOrderAdapterClick){
+        this.waiterReadyOrderAdapterClick = waiterReadyOrderAdapterClick;
+    }
+
     public void swapReadyOrders(List<WaiterReadyOrder> readyOrders){
         this.readyOrders = readyOrders;
         notifyDataSetChanged();
