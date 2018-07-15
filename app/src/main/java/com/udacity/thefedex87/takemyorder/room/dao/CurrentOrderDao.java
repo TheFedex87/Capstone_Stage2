@@ -19,17 +19,17 @@ import java.util.List;
 @Dao
 public interface CurrentOrderDao {
     //Select the current order for the logged user
-    @Query("SELECT * FROM current_order WHERE userId = :userRoomId")
-    LiveData<List<Meal>> getCurrentOrderList(long userRoomId);
+    @Query("SELECT * FROM current_order WHERE userId = :userRoomId AND restaurantId = :restaurantId")
+    LiveData<List<Meal>> getCurrentOrderList(long userRoomId, String restaurantId);
 
     //Get the list of the order with the same MealId, it used to count the number of meal of the same tyoe
-    @Query("SELECT * FROM current_order WHERE mealId = :mealId AND userId = :userRoomId")
-    LiveData<List<Meal>> getCurrentOrderListByMealId(String mealId, long userRoomId);
+    @Query("SELECT * FROM current_order WHERE mealId = :mealId AND userId = :userRoomId AND restaurantId = :restaurantId")
+    LiveData<List<Meal>> getCurrentOrderListByMealId(String mealId, long userRoomId, String restaurantId);
 
     //Get the list of meal inside current order, by foodType (starter, main dishes,...) and grouped by meal id in order to count
     //the number of meal with the same type
-    @Query("SELECT *, COUNT(mealId) AS count FROM current_order WHERE foodType = :foodType AND userId = :userRoomId GROUP BY mealId")
-    LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType(FoodTypes foodType, long userRoomId);
+    @Query("SELECT *, COUNT(mealId) AS count FROM current_order WHERE foodType = :foodType AND userId = :userRoomId AND restaurantId = :restaurantId GROUP BY mealId")
+    LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType(FoodTypes foodType, long userRoomId, String restaurantId);
 
     @Insert
     void insertFood(Meal food);

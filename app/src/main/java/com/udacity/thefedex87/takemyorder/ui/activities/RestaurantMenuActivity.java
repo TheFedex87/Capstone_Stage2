@@ -287,6 +287,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
                         foodImageToAnimateAlphaAnimation.start();
 
                         meal.setUserId(userRoomId);
+                        meal.setRestaurantId(restaurantId);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {

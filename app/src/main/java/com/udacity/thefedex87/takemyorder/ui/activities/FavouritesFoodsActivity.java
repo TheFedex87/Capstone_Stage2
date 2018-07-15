@@ -132,7 +132,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
         FavouritesViewModelFactory favouritesViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
-                .viewModelModule(new ViewModelModule(restaurantId, userRoomId))
+                .viewModelModule(new ViewModelModule(restaurantId, null, userRoomId))
                 .build()
                 .getFavouritesViewModelFactory();
 
@@ -292,6 +292,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                         foodImageToAnimateAlphaAnimation.start();
 
                         meal.setUserId(userRoomId);
+                        meal.setRestaurantId(restaurantId);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {

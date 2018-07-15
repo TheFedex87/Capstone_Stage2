@@ -25,8 +25,8 @@ public class FavouritesViewModel extends ViewModel {
     public FavouritesViewModel(AppDatabase db, String restaurantId, long userId){
         this.db = db;
         this.restaurantId = restaurantId;
-        favouriteMealsOfUser = db.favouriteMealsDao().getFavouriteMealsOfUser(userId);
-        currentOrderList = db.currentOrderDao().getCurrentOrderList(userId);
+        favouriteMealsOfUser = db.favouriteMealsDao().getFavouriteMealsOfUser(userId, restaurantId);
+        currentOrderList = db.currentOrderDao().getCurrentOrderList(userId, restaurantId);
     }
 
     public void setMealId(String mealId){

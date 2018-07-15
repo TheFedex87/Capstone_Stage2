@@ -97,30 +97,6 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
         }
     }
 
-//    private void setupViewModel(final String restaurantId) {
-//        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
-//        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-//        waiterViewModel.getWaiterCalls().observe(this, new Observer<List<WaiterCall>>() {
-//            @Override
-//            public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
-//                waiterCallsAdapter.swapCalls(waiterCalls);
-//                if (waiterCalls != null && waiterCalls.size() > 0) {
-//                    noCallsText.setVisibility(View.GONE);
-//
-//                } else {
-//                    noCallsText.setVisibility(View.VISIBLE);
-//                }
-//
-//                firstDownload = false;
-//                if(waiterCalls != null){
-//                    currentCallsId.clear();
-//                    for(WaiterCall waiterCall : waiterCalls)
-//                        currentCallsId.add(waiterCall.getId());
-//                }
-//            }
-//        });
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.LoginMapsActivity"
+        <activity
+            android:name=".ui.activities.LoginMapsActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -98,20 +99,31 @@
                 android:value=".ui.activities.CustomerMainActivity" />
         </activity>
         <activity android:name=".ui.activities.BarcodeScannerActivity" />
-        <activity android:name=".ui.activities.CheckoutOrderActivity"
+        <activity
+            android:name=".ui.activities.CheckoutOrderActivity"
             android:label="@string/checkout_order"
             android:parentActivityName=".ui.activities.CustomerMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.CustomerMainActivity" />
         </activity>
-        
-        <service android:name=".services.WaiterAttentionRequest"
+
+        <service
+            android:name=".services.WaiterAttentionRequest"
+            android:exported="false" />
+        <service
+            android:name=".services.WaiterRequestAttentionService"
             android:exported="false" />
 
-        <service android:name=".services.WaiterRequestAttentionService"
-            android:exported="false" />
+        <receiver android:name=".ui.widgets.FavouritesDishesWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favourites_dishes_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

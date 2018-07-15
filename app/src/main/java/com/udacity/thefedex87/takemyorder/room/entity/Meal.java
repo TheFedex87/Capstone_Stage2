@@ -21,6 +21,7 @@ public class Meal implements Parcelable {
     private String imageName;
     private String mealId;
     private FoodTypes foodType;
+    private String restaurantId;
 
     private long userId;
 
@@ -80,6 +81,14 @@ public class Meal implements Parcelable {
         this.userId = userId;
     }
 
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
 
     @Override
     public int describeContents() {
@@ -94,6 +103,7 @@ public class Meal implements Parcelable {
         dest.writeString(this.imageName);
         dest.writeString(this.mealId);
         dest.writeInt(this.foodType == null ? -1 : this.foodType.ordinal());
+        dest.writeString(this.restaurantId);
         dest.writeLong(this.userId);
     }
 
@@ -108,10 +118,11 @@ public class Meal implements Parcelable {
         this.mealId = in.readString();
         int tmpFoodType = in.readInt();
         this.foodType = tmpFoodType == -1 ? null : FoodTypes.values()[tmpFoodType];
+        this.restaurantId = in.readString();
         this.userId = in.readLong();
     }
 
-    public static final Creator<Meal> CREATOR = new Creator<Meal>() {
+    public static final Parcelable.Creator<Meal> CREATOR = new Parcelable.Creator<Meal>() {
         @Override
         public Meal createFromParcel(Parcel source) {
             return new Meal(source);

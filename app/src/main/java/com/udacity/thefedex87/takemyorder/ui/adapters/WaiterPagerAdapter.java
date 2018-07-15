@@ -24,8 +24,6 @@ import javax.inject.Inject;
  */
 
 public class WaiterPagerAdapter extends FragmentPagerAdapter {
-//    private List<WaiterCall> calls;
-//    private List<WaiterReadyOrderFragment> readyOrders;
     private String restaurantId;
     private WaiterCallsFragment waiterCallsFragment;
     private WaiterReadyOrderFragment waiterReadyOrder;
@@ -77,11 +75,6 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
-
-//    @Override
-//    public Object instantiateItem(ViewGroup container, int position) {
-//        return super.instantiateItem(container, position);
-//    }
 
     @Override
     public int getCount() {

@@ -69,21 +69,6 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
         this.restaurantId = restaurantId;
     }
 
-//    private void setupViewModel(String restaurantId) {
-//        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
-//        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-//        waiterViewModel.getWaiterReadyOrders().observe(this, new Observer<List<WaiterReadyOrder>>() {
-//            @Override
-//            public void onChanged(@Nullable List<WaiterReadyOrder> waiterReadyOrders) {
-//                waiterReadyOrdersAdapter.swapReadyOrders(waiterReadyOrders);
-//                if (waiterReadyOrders != null && waiterReadyOrders.size() > 0)
-//                    noReadyOrdersText.setVisibility(View.GONE);
-//                else
-//                    noReadyOrdersText.setVisibility(View.VISIBLE);
-//            }
-//        });
-//    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

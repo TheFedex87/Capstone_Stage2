@@ -106,6 +106,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
             //Assign the table to the fragment
             foodListFragment.setTableNumber(table);
 
+            foodListFragment.setRestaurantId(restaurantId);
+
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

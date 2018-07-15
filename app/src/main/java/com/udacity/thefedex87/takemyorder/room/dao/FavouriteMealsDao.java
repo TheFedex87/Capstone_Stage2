@@ -26,18 +26,18 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 public interface FavouriteMealsDao {
     //Get the list of user's favourites meals
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
-            "WHERE favouritemeal_user_join.userId = :userRoomId")
-    LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId);
+            "WHERE favouritemeal_user_join.userId = :userRoomId AND favourite_meals.restaurantId = :restaurantId")
+    LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId, String restaurantId);
 
-    //Get a user favourite meal by it's id. This is used to check if a specific toolbar_bg_2 is a favourite for the logged user
+    //Get a user favourite meal by it's id. This is used to check if a specific food is a favourite for the logged user
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
-            "WHERE favourite_meals.mealId = :mealId AND favouritemeal_user_join.userId = :userRoomId")
-    LiveData<FavouriteMeal> getUserFavouriteMealById(String mealId, long userRoomId);
+            "WHERE favourite_meals.mealId = :mealId AND favouritemeal_user_join.userId = :userRoomId AND favourite_meals.restaurantId = :restaurantId")
+    LiveData<FavouriteMeal> getUserFavouriteMealById(String mealId, long userRoomId, String restaurantId);
 
-    //Get the toolbar_bg_2 with specific foodId from the favourite list, this is used to see if a toolbar_bg_2 is already inside the table of
+    //Get the food with specific foodId from the favourite list, this is used to see if a food is already inside the table of
     //favourites meals
-    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId")
-    LiveData<FavouriteMeal> getFavouriteMealById(String mealId);
+    @Query("SELECT * FROM favourite_meals WHERE mealId = :mealId AND favourite_meals.restaurantId = :restaurantId")
+    LiveData<FavouriteMeal> getFavouriteMealById(String mealId, String restaurantId);
 
     //Get an ingredient by its name
     @Query("SELECT * FROM ingredient WHERE ingredientName = :ingredientName")

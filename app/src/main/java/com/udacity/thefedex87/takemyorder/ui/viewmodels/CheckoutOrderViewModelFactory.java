@@ -13,13 +13,15 @@ import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 public class CheckoutOrderViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final AppDatabase db;
     private final long userRoomId;
+    private final String restaurantId;
 
-    public CheckoutOrderViewModelFactory(AppDatabase db, long userRoomId){
+    public CheckoutOrderViewModelFactory(AppDatabase db, long userRoomId, String restaurantId){
         this.db = db;
         this.userRoomId = userRoomId;
+        this.restaurantId = restaurantId;
     }
 
     public <T extends ViewModel>T create(Class<T> modelClass){
-        return (T) new CheckoutOrderViewModel(db, userRoomId);
+        return (T) new CheckoutOrderViewModel(db, userRoomId, restaurantId);
     }
 }

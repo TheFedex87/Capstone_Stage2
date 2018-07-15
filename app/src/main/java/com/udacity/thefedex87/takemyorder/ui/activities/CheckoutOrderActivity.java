@@ -130,7 +130,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
         CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
-                .viewModelModule(new ViewModelModule(userRoomId))
+                .viewModelModule(new ViewModelModule(restaurantId, null, userRoomId))
                 .build()
                 .getCheckoutOrderViewModelFactory();
 

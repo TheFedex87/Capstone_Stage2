@@ -13,14 +13,16 @@ public class DishDetailsViewModelFactory extends ViewModelProvider.NewInstanceFa
     private final AppDatabase db;
     private final String mealId;
     private final long userRoomId;
+    private final String restaurantId;
 
-    public DishDetailsViewModelFactory(AppDatabase db, String mealId, long userRoomId){
+    public DishDetailsViewModelFactory(AppDatabase db, String mealId, long userRoomId, String restaurantId){
         this.db = db;
         this.mealId = mealId;
         this.userRoomId = userRoomId;
+        this.restaurantId = restaurantId;
     }
 
     public <T extends ViewModel>T create(Class<T> modelClass){
-        return (T) new DishDetailsViewModel(db, mealId, userRoomId);
+        return (T) new DishDetailsViewModel(db, mealId, userRoomId, restaurantId);
     }
 }

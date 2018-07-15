@@ -68,6 +68,8 @@ public class FoodListFragment extends Fragment {
 
     private double totalOrderPrice;
 
+    private String restaurantId;
+
     public FoodListFragment(){
         adapter = new FoodInOrderAdapter();
     }
@@ -86,6 +88,10 @@ public class FoodListFragment extends Fragment {
 
     public void setTableNumber(String tableNumber){
         this.tableNumber.setText(getString(R.string.table_number, tableNumber));
+    }
+
+    public void setRestaurantId(String restaurantId){
+        this.restaurantId = restaurantId;
     }
 
     public void userLoaded(){
@@ -139,7 +145,7 @@ public class FoodListFragment extends Fragment {
         CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(applicationContext))
-                .viewModelModule(new ViewModelModule(((UserRoomContainer)getActivity()).getUserRoomId()))
+                .viewModelModule(new ViewModelModule(restaurantId, null, ((UserRoomContainer)getActivity()).getUserRoomId()))
                 .build()
                 .getCustomerMainViewModelFactory();
 

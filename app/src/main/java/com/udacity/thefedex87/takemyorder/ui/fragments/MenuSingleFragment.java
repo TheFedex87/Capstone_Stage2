@@ -200,7 +200,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
         selectedMeal.setUserId(((UserRoomContainer)getActivity()).getUserRoomId());
 
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        final int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         int statusBarHeight = 0;
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
@@ -268,6 +268,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
                         final AppDatabase db = AppDatabase.getInstance(getActivity());
 
+                        selectedMeal.setRestaurantId(restaurantId);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
                             public void run() {

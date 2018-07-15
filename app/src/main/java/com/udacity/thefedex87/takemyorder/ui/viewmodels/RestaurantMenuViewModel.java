@@ -45,7 +45,7 @@ public class RestaurantMenuViewModel extends ViewModel {
         this.db = db;
         this.restaurantId = restaurantId;
 
-        currentOrderList = db.currentOrderDao().getCurrentOrderList(userRoomId);
+        currentOrderList = db.currentOrderDao().getCurrentOrderList(userRoomId, restaurantId);
 
         menuLiveData = new MutableLiveData<>();
         retrieveRestaurantMenu();
@@ -53,9 +53,9 @@ public class RestaurantMenuViewModel extends ViewModel {
 
 
     public void setData(String mealId, String restaurantId, long userRoomId){
-        currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId, userRoomId);
-        favouriteUserMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, userRoomId);
-        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId);
+        currentOrderListByMealId = db.currentOrderDao().getCurrentOrderListByMealId(mealId, userRoomId, restaurantId);
+        favouriteUserMealByMealId = db.favouriteMealsDao().getUserFavouriteMealById(mealId, userRoomId, restaurantId);
+        favouriteMealByMealId = db.favouriteMealsDao().getFavouriteMealById(mealId, restaurantId);
     }
 
     public void setIngredientName(String ingredientName){

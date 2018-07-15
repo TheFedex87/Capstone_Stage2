@@ -22,16 +22,18 @@ public class CheckoutOrderViewModel extends ViewModel {
     private LiveData<List<CurrentOrderGrouped>> currentOrderByFoodType;
     private LiveData<List<Meal>> currentOrder;
     private long userRoomId;
+    private String restaurantId;
 
 
-    public CheckoutOrderViewModel(AppDatabase db, long userRoomId) {
+    public CheckoutOrderViewModel(AppDatabase db, long userRoomId, String restaurantId) {
         this.userRoomId = userRoomId;
         this.db = db;
-        currentOrder = db.currentOrderDao().getCurrentOrderList(userRoomId);
+        this.restaurantId = restaurantId;
+        currentOrder = db.currentOrderDao().getCurrentOrderList(userRoomId, restaurantId);
     }
 
     public void setFoodType(FoodTypes foodType){
-        currentOrderByFoodType = db.currentOrderDao().getCurrentOrderByFoodType(foodType, userRoomId);
+        currentOrderByFoodType = db.currentOrderDao().getCurrentOrderByFoodType(foodType, userRoomId, restaurantId);
     }
 
     public LiveData<List<CurrentOrderGrouped>> getCurrentOrderByFoodType() {return currentOrderByFoodType;}

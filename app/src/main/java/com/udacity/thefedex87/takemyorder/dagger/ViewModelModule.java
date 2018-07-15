@@ -23,24 +23,22 @@ public class ViewModelModule {
     private String userName;
     private String mealId;
 
-    public ViewModelModule(long userRoomId){
-        this.userRoomId = userRoomId;
-    }
 
     public ViewModelModule(String restaurantId, String userName, long userRoomId){
-        this(userRoomId);
+        this.userRoomId = userRoomId;
         this.restaurdantId = restaurantId;
         this.userName = userName;
     }
 
-    public ViewModelModule(String mealId, long userRoomId){
-        this(userRoomId);
+    public ViewModelModule(String mealId, long userRoomId, String restaurdantId){
+        this.userRoomId = userRoomId;
         this.mealId = mealId;
+        this.restaurdantId = restaurdantId;
     }
 
     @Provides
     public CheckoutOrderViewModelFactory provideCheckoutOrderViewModelFactory (Context context){
-        return new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId);
+        return new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId, restaurdantId);
     }
 
     @Provides
@@ -50,7 +48,7 @@ public class ViewModelModule {
 
     @Provides
     public DishDetailsViewModelFactory provideDishDetailsViewModelFactory(Context context){
-        return new DishDetailsViewModelFactory(AppDatabase.getInstance(context), mealId, userRoomId);
+        return new DishDetailsViewModelFactory(AppDatabase.getInstance(context), mealId, userRoomId, restaurdantId);
     }
 
     @Provides

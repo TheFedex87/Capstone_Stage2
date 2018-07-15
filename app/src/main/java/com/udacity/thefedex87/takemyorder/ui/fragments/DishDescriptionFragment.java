@@ -147,14 +147,14 @@ public class DishDescriptionFragment extends Fragment {
         DishDetailsViewModelFactory dishDetailsViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
-                .viewModelModule(new ViewModelModule(meal.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId()))
+                .viewModelModule(new ViewModelModule(meal.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId(), restaurantId))
                 .build()
                 .getDishDetailsViewModelFactory();
 
         final DishDetailsViewModel dishDetailsViewModel = ViewModelProviders.of(getActivity(), dishDetailsViewModelFactory).get(DishDetailsViewModel.class);
         if(meal instanceof Food) {
             //TODO: check if there is another way to pass new arguments at the view model, CHECK USING TRANSORMATIONS!!!
-            dishDetailsViewModel.setData(meal.getMealId(), ((UserRoomContainer) getActivity()).getUserRoomId());
+            dishDetailsViewModel.setData(meal.getMealId(), ((UserRoomContainer) getActivity()).getUserRoomId(), restaurantId);
             dishDetailsViewModel.getUserFavouriteMealByMealId().observe(getActivity(), new Observer<FavouriteMeal>() {
                 @Override
                 public void onChanged(@Nullable FavouriteMeal meal) {
