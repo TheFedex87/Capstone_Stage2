@@ -24,10 +24,9 @@ import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.WaiterReadyOrder;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterReadyOrdersAdapter;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
 import java.util.List;
 
@@ -41,9 +40,6 @@ import butterknife.ButterKnife;
 public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrdersAdapter.WaiterReadyOrderAdapterClick {
     private List<WaiterReadyOrder> readyOrders;
     private String restaurantId;
-
-    private boolean viewAttached = false;
-    private boolean dataSet = false;
 
     private Context context;
 
@@ -59,27 +55,34 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
 
     }
 
-    public void setRestaurantId(String restaurantId){
-        this.restaurantId = restaurantId;
-        dataSet = true;
-        if (viewAttached)
-            setupViewModel(restaurantId);
+    public void setReadyOrders(List<WaiterReadyOrder> readyOrders){
+        waiterReadyOrdersAdapter.swapReadyOrders(readyOrders);
+
+        if (readyOrders != null && readyOrders.size() > 0) {
+            noReadyOrdersText.setVisibility(View.GONE);
+        } else {
+            noReadyOrdersText.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void setupViewModel(String restaurantId) {
-        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
-        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-        waiterViewModel.getWaiterReadyOrders().observe(this, new Observer<List<WaiterReadyOrder>>() {
-            @Override
-            public void onChanged(@Nullable List<WaiterReadyOrder> waiterReadyOrders) {
-                waiterReadyOrdersAdapter.swapReadyOrders(waiterReadyOrders);
-                if (waiterReadyOrders != null && waiterReadyOrders.size() > 0)
-                    noReadyOrdersText.setVisibility(View.GONE);
-                else
-                    noReadyOrdersText.setVisibility(View.VISIBLE);
-            }
-        });
+    public void setRestaurantId(String restaurantId){
+        this.restaurantId = restaurantId;
     }
+
+//    private void setupViewModel(String restaurantId) {
+//        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
+//        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
+//        waiterViewModel.getWaiterReadyOrders().observe(this, new Observer<List<WaiterReadyOrder>>() {
+//            @Override
+//            public void onChanged(@Nullable List<WaiterReadyOrder> waiterReadyOrders) {
+//                waiterReadyOrdersAdapter.swapReadyOrders(waiterReadyOrders);
+//                if (waiterReadyOrders != null && waiterReadyOrders.size() > 0)
+//                    noReadyOrdersText.setVisibility(View.GONE);
+//                else
+//                    noReadyOrdersText.setVisibility(View.VISIBLE);
+//            }
+//        });
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -105,11 +108,6 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
 
         waiterReadyOrders.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
         waiterReadyOrders.setAdapter(waiterReadyOrdersAdapter);
-
-        viewAttached = true;
-
-        if(dataSet)
-            setupViewModel(restaurantId);
 
         return rootView;
     }

@@ -41,8 +41,6 @@ import com.udacity.thefedex87.takemyorder.services.WaiterRequestAttentionService
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.WaiterMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterCallsAdapter;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,52 +82,44 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
     public void setRestaurantId(String restaurantId){
         this.restaurantId = restaurantId;
         dataSet = true;
-        if (viewAttached)
-            setupViewModel(restaurantId);
+//        if (viewAttached)
+//            setupViewModel(restaurantId);
 
     }
 
     public void setCalls(List<WaiterCall> calls){
         waiterCallsAdapter.swapCalls(calls);
+
+        if (waiterCalls != null && calls.size() > 0) {
+            noCallsText.setVisibility(View.GONE);
+        } else {
+            noCallsText.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void setupViewModel(final String restaurantId) {
-        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
-        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
-        waiterViewModel.getWaiterCalls().observe(this, new Observer<List<WaiterCall>>() {
-            @Override
-            public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
-                waiterCallsAdapter.swapCalls(waiterCalls);
-                if (waiterCalls != null && waiterCalls.size() > 0) {
-                    noCallsText.setVisibility(View.GONE);
-
-//                    if (waiterCalls.size() >= currentCallsId.size() && !firstDownload){
-//                        for(WaiterCall waiterCall : waiterCalls){
-//                            boolean oldRequest = false;
-//                            for(String requestId : currentCallsId){
-//                                if (requestId == waiterCall.getId()){
-//                                    oldRequest = true;
-//                                    break;
-//                                }
-//                            }
-//                            if (!oldRequest){
-//                                createNotification(getString(R.string.waiter_call_text, waiterCall.getTableId()), restaurantId);
-//                            }
-//                        }
-//                    }
-                } else {
-                    noCallsText.setVisibility(View.VISIBLE);
-                }
-
-                firstDownload = false;
-                if(waiterCalls != null){
-                    currentCallsId.clear();
-                    for(WaiterCall waiterCall : waiterCalls)
-                        currentCallsId.add(waiterCall.getId());
-                }
-            }
-        });
-    }
+//    private void setupViewModel(final String restaurantId) {
+//        WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
+//        WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
+//        waiterViewModel.getWaiterCalls().observe(this, new Observer<List<WaiterCall>>() {
+//            @Override
+//            public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
+//                waiterCallsAdapter.swapCalls(waiterCalls);
+//                if (waiterCalls != null && waiterCalls.size() > 0) {
+//                    noCallsText.setVisibility(View.GONE);
+//
+//                } else {
+//                    noCallsText.setVisibility(View.VISIBLE);
+//                }
+//
+//                firstDownload = false;
+//                if(waiterCalls != null){
+//                    currentCallsId.clear();
+//                    for(WaiterCall waiterCall : waiterCalls)
+//                        currentCallsId.add(waiterCall.getId());
+//                }
+//            }
+//        });
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -158,8 +148,8 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
 
         viewAttached = true;
 
-        if(dataSet)
-            setupViewModel(restaurantId);
+//        if(dataSet)
+//            setupViewModel(restaurantId);
 
         return rootView;
     }

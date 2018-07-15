@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.models.Waiter;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.WaiterReadyOrder;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
@@ -33,6 +34,7 @@ import java.util.List;
  */
 
 public class WaiterAttentionRequest extends IntentService {
+
     private final String CALLS_ROOT = "waiters_calls";
     private final String READY_ORDERS = "orders";
     private static int NOTIFICATION_ID = 1;
@@ -42,8 +44,9 @@ public class WaiterAttentionRequest extends IntentService {
     private String restaurantId;
     private boolean callsFirstDownload = true;
     private boolean readyOrdersFirstDownload = true;
-    private int currentCallSize = 0;
-    private int currentReadyOrdersSize = 0;
+
+    private static ArrayList<WaiterCall> currentCalls;
+    private static ArrayList<WaiterReadyOrder> currentReadyOrders;
 
     private FirebaseDatabase db;
     private DatabaseReference waiterCallReference;
@@ -56,16 +59,26 @@ public class WaiterAttentionRequest extends IntentService {
 
     }
 
+    public static void setIsExecutingTask(boolean isExecutingTask){
+        WaiterAttentionRequest.isExecutingTask = isExecutingTask;
+    }
+
 //    @Override
 //    public void onDestroy() {
 //        isExecutingTask = false;
 //        waiterCallReference.removeEventListener(callsEventListener);
+//        waiterReadyOrderReference.removeEventListener(readyOrdersEventListener);
 //        super.onDestroy();
 //    }
 
     @Override
     protected void onHandleIntent(@Nullable final Intent intent) {
-        if(isExecutingTask) return;
+
+        if(isExecutingTask) {
+            sendCallsBroadcast(currentCalls);
+            sendReadyOrdersBroadcast(currentReadyOrders);
+            return;
+        }
         isExecutingTask = true;
 
         restaurantId = intent.getStringExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY);
@@ -88,12 +101,14 @@ public class WaiterAttentionRequest extends IntentService {
                     readyOrders.add(readyOrder);
                 }
 
-                if (!readyOrdersFirstDownload && readyOrders.size() > currentReadyOrdersSize) {
+                if (!readyOrdersFirstDownload && readyOrders.size() > currentReadyOrders.size()) {
                     createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId);
                 }
 
-                currentReadyOrdersSize = readyOrders.size();
+                currentReadyOrders = readyOrders;
                 readyOrdersFirstDownload = false;
+
+                sendReadyOrdersBroadcast(readyOrders);
             }
         }
 
@@ -115,19 +130,15 @@ public class WaiterAttentionRequest extends IntentService {
                     waiterCalls.add(waiterCall);
                 }
 
-                if (!callsFirstDownload && waiterCalls.size() > currentCallSize) {
+                if (!callsFirstDownload && waiterCalls.size() > currentCalls.size()) {
                     createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()), restaurantId);
                 }
 
-                currentCallSize = waiterCalls.size();
+                currentCalls = waiterCalls;
+
                 callsFirstDownload = false;
 
-
-//                    Intent callsIntent = new Intent();
-//                    callsIntent.setAction(WaiterMainActivity.ACTION_WAITER_CALLS);
-//                    //callsIntent.putParcelableArrayListExtra(WaiterMainActivity.WAITER_CALLS_LIST, waiterCalls);
-//                    sendBroadcast(intent);
-//                    //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                sendCallsBroadcast(waiterCalls);
             }
         }
 
@@ -137,7 +148,19 @@ public class WaiterAttentionRequest extends IntentService {
         }
     };
 
+    private void sendCallsBroadcast(ArrayList<WaiterCall> waiterCalls){
+        Intent callsIntent = new Intent();
+        callsIntent.setAction(WaiterMainActivity.ACTION_WAITER_CALLS);
+        callsIntent.putParcelableArrayListExtra(WaiterMainActivity.WAITER_CALLS_LIST, waiterCalls);
+        sendBroadcast(callsIntent);
+    }
 
+    private void sendReadyOrdersBroadcast(ArrayList<WaiterReadyOrder> readyOrders){
+        Intent readyOrdersIntent = new Intent();
+        readyOrdersIntent.setAction(WaiterMainActivity.ACTION_WAITER_READY_ORDERS);
+        readyOrdersIntent.putParcelableArrayListExtra(WaiterMainActivity.WAITER_READY_ORDERS_LIST, readyOrders);
+        sendBroadcast(readyOrdersIntent);
+    }
 
     private void createNotification(String notificationText, String restaurantId){
         Intent intent = new Intent(getApplicationContext(), WaiterMainActivity.class);
