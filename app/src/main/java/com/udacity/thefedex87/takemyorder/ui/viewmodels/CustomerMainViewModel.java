@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.User;
@@ -33,6 +34,8 @@ public class CustomerMainViewModel extends ViewModel {
     private MutableLiveData<Restaurant> restaurantLivedata;
     private LiveData<User> userByUserFirebaseId;
 
+    private LiveData<List<FavouriteMeal>> allFavouriteMealOfUser;
+
     public CustomerMainViewModel(AppDatabase db, String restaurantId, String userName, long userRoomId) {
         currentOrderList = db.currentOrderDao().getCurrentOrderList(userRoomId, restaurantId);
         restaurantLivedata = new MutableLiveData<>();
@@ -42,6 +45,8 @@ public class CustomerMainViewModel extends ViewModel {
         if(userName != null && !userName.isEmpty()){
             userByUserFirebaseId = db.userDao().getUserByUserFirebaseId(userName);
         }
+
+        allFavouriteMealOfUser = db.favouriteMealsDao().getAllFavouriteMealsOfUser(userRoomId);
     }
 
     private void retrieveRetaurant(String restaurantId){
@@ -72,4 +77,6 @@ public class CustomerMainViewModel extends ViewModel {
     public LiveData<User> getUserByUserFirebaseId() {
         return userByUserFirebaseId;
     }
+
+    public LiveData<List<FavouriteMeal>> getAllFavouriteMealOfUser() {return allFavouriteMealOfUser;}
 }

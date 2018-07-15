@@ -3,22 +3,51 @@ package com.udacity.thefedex87.takemyorder.ui.widgets;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkModule;
+import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
+import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class FavouritesDishesWidget extends AppWidgetProvider {
+    public static final String MEALS_LIST_KEY = "MEALS_LIST_KEY";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favourites_dishes_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        NetworkComponent networkComponent = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(context)).build();
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_favourites);
+
+        ArrayList<FavouriteMeal> meals = new ArrayList<>();
+        SharedPreferences sp = context.getSharedPreferences(CustomerMainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        Set<String> favouritesSet = sp.getStringSet(CustomerMainActivity.SHARED_PREFERENCES_FAVOURITES_LIST, new HashSet<String>());
+
+        for(String favouriteSerialized : favouritesSet){
+            meals.add(networkComponent.getGson().fromJson(favouriteSerialized, FavouriteMeal.class));
+        }
+
+        Intent intent = new Intent(context, ListViewWidgetService.class);
+        intent.putParcelableArrayListExtra(MEALS_LIST_KEY, meals);
+        views.setRemoteAdapter(R.id.favourites_list_widget, intent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

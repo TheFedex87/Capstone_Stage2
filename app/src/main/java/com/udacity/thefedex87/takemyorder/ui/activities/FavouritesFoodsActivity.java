@@ -207,6 +207,8 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                 counterAnimation.start();
             }
         });
+
+
     }
 
     private void setupFab(){

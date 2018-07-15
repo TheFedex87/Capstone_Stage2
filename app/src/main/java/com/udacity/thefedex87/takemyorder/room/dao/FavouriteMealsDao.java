@@ -24,7 +24,11 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 
 @Dao
 public interface FavouriteMealsDao {
-    //Get the list of user's favourites meals
+    @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
+            "WHERE favouritemeal_user_join.userId = :userRoomId")
+    LiveData<List<FavouriteMeal>> getAllFavouriteMealsOfUser(long userRoomId);
+
+    //Get the list of user's favourites meals for specific restaurant
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
             "WHERE favouritemeal_user_join.userId = :userRoomId AND favourite_meals.restaurantId = :restaurantId")
     LiveData<List<FavouriteMeal>> getFavouriteMealsOfUser(long userRoomId, String restaurantId);

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,19 +23,30 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkModule;
 import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.User;
 import com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
+import com.udacity.thefedex87.takemyorder.ui.widgets.FavouritesDishesWidget;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -43,6 +55,9 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class CustomerMainActivity extends AppCompatActivity implements UserRoomContainer {
+    public static final String SHARED_PREFERENCES_NAME = "TAKE_MY_ORDER_SHARED_PREFERENCES";
+    public static final String SHARED_PREFERENCES_FAVOURITES_LIST = "SHARED_PREFERENCES_FAVOURITES_LIST";
+
     public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
     public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
     public static final String USER_ID_KEY = "USER_ID_KEY";
@@ -58,6 +73,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     private long userRoomId;
 
     private FoodListFragment foodListFragment;
+
+
 
     @BindView(R.id.add_to_order_fab)
     FloatingActionButton addToOrderFab;
@@ -231,7 +248,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                 .build()
                 .getCustomerMainViewModelFactory();
 
-        CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
+        final CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
         customerMainViewModel.getRestaurant().observe(this, new Observer<Restaurant>() {
             @Override
             public void onChanged(@Nullable Restaurant restaurant) {
@@ -265,6 +282,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                             foodListFragment.userLoaded();
                         }
                     });
+
+
                 } else {
                     userRoomId = user.getId();
                     foodListFragment.userLoaded();
@@ -272,6 +291,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
             }
         });
     }
+
 
     private void signout(){
         //Signout from Firebase

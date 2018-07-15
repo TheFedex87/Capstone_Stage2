@@ -3,6 +3,7 @@ package com.udacity.thefedex87.takemyorder.ui.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,15 +16,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
+import com.udacity.thefedex87.takemyorder.dagger.NetworkModule;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
+import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
@@ -33,12 +39,17 @@ import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by federico.creti on 14/06/2018.
@@ -69,6 +80,8 @@ public class FoodListFragment extends Fragment {
     private double totalOrderPrice;
 
     private String restaurantId;
+
+    private NetworkComponent networkComponent;
 
     public FoodListFragment(){
         adapter = new FoodInOrderAdapter();
@@ -107,11 +120,16 @@ public class FoodListFragment extends Fragment {
 
         totalOrderPriceTV.setText(getString(R.string.total_price, 0.00f));
 
+        ApplicationModule applicationModule = new ApplicationModule(applicationContext);
+
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
-                .applicationModule(new ApplicationModule(applicationContext))
+                .applicationModule(applicationModule)
                 .userInterfaceModule(
                         new UserInterfaceModule(LinearLayoutManager.VERTICAL, null, null))
                 .build();
+
+
+        networkComponent = DaggerNetworkComponent.builder().applicationModule(applicationModule).networkModule(new NetworkModule()).build();
 
         currentOrderList.setAdapter(adapter);
         currentOrderList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
@@ -166,6 +184,32 @@ public class FoodListFragment extends Fragment {
                     totalOrderPrice += meal.getPrice();
                 }
                 totalOrderPriceTV.setText(getString(R.string.total_price, totalOrderPrice));
+            }
+        });
+
+        customerMainViewModel.getAllFavouriteMealOfUser().observe(this, new Observer<List<FavouriteMeal>>() {
+            @Override
+            public void onChanged(@Nullable List<FavouriteMeal> favouriteMeals) {
+                final SharedPreferences.Editor editor = getActivity().getSharedPreferences(CustomerMainActivity.SHARED_PREFERENCES_NAME, MODE_PRIVATE).edit();
+
+                //Retrieve the whole list of favourites to store them into SHaredPreferences
+
+                List<String> serializedFavouriteMeals = new ArrayList<>();
+                Gson gson = networkComponent.getGson();
+
+                for(FavouriteMeal favouriteMeal : favouriteMeals){
+                    String serializedFavourite = gson.toJson(favouriteMeal);
+                    serializedFavouriteMeals.add(serializedFavourite);
+                }
+
+                Set<String> stringSet = new HashSet<>();
+                stringSet.addAll(serializedFavouriteMeals);
+                editor.putStringSet(CustomerMainActivity.SHARED_PREFERENCES_FAVOURITES_LIST, stringSet);
+
+
+
+                editor.putLong("USER_ID", ((UserRoomContainer)getActivity()).getUserRoomId());
+                editor.apply();
             }
         });
     }

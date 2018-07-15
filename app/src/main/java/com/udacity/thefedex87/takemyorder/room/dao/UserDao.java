@@ -20,6 +20,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE userFirebaseId = :userFirebaseId")
     LiveData<User> getUserByUserFirebaseId(String userFirebaseId);
 
+    @Query("SELECT * FROM user WHERE userFirebaseId = :userFirebaseId")
+    User getUserByUserFirebaseIdWidget(String userFirebaseId);
+
     @Insert
     long insertUser(User user);
 }
