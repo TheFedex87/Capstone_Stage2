@@ -143,12 +143,14 @@
 
 
     <!--Waiter Activity-->
-    <dimen name="take_request_text_size">20sp</dimen>
+    <dimen name="take_request_text_size">16sp</dimen>
     <dimen name="take_request_margin">8dp</dimen>
     <dimen name="take_request_icon_size">50dp</dimen>
     <dimen name="take_request_icon_margin_top">8dp</dimen>
     <dimen name="take_request_icon_margin_end">16dp</dimen>
     <dimen name="take_request_icon_margin_bottom">8dp</dimen>
+    <dimen name="waiter_header_text_size">20sp</dimen>
+    <dimen name="waiter_header_margin_top">8dp</dimen>
 
 
 

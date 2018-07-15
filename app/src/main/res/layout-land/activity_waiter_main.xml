@@ -36,33 +36,62 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:background="@color/colorAccent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/waiter_calls"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            android:background="@color/semiTransparent"
+            android:text="@string/waiter_calls"
+            app:layout_constraintEnd_toStartOf="@+id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textAlignment="center"
+            android:textSize="@dimen/waiter_header_text_size"
+            android:layout_marginTop="@dimen/waiter_header_margin_top"/>
 
         <fragment
             android:id="@+id/fragment_calls"
+            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.WaiterCallsFragment"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintHorizontal_bias="0.025"
+            app:layout_constraintEnd_toStartOf="@+id/divider"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/waiter_calls" />
+
+        <TextView
+            android:id="@+id/waiter_ready_orders"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/semiTransparent"
+            android:text="@string/waiter_ready_orders"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/divider"
             app:layout_constraintTop_toTopOf="parent"
-            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.WaiterCallsFragment"/>
+            android:textAlignment="center"
+            android:textSize="@dimen/waiter_header_text_size"
+            android:layout_marginTop="@dimen/waiter_header_margin_top"/>
 
         <fragment
             android:id="@+id/fragment_ready_orders"
+            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.WaiterReadyOrderFragment"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="parent"
-            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.WaiterReadyOrderFragment"/>
+            app:layout_constraintStart_toEndOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@id/waiter_ready_orders" />
+
+
 
     </android.support.constraint.ConstraintLayout>
 

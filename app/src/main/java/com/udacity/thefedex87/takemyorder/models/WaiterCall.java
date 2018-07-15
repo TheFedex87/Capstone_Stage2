@@ -1,10 +1,13 @@
 package com.udacity.thefedex87.takemyorder.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by feder on 05/07/2018.
  */
 
-public class WaiterCall {
+public class WaiterCall implements Parcelable {
     private String tableId;
     private String userId;
     private String id;
@@ -41,4 +44,35 @@ public class WaiterCall {
     public void setId(String id) {
         this.id = id;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.tableId);
+        dest.writeString(this.userId);
+        dest.writeString(this.id);
+    }
+
+    protected WaiterCall(Parcel in) {
+        this.tableId = in.readString();
+        this.userId = in.readString();
+        this.id = in.readString();
+    }
+
+    public static final Parcelable.Creator<WaiterCall> CREATOR = new Parcelable.Creator<WaiterCall>() {
+        @Override
+        public WaiterCall createFromParcel(Parcel source) {
+            return new WaiterCall(source);
+        }
+
+        @Override
+        public WaiterCall[] newArray(int size) {
+            return new WaiterCall[size];
+        }
+    };
 }

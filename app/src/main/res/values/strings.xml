@@ -77,5 +77,9 @@
     <string name="waiter_order_ready_not_present">No ready orders</string>
     <string name="waiter_call_text">There is a request at table: %1$s</string>
     <string name="waiter_order_ready_text">There is an order ready for table: %1$s</string>
+    <string name="waiter_new_waiter_call">New waiter call received</string>
+    <string name="waiter_new_order_ready">New ready order</string>
+    <string name="waiter_notification_channel_name">Waiter attention request</string>
+    <string name="waiter_notification_channel_description">Required attention for waiter when there is a call or a order is ready to be token from kitchen</string>
 
 </resources>

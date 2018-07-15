@@ -26,6 +26,7 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
 //    private List<WaiterCall> calls;
 //    private List<WaiterReadyOrderFragment> readyOrders;
     private String restaurantId;
+    private WaiterCallsFragment waiterCallsFragment;
 
     @Inject
     Context context;
@@ -35,6 +36,10 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
 
         TakeMyOrderApplication.appComponent().inject(this);
         this.restaurantId = restaurantId;
+    }
+
+    public void setCalls(List<WaiterCall> calls){
+        waiterCallsFragment.setCalls(calls);
     }
 
     @Override
@@ -54,6 +59,7 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 WaiterCallsFragment waiterCallsFragment = (WaiterCallsFragment) Fragment.instantiate(context, WaiterCallsFragment.class.getName());
                 //waiterCallsFragment.setRestaurantId(restaurantId);
+                this.waiterCallsFragment = waiterCallsFragment;
                 return waiterCallsFragment;
             case 1:
                 WaiterReadyOrderFragment waiterReadyOrderFragment = (WaiterReadyOrderFragment)Fragment.instantiate(context, WaiterReadyOrderFragment.class.getName());

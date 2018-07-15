@@ -1,12 +1,21 @@
 package com.udacity.thefedex87.takemyorder.ui.fragments;
 
+import android.app.IntentService;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,11 +34,18 @@ import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
+import com.udacity.thefedex87.takemyorder.models.Waiter;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
+import com.udacity.thefedex87.takemyorder.services.WaiterAttentionRequest;
+import com.udacity.thefedex87.takemyorder.services.WaiterRequestAttentionService;
+import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.WaiterMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterCallsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,7 +56,10 @@ import butterknife.ButterKnife;
  */
 
 public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.WaiterCallsAdapterClick {
-    private List<WaiterCall> calls;
+
+    private static int NOTIFICATION_ID = 1;
+
+    private List<String> currentCallsId;
     private String restaurantId;
 
     private boolean viewAttached = false;
@@ -50,6 +69,8 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
 
     private WaiterCallsAdapter waiterCallsAdapter;
 
+    private boolean firstDownload = true;
+
     @BindView(R.id.waiter_calls_list)
     RecyclerView waiterCalls;
 
@@ -57,7 +78,7 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
     TextView noCallsText;
 
     public WaiterCallsFragment(){
-
+        currentCallsId = new ArrayList<>();
     }
 
     public void setRestaurantId(String restaurantId){
@@ -65,19 +86,47 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
         dataSet = true;
         if (viewAttached)
             setupViewModel(restaurantId);
+
     }
 
-    private void setupViewModel(String restaurantId) {
+    public void setCalls(List<WaiterCall> calls){
+        waiterCallsAdapter.swapCalls(calls);
+    }
+
+    private void setupViewModel(final String restaurantId) {
         WaiterViewModelFactory waiterViewModelFactory = new WaiterViewModelFactory(restaurantId);
         WaiterViewModel waiterViewModel = ViewModelProviders.of(this, waiterViewModelFactory).get(WaiterViewModel.class);
         waiterViewModel.getWaiterCalls().observe(this, new Observer<List<WaiterCall>>() {
             @Override
             public void onChanged(@Nullable List<WaiterCall> waiterCalls) {
                 waiterCallsAdapter.swapCalls(waiterCalls);
-                if (waiterCalls != null && waiterCalls.size() > 0)
+                if (waiterCalls != null && waiterCalls.size() > 0) {
                     noCallsText.setVisibility(View.GONE);
-                else
+
+//                    if (waiterCalls.size() >= currentCallsId.size() && !firstDownload){
+//                        for(WaiterCall waiterCall : waiterCalls){
+//                            boolean oldRequest = false;
+//                            for(String requestId : currentCallsId){
+//                                if (requestId == waiterCall.getId()){
+//                                    oldRequest = true;
+//                                    break;
+//                                }
+//                            }
+//                            if (!oldRequest){
+//                                createNotification(getString(R.string.waiter_call_text, waiterCall.getTableId()), restaurantId);
+//                            }
+//                        }
+//                    }
+                } else {
                     noCallsText.setVisibility(View.VISIBLE);
+                }
+
+                firstDownload = false;
+                if(waiterCalls != null){
+                    currentCallsId.clear();
+                    for(WaiterCall waiterCall : waiterCalls)
+                        currentCallsId.add(waiterCall.getId());
+                }
             }
         });
     }

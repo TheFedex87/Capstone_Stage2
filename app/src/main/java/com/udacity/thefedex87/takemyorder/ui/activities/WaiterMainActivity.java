@@ -1,11 +1,17 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,12 +26,11 @@ import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
-import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
+import com.udacity.thefedex87.takemyorder.services.WaiterAttentionRequest;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterCallsFragment;
 import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterReadyOrderFragment;
-import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.WaiterViewModelFactory;
 
 import java.util.List;
@@ -38,10 +43,17 @@ import timber.log.Timber;
 
 public class WaiterMainActivity extends AppCompatActivity {
     private final String RESTAURANT_KEY = "RESTAURANT_KEY";
+    public static String NOTIFICATION_CHANNEL_ID = "WAITER_ATTENTION_REQUEST";
+
+    public static String ACTION_WAITER_CALLS = "com.udacity.thefedex87.takemyorder.ui.activities.WAITERS_CALLS_RECEIVED_ACTION";
+
+    public static final String WAITER_CALLS_LIST = "WAITER_CALLS_LIST";
 
     private String restaurantId;
     private WaiterViewModelFactory waiterViewModelFactory;
     private FirebaseAuth firebaseAuth;
+
+    WaiterPagerAdapter waiterPagerAdapter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -62,6 +74,14 @@ public class WaiterMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiter_main);
 
+//        //attentionRequestReceiver = new AttentionRequestReceiver();
+//        IntentFilter filter = new IntentFilter(ACTION_WAITER_CALLS);
+//        AttentionRequestReceiver attentionRequestReceiver = new AttentionRequestReceiver();
+//        //LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+//        registerReceiver(attentionRequestReceiver, filter);
+
+
+
         Timber.i("Waiter logged");
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -69,13 +89,19 @@ public class WaiterMainActivity extends AppCompatActivity {
 
         TakeMyOrderApplication.appComponent().inject(this);
 
-
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)) {
             restaurantId = intent.getStringExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY);
 
             setupUi();
+
+            Intent intentService = new Intent(context, WaiterAttentionRequest.class);
+            intentService.putExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY, restaurantId);
+            context.startService(intentService);
         }
+
+
+
 
     }
 
@@ -133,7 +159,7 @@ public class WaiterMainActivity extends AppCompatActivity {
                 }
             });
 
-            WaiterPagerAdapter waiterPagerAdapter = DaggerUserInterfaceComponent
+            waiterPagerAdapter = DaggerUserInterfaceComponent
                     .builder()
                     .applicationModule(new ApplicationModule(context))
                     .userInterfaceModule(new UserInterfaceModule(getSupportFragmentManager(), restaurantId))
@@ -147,6 +173,24 @@ public class WaiterMainActivity extends AppCompatActivity {
             ((WaiterCallsFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calls)).setRestaurantId(restaurantId);
             ((WaiterReadyOrderFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_ready_orders)).setRestaurantId(restaurantId);
         }
+
+        registerNotificationChannels();
+    }
+
+    private void registerNotificationChannels(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            String channelName = getString(R.string.waiter_notification_channel_name);
+            String channelDescription = getString(R.string.waiter_notification_channel_description);
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(channelDescription);
+            channel.enableLights(true);
+            channel.setLightColor(Color.BLUE);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[] { 1000 });
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void signout(){
@@ -155,4 +199,21 @@ public class WaiterMainActivity extends AppCompatActivity {
         Timber.d("User signed out");
         finish();
     }
+
+
+//    public class AttentionRequestReceiver extends BroadcastReceiver{
+////        private WaiterPagerAdapter waiterPagerAdapter;
+////
+////        public Receiver(WaiterPagerAdapter waiterPagerAdapter) {
+////            this.waiterPagerAdapter = waiterPagerAdapter;
+////        }
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent.getAction().equals(ACTION_WAITER_CALLS)){
+//                List<WaiterCall> calls = intent.getParcelableArrayListExtra(WAITER_CALLS_LIST);
+//                waiterPagerAdapter.setCalls(calls);
+//            }
+//        }
+//    }
 }
