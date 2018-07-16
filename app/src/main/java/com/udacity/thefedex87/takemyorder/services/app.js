@@ -20,7 +20,7 @@
 	firebaseGCM.initializeApp(configGCM, "GCM");*/
 
 	//var database = firebaseRD.database();	
-	git status
+
 	var admin = require("firebase-admin");
 
 	var serviceAccount = require("./takemyorder-8a08a-firebase-adminsdk-nl2ry-28d98a4a7e.json");
