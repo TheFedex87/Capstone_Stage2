@@ -125,7 +125,7 @@ public class FoodListFragment extends Fragment {
         UserInterfaceComponent userInterfaceComponent = DaggerUserInterfaceComponent.builder()
                 .applicationModule(applicationModule)
                 .userInterfaceModule(
-                        new UserInterfaceModule(LinearLayoutManager.VERTICAL, null, null))
+                        new UserInterfaceModule(LinearLayoutManager.VERTICAL))
                 .build();
 
 

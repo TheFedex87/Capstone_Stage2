@@ -86,7 +86,6 @@ public class UserInterfaceModule {
         this.meals = meals;
     }
 
-    //TODO: creare un costruttore apposito per FoodInMenuActionClick
     public UserInterfaceModule(int linearLayoutManagerOrientation, FoodInMenuAdapter.FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity) {
         this(null, null, null, linearLayoutManagerOrientation);
         this.foodInMenuActionClick = foodInMenuActionClick;

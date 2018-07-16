@@ -1,12 +1,22 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,12 +33,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class RestaurantsMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class RestaurantsMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationListener {
     public static final String PLACE_ID_KEY = "PLACE_ID_KEY";
     public static final String RESTAURANT_NAME_KEY = "RESTAURANT_NAME_KEY";
 
+    private static final int PERMISSION_LOCATION_CODE = 1;
+
     private GoogleMap mMap;
     private List<Restaurant> restaurantList;
+
+    private LocationManager locationManager;
+    private static final long MIN_TIME = 400;
+    private static final float MIN_DISTANCE = 1000;
+
+    private View mapView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -48,6 +66,8 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mapView = mapFragment.getView();
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY)) {
@@ -78,33 +98,46 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
             Toast.makeText(this, getString(R.string.error_places_api_key_not_provided), Toast.LENGTH_LONG).show();
         }
 
-        //TODO: implement controls to retrieve current user position
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        mMap.setMyLocationEnabled(true);
 
         int i = 0;
         for (Restaurant restaurant : restaurantList) {
             LatLng restaurantPlace = new LatLng(restaurant.getLat(), restaurant.getLng());
-            if (i == 0){
+            if (i == restaurantList.size() - 1){
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restaurantPlace, 10));
-                i++;
             }
-
+            i++;
 
             mMap.addMarker(new MarkerOptions().position(restaurantPlace).title(restaurant.getName())).setTag(restaurant.getPlaceId());
         }
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, PERMISSION_LOCATION_CODE);
+        } else {
+            setCurrentUserLocation();
+        }
 
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == PERMISSION_LOCATION_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                setCurrentUserLocation();
+            }
+        }
+    }
+
+    private void setCurrentUserLocation(){
+        mMap.setMyLocationEnabled(true);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+
+        View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        // position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        rlp.setMargins(0, 0, (int)getResources().getDimension(R.dimen.map_my_location_button_margin), (int)getResources().getDimension(R.dimen.map_my_location_button_margin));
     }
 
     @Override
@@ -117,5 +150,28 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
         startActivity(intent);
 
         return false;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+        mMap.animateCamera(cameraUpdate);
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

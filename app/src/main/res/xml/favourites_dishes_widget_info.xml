@@ -3,8 +3,8 @@
     android:initialKeyguardLayout="@layout/widget_favourites"
     android:initialLayout="@layout/widget_favourites"
     android:minHeight="180dp"
-    android:minWidth="300dp"
-    android:previewImage="@drawable/example_appwidget_preview"
-    android:resizeMode="vertical"
+    android:minWidth="180dp"
+    android:previewImage="@drawable/logo"
+    android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"></appwidget-provider>

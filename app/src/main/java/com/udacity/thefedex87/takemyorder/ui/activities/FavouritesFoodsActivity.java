@@ -186,7 +186,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
         favouritesViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
-                //TODO: gestire se menuCompleteFragment fosse null perchè non ancora creato e/o agganciato
                 //if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
                 menuCompleteFragment.setCurrentOrder(currentOrderEntries);
                 currentOrder = currentOrderEntries;

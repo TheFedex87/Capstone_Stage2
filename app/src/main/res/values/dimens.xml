@@ -33,6 +33,10 @@
     <dimen name="review_text_margin_top">8dp</dimen>
     <dimen name="review_text_margin_end">16dp</dimen>
 
+    <!--Map activity-->
+    <dimen name="map_toolbar_margin">8dp</dimen>
+    <dimen name="map_my_location_button_margin">8dp</dimen>
+
     <!--Customer main activity (order activity)-->
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
