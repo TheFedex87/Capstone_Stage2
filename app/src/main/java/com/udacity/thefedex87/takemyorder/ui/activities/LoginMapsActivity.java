@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.animation.AnimationSet;
@@ -19,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -117,6 +120,15 @@ public class LoginMapsActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         restaurantsReference = firebaseDatabase.getReference("restaurants");
 
+        Bundle b;
+        if(getIntent() != null){
+            b = getIntent().getExtras();
+            if (b != null) {
+                String d = b.getString("key1");
+                int f = 55;
+            }
+        }
+
         //PostMockData.postMockData();
 
         //Intent intent = new Intent(this, RestaurantsMapActivity.class);
@@ -207,10 +219,28 @@ public class LoginMapsActivity extends AppCompatActivity {
                                             } else {
                                                 //Waiter login
                                                 //AuthUI.getInstance().signOut(LoginMapsActivity.this);
+
+
                                                 Waiter waiter = null;
                                                 for(DataSnapshot waiterSnapshot : dataSnapshot.getChildren()){
                                                     waiter = waiterSnapshot.getValue(Waiter.class);
                                                 }
+
+//                                                FirebaseMessaging.getInstance().subscribeToTopic("orders_" + waiter.getRestaurantId());
+//                                                FirebaseMessaging.getInstance().subscribeToTopic("calls_" + waiter.getRestaurantId())
+//                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                            @Override
+//                                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                                String msg;
+//                                                                if (task.isSuccessful())
+//                                                                    msg="Subscribed";
+//                                                                else
+//                                                                    msg="Subscribed error";
+//                                                                Timber.d(msg);
+//                                                            }
+//                                                        });
+
+
 
                                                 Intent intent = new Intent(LoginMapsActivity.this, WaiterMainActivity.class);
                                                 intent.putExtra(WAITER_RESTAURANT_KEY, waiter.getRestaurantId());

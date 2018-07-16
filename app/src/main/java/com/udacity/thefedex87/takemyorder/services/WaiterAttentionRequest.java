@@ -102,7 +102,7 @@ public class WaiterAttentionRequest extends IntentService {
                 }
 
                 if (!readyOrdersFirstDownload && readyOrders.size() > currentReadyOrders.size()) {
-                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId);
+                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_order_ready_black, R.drawable.ic_waiter_order_ready_black);
                 }
 
                 currentReadyOrders = readyOrders;
@@ -131,7 +131,7 @@ public class WaiterAttentionRequest extends IntentService {
                 }
 
                 if (!callsFirstDownload && waiterCalls.size() > currentCalls.size()) {
-                    createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()), restaurantId);
+                    createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_call_black, R.drawable.ic_waiter_call);
                 }
 
                 currentCalls = waiterCalls;
@@ -162,7 +162,7 @@ public class WaiterAttentionRequest extends IntentService {
         sendBroadcast(readyOrdersIntent);
     }
 
-    private void createNotification(String notificationText, String restaurantId){
+    private void createNotification(String notificationText, String restaurantId, int imageResourceSmall, int imageResourceLarge){
         Intent intent = new Intent(getApplicationContext(), WaiterMainActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY, restaurantId);

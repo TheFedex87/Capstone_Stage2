@@ -45,6 +45,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/GOOGLE_MAPS_API_KEY" />
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_waiter_call" />
+
         <activity
             android:name=".ui.activities.RestaurantsMapActivity"
             android:label="@string/title_activity_restaurants"
@@ -111,9 +115,12 @@
         <service
             android:name=".services.WaiterAttentionRequest"
             android:exported="false" />
-        <service
-            android:name=".services.WaiterRequestAttentionService"
-            android:exported="false" />
+
+        <!--<service android:name=".services.TakeMyOrderNotificationService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
+            <!--</intent-filter>-->
+        <!--</service>-->
 
         <receiver android:name=".ui.widgets.FavouritesDishesWidget">
             <intent-filter>
