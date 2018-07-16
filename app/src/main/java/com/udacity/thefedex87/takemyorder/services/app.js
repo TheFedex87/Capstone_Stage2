@@ -4,7 +4,7 @@
 	//export GCLOUD_PROJECT='takemyorder-8a08a'
 
 	var configRD = {
-		apiKey: "AIzaSyAiqEVvAp46pif7wxRfbzfjjKs7Sj2n7Aw",
+		apiKey: "<API-KEY>",
 		authDomain: "takemyorder-8a08a.firebaseapp.com",
 		databaseURL: "https://takemyorder-8a08a.firebaseio.com",
 		storageBucket: "takemyorder-8a08a.appspot.com",
@@ -14,13 +14,13 @@
 	firebaseRD.initializeApp(configRD);
 	
 	var configGCM = {
-		apiKey: "AIzaSyATEte9wXqvzyLwyR7ke2MB340z415YsBo",
+		apiKey: "<API-KEY>",
 		projectId: "takemyorder-8a08a"
 	};
 	firebaseGCM.initializeApp(configGCM, "GCM");*/
 
 	//var database = firebaseRD.database();	
-	
+	git status
 	var admin = require("firebase-admin");
 
 	var serviceAccount = require("./takemyorder-8a08a-firebase-adminsdk-nl2ry-28d98a4a7e.json");
