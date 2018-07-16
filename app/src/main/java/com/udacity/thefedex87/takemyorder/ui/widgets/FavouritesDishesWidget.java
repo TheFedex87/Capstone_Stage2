@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,13 +48,19 @@ public class FavouritesDishesWidget extends AppWidgetProvider {
             meals.add(networkComponent.getGson().fromJson(favouriteSerialized, FavouriteMeal.class));
         }
 
-        Intent intent = new Intent(context, ListViewWidgetService.class);
-        Bundle b = new Bundle();
-        b.putParcelableArrayList(MEALS_LIST_KEY, meals);
-        intent.putExtra("BUNDLE", b);
-        Random rnd = new Random();
-        intent.setData(Uri.fromParts("content", String.valueOf(rnd.nextInt()), null));
-        views.setRemoteAdapter(R.id.favourites_list_widget, intent);
+        if (meals.size() > 0) {
+            Intent intent = new Intent(context, ListViewWidgetService.class);
+            Bundle b = new Bundle();
+            b.putParcelableArrayList(MEALS_LIST_KEY, meals);
+            intent.putExtra("BUNDLE", b);
+            Random rnd = new Random();
+            intent.setData(Uri.fromParts("content", String.valueOf(rnd.nextInt()), null));
+            views.setRemoteAdapter(R.id.favourites_list_widget, intent);
+
+            views.setViewVisibility(R.id.no_favourites_widget, View.GONE);
+        }else{
+            views.setViewVisibility(R.id.no_favourites_widget, View.VISIBLE);
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
