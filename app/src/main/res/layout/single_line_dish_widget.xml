@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dish_name"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
-</TextView>
+    <TextView
+        android:id="@+id/dish_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textSize="@dimen/widget_dish_category_text_size"
+        android:layout_marginTop="@dimen/widget_dish_category_margin_top"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/dish_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginStart="@dimen/widget_dish_category_margin_start"/>
+
+</LinearLayout>
+

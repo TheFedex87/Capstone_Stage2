@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
@@ -22,6 +23,7 @@ import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -46,7 +48,11 @@ public class FavouritesDishesWidget extends AppWidgetProvider {
         }
 
         Intent intent = new Intent(context, ListViewWidgetService.class);
-        intent.putParcelableArrayListExtra(MEALS_LIST_KEY, meals);
+        Bundle b = new Bundle();
+        b.putParcelableArrayList(MEALS_LIST_KEY, meals);
+        intent.putExtra("BUNDLE", b);
+        Random rnd = new Random();
+        intent.setData(Uri.fromParts("content", String.valueOf(rnd.nextInt()), null));
         views.setRemoteAdapter(R.id.favourites_list_widget, intent);
 
         // Instruct the widget manager to update the widget
