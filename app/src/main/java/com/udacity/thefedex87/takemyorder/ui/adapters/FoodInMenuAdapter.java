@@ -226,11 +226,11 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
         }
 
-//        if (isTwoPanelsMode && selectedIndex < 0){
-//            selectedIndex = 0;
-//            foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);
-//            holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
-//        }
+        if (isTwoPanelsMode && selectedIndex < 0){
+            selectedIndex = 0;
+            foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);
+            holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+        }
     }
 
     @Override
@@ -351,10 +351,9 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
                     @Override
                     public void onClick(View v) {
                         selectedIndex = getAdapterPosition();
-                        if (isTwoPanelsMode) {
-                            foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
-                            notifyDataSetChanged();
-                        }
+
+                        foodInMenuActionClick.showDishDetails(meals.get(getAdapterPosition()), foodImage);
+                        notifyDataSetChanged();
                     }
                 });
             }
