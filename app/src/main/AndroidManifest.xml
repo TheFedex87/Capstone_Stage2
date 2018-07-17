@@ -107,7 +107,8 @@
         <activity
             android:name=".ui.activities.CheckoutOrderActivity"
             android:label="@string/checkout_order"
-            android:parentActivityName=".ui.activities.CustomerMainActivity">
+            android:parentActivityName=".ui.activities.CustomerMainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.CustomerMainActivity" />

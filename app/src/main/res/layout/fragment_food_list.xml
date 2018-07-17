@@ -14,120 +14,116 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/app_bg"
-        android:alpha="0.2"/>
+        android:alpha="0.2"
+        android:contentDescription="@string/content_description_background"/>
 
-    <ImageView
-        android:focusableInTouchMode="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
         android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:layout_margin="10dp"
-        android:src="@drawable/customer_bg_4"
-        android:elevation="5dp"/>
+        android:layout_width="@dimen/max_notepad_width"
+        android:layout_height="match_parent">
 
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_marginTop="60dp"-->
-        <!--android:layout_marginBottom="60dp"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--android:src="@drawable/customer_bg_2" />-->
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:elevation="6dp">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <!--TODO: Aggiungere su taqquino nome utente-->
+        <ImageView
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"></View>
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp"
+            android:src="@drawable/customer_bg_4"
+            android:contentDescription="@string/content_description_notepad_background"/>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="10"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2.2"
-                android:visibility="invisible"/>
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:visibility="invisible"></View>
 
-            <android.support.constraint.ConstraintLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="14"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="10"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/table_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/table_number_margine_start"
-                    android:layout_marginTop="@dimen/table_number_margine_top"
-                    android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="@dimen/total_order_price_text_size"
-                    tools:text="Table: 18" />
-
-                <TextView
-                    android:id="@+id/total_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/total_order_price_margin_end"
-                    android:layout_marginTop="@dimen/total_order_price_margin_top"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="@dimen/total_order_price_text_size"
-                    tools:text="21.5 €" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/current_order_list"
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/total_price" />
-            </android.support.constraint.ConstraintLayout>
+                    android:layout_weight="2.2"
+                    android:visibility="invisible"/>
+
+                <android.support.constraint.ConstraintLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="14"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/table_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/table_number_margine_start"
+                        android:layout_marginTop="@dimen/table_number_margine_top"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="@dimen/total_order_price_text_size"
+                        tools:text="Table: 18" />
+
+                    <TextView
+                        android:id="@+id/total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/total_order_price_margin_end"
+                        android:layout_marginTop="@dimen/total_order_price_margin_top"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="@dimen/total_order_price_text_size"
+                        tools:text="21.5 €" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/current_order_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/total_price" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:visibility="invisible"/>
-
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="match_parent"
+                android:visibility="invisible"></View>
         </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
+
+        <TextView
+            android:id="@+id/food_list_placeholder"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"></View>
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/food_list_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/order_something"
-        android:textSize="@dimen/order_something_text_size" />
-
+            android:gravity="center"
+            android:text="@string/order_something"
+            android:textSize="@dimen/order_something_text_size" />
+    </FrameLayout>
 
 </FrameLayout>

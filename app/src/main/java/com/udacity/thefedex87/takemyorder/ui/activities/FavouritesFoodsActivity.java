@@ -78,6 +78,9 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.activity_title)
+    TextView toolbarTitle;
+
     @BindView(R.id.toolbar_container)
     CollapsingToolbarLayout
     collapsingToolbarLayout;
@@ -98,9 +101,10 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
 
             ButterKnife.bind(this);
 
+            collapsingToolbarLayout.setTitleEnabled(false);
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            collapsingToolbarLayout.setTitle(getString(R.string.favourites));
+            toolbarTitle.setText(getString(R.string.favourites));
 
             favourites = new HashMap<>();
             favourites.put(FoodTypes.STARTER, new ArrayList<Meal>());

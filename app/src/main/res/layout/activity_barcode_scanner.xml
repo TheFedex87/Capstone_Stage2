@@ -22,7 +22,8 @@
             android:id="@+id/open_camera"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_photo_camera" />
+            android:src="@drawable/ic_photo_camera"
+            android:contentDescription="@string/content_description_scan_barcode"/>
 
         <SurfaceView
             android:id="@+id/camera_preview"

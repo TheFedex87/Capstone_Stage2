@@ -29,7 +29,8 @@
         android:background="@drawable/app_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.2"/>
+        android:alpha="0.2"
+        android:contentDescription="@string/content_description_background"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

@@ -172,6 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/food_in_menu_action_favourite_margin_start"
+                android:contentDescription="@string/content_description_add_to_favourite"
                 app:layout_constraintBottom_toBottomOf="@+id/show_food_details"
                 app:layout_constraintStart_toEndOf="@+id/subtract_food"
                 app:layout_constraintTop_toTopOf="@+id/show_food_details"

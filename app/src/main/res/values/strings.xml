@@ -16,6 +16,15 @@
     <string name="content_description_add_to_favourite">Add or remove this food from the favourites meals of this restaurant</string>
     <string name="content_description_favourites">Show favourites foods</string>
     <string name="content_description_pay">Procede to the payment for your order</string>
+    <string name="content_description_background">Background app image</string>
+    <string name="content_description_receipt">Background of order checkout</string>
+    <string name="content_description_scan_barcode">Active the camera to start the barcode capture</string>
+    <string name="content_description_dish_description">Image of the slected food</string>
+    <string name="content_description_logo">Logo of the application</string>
+    <string name="content_description_notepad_background">Background of current order list</string>
+    <string name="content_description_restaurant_image">Restaurant image</string>
+    <string name="content_description_restaurant_review_profile">Photo of the profile who lives the review</string>
+    <string name="content_description_waiter_accept_request">Waiter click this image to accept the request</string>
 
     <!--Errors-->
     <string name="error_retrieving_restaurant_details">Error retrieving restaurant detail</string>

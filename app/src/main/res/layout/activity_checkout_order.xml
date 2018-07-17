@@ -32,234 +32,202 @@
         android:layout_height="match_parent"
         android:src="@drawable/app_bg"
         android:scaleType="fitXY"
-        android:alpha="0.2"/>
+        android:alpha="0.2"
+        android:contentDescription="@string/content_description_background"/>
 
-    <ImageView
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:layout_width="@dimen/receipt_width"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/receipt_bg"
+        android:layout_marginBottom="@dimen/receipt_container_margin"
+        android:layout_marginEnd="@dimen/receipt_container_margin"
+        android:layout_marginStart="@dimen/receipt_container_margin"
+        android:layout_marginTop="@dimen/receipt_container_margin"
         app:layout_constraintTop_toBottomOf="@id/app_bar_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/checkout_food_list_margin_bottom"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_container">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
+        <ImageView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible" />
+            android:scaleType="fitXY"
+            android:src="@drawable/receipt_bg"
+            android:contentDescription="@string/content_description_receipt"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="6"
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:paddingStart="@dimen/receipt_padding_start_end"
+            android:paddingEnd="@dimen/receipt_padding_start_end"
+            android:paddingBottom="@dimen/receipt_padding_bottom">
 
-            <View
+            <TextView
+                android:id="@+id/receipt_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/check_out_receipt_margin_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/check_out_receipt_text_size"
+                android:text="@string/receipt_header" />
+
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3"
-                android:visibility="invisible"/>
+                android:layout_marginBottom="@dimen/check_out_receipt_list_margin_bottom"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@id/total_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/receipt_header">
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4">
-
-                <TextView
-                    android:id="@+id/receipt_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/check_out_receipt_margin_top"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="@dimen/check_out_receipt_text_size"
-                    android:text="@string/receipt_header" />
-
-                <android.support.v4.widget.NestedScrollView
+                <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="@dimen/check_out_receipt_list_margin_bottom"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toTopOf="@id/total_price"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/receipt_header">
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout"
+                        android:id="@+id/starters_summary_container"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <LinearLayout
-                            android:id="@+id/starters_summary_container"
+                        <TextView
+                            style="@style/food_type_style"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:text="@string/starter_dishes" />
 
-                            <TextView
-                                style="@style/food_type_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/starter_dishes" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/order_summary_starter"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/main_dishes_summary_container"
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/order_summary_starter"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/food_type_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/main_dishes" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/order_summary_main_dishes"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/side_dishes_summary_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/food_type_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/side_dishes" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/order_summary_side_dishes"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/desserts_summary_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/food_type_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/desserts" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/order_summary_desserts"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/drinks_summary_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/food_type_style"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/drinks" />
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/order_summary_drinks"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-                        </LinearLayout>
+                            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
                     </LinearLayout>
-                </android.support.v4.widget.NestedScrollView>
 
-                <TextView
-                    android:id="@+id/total_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/checkout_food_price_margin_bottom"
-                    android:layout_marginEnd="@dimen/checkout_food_price_margin_start_end"
-                    android:textSize="@dimen/checkout_total_price_text_size"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="54.80 €" />
+                    <LinearLayout
+                        android:id="@+id/main_dishes_summary_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:background="@color/darkGrey"
-                    app:layout_constraintLeft_toRightOf="@id/total_price_description"
-                    app:layout_constraintTop_toBottomOf="@id/total_price_description"
-                    app:layout_constraintRight_toRightOf="@id/total_price"/>
+                        <TextView
+                            style="@style/food_type_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_dishes" />
 
-                <TextView
-                    android:id="@+id/total_price_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/checkout_food_price_margin_bottom"
-                    android:layout_marginStart="@dimen/checkout_food_price_margin_start_end"
-                    android:text="@string/total"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="@dimen/checkout_total_price_text_size"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/order_summary_main_dishes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-            </android.support.constraint.ConstraintLayout>
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/side_dishes_summary_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/food_type_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/side_dishes" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/order_summary_side_dishes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/desserts_summary_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/food_type_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/desserts" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/order_summary_desserts"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drinks_summary_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/food_type_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/drinks" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/order_summary_drinks"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/checkout_food_price_margin_bottom"
+                android:layout_marginEnd="@dimen/checkout_food_price_margin_start_end"
+                android:textSize="@dimen/checkout_total_price_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="54.80 €" />
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.3" />
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/darkGrey"
+                app:layout_constraintLeft_toRightOf="@id/total_price_description"
+                app:layout_constraintTop_toBottomOf="@id/total_price_description"
+                app:layout_constraintRight_toRightOf="@id/total_price"/>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/total_price_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/checkout_food_price_margin_bottom"
+                android:layout_marginStart="@dimen/checkout_food_price_margin_start_end"
+                android:text="@string/total"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="@dimen/checkout_total_price_text_size"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
+        </android.support.constraint.ConstraintLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
 
 

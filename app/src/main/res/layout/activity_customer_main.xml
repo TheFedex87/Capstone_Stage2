@@ -12,41 +12,6 @@
         android:background="?colorPrimary"
         android:elevation="@dimen/app_bar_elevation">
 
-        <!--<android.support.design.widget.CollapsingToolbarLayout-->
-            <!--android:id="@+id/toolbar_container"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"-->
-            <!--app:contentScrim="?attr/colorPrimary"-->
-            <!--app:expandedTitleMarginStart="48dp"-->
-            <!--app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"-->
-            <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
-
-            <!--<RelativeLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="center"-->
-                <!--app:layout_collapseMode="parallax">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@drawable/toolbar_bg"-->
-                    <!--/>-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@drawable/drawable_background_layer" />-->
-
-                <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:background="@drawable/drawable_background_layer_down" />&ndash;&gt;-->
-
-            <!--</RelativeLayout>-->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -54,31 +19,15 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:contentInsetStart="@dimen/detail_content_intent_start"
                 app:layout_collapseMode="pin" />
-
-
-
-        <!--</android.support.design.widget.CollapsingToolbarLayout>-->
-
     </android.support.design.widget.AppBarLayout>
 
-    <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:id="@+id/order_container_nsv"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-        <!--android:fillViewport="false">-->
+    <fragment
+        android:layout_marginTop="?actionBarSize"
+        android:id="@+id/current_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment" />
 
-
-
-        <fragment
-            android:layout_marginTop="?actionBarSize"
-            android:id="@+id/current_order"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment" />
-
-
-    <!--</android.support.v4.widget.NestedScrollView>-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_to_order_fab"

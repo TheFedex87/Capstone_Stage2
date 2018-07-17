@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Customer main-->
+    <dimen name="max_notepad_width">700dp</dimen>
+
+    <!--Checkout Activity-->
+    <dimen name="receipt_width">700dp</dimen>
+</resources>

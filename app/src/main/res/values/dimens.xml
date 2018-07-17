@@ -50,6 +50,7 @@
     <dimen name="table_number_margine_start">16dp</dimen>
     <dimen name="table_number_margine_top">16dp</dimen>
     <dimen name="food_divider_margin_top">4dp</dimen>
+    <dimen name="max_notepad_width">@dimen/match_parent</dimen>
 
 
     <!--Food in order-->
@@ -98,7 +99,7 @@
 
 
     <dimen name="counter_circle_size">18dp</dimen>
-    <dimen name="counter_circle_margin_end">5dp</dimen>
+    <dimen name="counter_circle_margin_end">8dp</dimen>
     <dimen name="counter_circle_margin_start">27dp</dimen>
     <dimen name="counter_circle_margin_top">0dp</dimen>
     <dimen name="counter_circle_text_size">12sp</dimen>
@@ -140,10 +141,14 @@
     <dimen name="checkout_food_category_margin">16dp</dimen>
     <dimen name="checkout_nested_scroll_view_margin_bottom">40dp</dimen>
     <dimen name="check_out_submitting_pb_margin_bottom">8dp</dimen>
-    <dimen name="check_out_submitting_text_size">20dp</dimen>
+    <dimen name="check_out_submitting_text_size">20sp</dimen>
     <dimen name="check_out_receipt_margin_top">16dp</dimen>
     <dimen name="check_out_receipt_list_margin_bottom">8dp</dimen>
     <dimen name="check_out_receipt_text_size">30sp</dimen>
+    <dimen name="receipt_width">@dimen/match_parent</dimen>
+    <dimen name="receipt_padding_start_end">10dp</dimen>
+    <dimen name="receipt_padding_bottom">25dp</dimen>
+    <dimen name="receipt_container_margin">20dp</dimen>
 
 
     <!--Waiter Activity-->

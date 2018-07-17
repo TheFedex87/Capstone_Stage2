@@ -36,7 +36,8 @@ tools:context="com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionA
                 android:id="@+id/dish_description_meal_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dish_description_image_height"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/content_description_dish_description"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/food_image_to_animate"
