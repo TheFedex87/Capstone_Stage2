@@ -1,16 +1,30 @@
 package com.udacity.thefedex87.takemyorder.ui.widgets;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.udacity.thefedex87.takemyorder.R;
+import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
+import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
+import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
+import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
+import com.udacity.thefedex87.takemyorder.ui.activities.FavouritesFoodsActivity;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.FavouritesViewModel;
+import com.udacity.thefedex87.takemyorder.ui.viewmodels.FavouritesViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +38,19 @@ public class ListViewWidgetService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         Bundle b = intent.getBundleExtra("BUNDLE");
         List<FavouriteMeal> meals = b.getParcelableArrayList(FavouritesDishesWidget.MEALS_LIST_KEY);
-        return new ListViewWidgetFactory(getApplicationContext(), meals);
+        long userRoomId = b.getLong(FavouritesDishesWidget.USER_ID);
+        return new ListViewWidgetFactory(getApplicationContext(), meals, userRoomId);
     }
 }
 
 class ListViewWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
     private List<FavouriteMeal> meals;
     private Context context;
+    private long userRoomId;
 
-    public ListViewWidgetFactory(Context context, List<FavouriteMeal> meals){
+    public ListViewWidgetFactory(Context context, List<FavouriteMeal> meals, long userRoomId){
         this.context = context;
+        this.userRoomId = userRoomId;
 
         List<FavouriteMeal> starter = new ArrayList<>();
         List<FavouriteMeal> main = new ArrayList<>();
@@ -104,6 +121,27 @@ class ListViewWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
         } else {
             remoteViews.setViewVisibility(R.id.dish_category, View.GONE);
         }
+
+        Intent intent = new Intent(context, DishDescriptionActivity.class);
+        Bundle b = new Bundle();
+
+        FavouriteMeal meal = meals.get(position);
+        Food food = new Food();
+        food.setUserId(userRoomId);
+        food.setMealId(meal.getMealId());
+        food.setImageName(meal.getImageName());
+        food.setDescription(meal.getDescription());
+        food.setName(meal.getName());
+        food.setPrice(meal.getPrice());
+        food.setFoodType(meal.getFoodType());
+        food.setRestaurantId(meal.getRestaurantId());
+
+        b.putParcelable(CustomerMainActivity.FOOD_DESCRIPTION_KEY, food);
+        b.putString(CustomerMainActivity.RESTAURANT_ID_KEY, meals.get(position).getRestaurantId());
+        b.putLong(CustomerMainActivity.USER_ID_KEY, userRoomId);
+        intent.putExtras(b);
+
+        remoteViews.setOnClickFillInIntent(R.id.dish_name, intent);
 
         return remoteViews;
     }

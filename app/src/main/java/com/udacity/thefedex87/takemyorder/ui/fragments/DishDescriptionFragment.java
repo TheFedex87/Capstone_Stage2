@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -40,12 +41,16 @@ import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
+import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.ui.activities.FavouritesFoodsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModelFactory;
 import com.udacity.thefedex87.takemyorder.room.DBManager;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -142,7 +147,7 @@ public class DishDescriptionFragment extends Fragment {
     }
 
     private void setUi(){
-        //DishDetailsViewModelFactory dishDetailsViewModelFactory = new DishDetailsViewModelFactory(AppDatabase.getInstance(getActivity()), toolbar_bg_2.getMealId(), ((UserRoomContainer)getActivity()).getUserRoomId());
+        final ApplicationModule applicationModule = new ApplicationModule(context);
 
         DishDetailsViewModelFactory dishDetailsViewModelFactory = DaggerViewModelComponent
                 .builder()
@@ -169,25 +174,50 @@ public class DishDescriptionFragment extends Fragment {
                     }
                 }
             });
+
+            //Check if ingredients are set into meal, otherwise this mean we are in this activity from favourites activity or from
+            //widget, and we have to load the ingredients from DB
+            if(((Food) meal).getIngredients() == null || ((Food) meal).getIngredients().size() == 0){
+                dishDetailsViewModel.setMealId(meal.getMealId());
+                final LiveData<List<Ingredient>> ingredientsLiveData = dishDetailsViewModel.getIngredientsOfMeal();
+                ingredientsLiveData.observe(getActivity(), new Observer<List<Ingredient>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Ingredient> ingredients) {
+                        ingredientsLiveData.removeObserver(this);
+                        ((Food)meal).setIngredients(ingredients);
+
+                        userInterfaceComponent = DaggerUserInterfaceComponent
+                                .builder()
+                                .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
+                                .applicationModule(applicationModule)
+                                .build();
+
+                        mealDescription.setText(((Food) meal).getDescription());
+
+                        ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+                        DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
+                        ingredientsList.setAdapter(dishIngredientsAdapter);
+                    }
+                });
+            } else {
+                userInterfaceComponent = DaggerUserInterfaceComponent
+                        .builder()
+                        .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
+                        .applicationModule(applicationModule)
+                        .build();
+
+                mealDescription.setText(((Food) meal).getDescription());
+
+                ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+                DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
+                ingredientsList.setAdapter(dishIngredientsAdapter);
+            }
         } else {
             favouriteMealImage.setVisibility(View.GONE);
-
         }
 
-        ApplicationModule applicationModule = new ApplicationModule(context);
-
         if (meal instanceof Food) {
-            userInterfaceComponent = DaggerUserInterfaceComponent
-                    .builder()
-                    .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
-                    .applicationModule(applicationModule)
-                    .build();
 
-            mealDescription.setText(((Food) meal).getDescription());
-
-            ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
-            DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
-            ingredientsList.setAdapter(dishIngredientsAdapter);
         }
 
         if (foodImage != null){

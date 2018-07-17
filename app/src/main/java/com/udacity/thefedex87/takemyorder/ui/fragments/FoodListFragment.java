@@ -3,6 +3,7 @@ package com.udacity.thefedex87.takemyorder.ui.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +39,7 @@ import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInOrderAdapter;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
+import com.udacity.thefedex87.takemyorder.ui.widgets.UpdateWidgetService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -205,11 +207,13 @@ public class FoodListFragment extends Fragment {
                 Set<String> stringSet = new HashSet<>();
                 stringSet.addAll(serializedFavouriteMeals);
                 editor.putStringSet(CustomerMainActivity.SHARED_PREFERENCES_FAVOURITES_LIST, stringSet);
-
-
-
-                editor.putLong("USER_ID", ((UserRoomContainer)getActivity()).getUserRoomId());
+                editor.putLong(CustomerMainActivity.SHARED_PREFERENCES_USER_ID, ((UserRoomContainer)getActivity()).getUserRoomId());
                 editor.apply();
+
+                //Call the service to update the widget of favourites
+                Intent updateWidgetIntent = new Intent(getActivity(), UpdateWidgetService.class);
+                updateWidgetIntent.setAction(UpdateWidgetService.UPDATE_WIDGET_ACTION);
+                getActivity().startService(updateWidgetIntent);
             }
         });
     }

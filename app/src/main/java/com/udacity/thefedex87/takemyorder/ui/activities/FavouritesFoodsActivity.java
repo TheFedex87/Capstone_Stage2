@@ -160,15 +160,15 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                     food.setDescription(favouriteMeal.getDescription());
 
                     //Using the viewmodle, extract the list of the ingredient of this meal, and assign it the toolbar_bg_2 entity
-                    favouritesViewModel.setMealId(favouriteMeal.getMealId());
-                    final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
-                    ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
-                        @Override
-                        public void onChanged(@Nullable List<Ingredient> ingredients) {
-                            ingredientsLiveData.removeObserver(this);
-                            food.setIngredients(ingredients);
-                        }
-                    });
+//                    favouritesViewModel.setMealId(favouriteMeal.getMealId());
+//                    final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
+//                    ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
+//                        @Override
+//                        public void onChanged(@Nullable List<Ingredient> ingredients) {
+//                            ingredientsLiveData.removeObserver(this);
+//                            food.setIngredients(ingredients);
+//                        }
+//                    });
                     favourites.get(favouriteMeal.getFoodType()).add(food);
                 }
 

@@ -120,6 +120,8 @@
         <service android:name=".ui.widgets.ListViewWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
+        <service android:name=".ui.widgets.UpdateWidgetService" />
+
         <!--<service android:name=".services.TakeMyOrderNotificationService">-->
             <!--<intent-filter>-->
                 <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->

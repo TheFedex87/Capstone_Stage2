@@ -57,6 +57,7 @@ import timber.log.Timber;
 public class CustomerMainActivity extends AppCompatActivity implements UserRoomContainer {
     public static final String SHARED_PREFERENCES_NAME = "TAKE_MY_ORDER_SHARED_PREFERENCES";
     public static final String SHARED_PREFERENCES_FAVOURITES_LIST = "SHARED_PREFERENCES_FAVOURITES_LIST";
+    public static final String SHARED_PREFERENCES_USER_ID = "SHARED_PREFERENCES_USER_ID";
 
     public static final String FOOD_DESCRIPTION_KEY = "FOOD_DESCRIPTION_KEY";
     public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
