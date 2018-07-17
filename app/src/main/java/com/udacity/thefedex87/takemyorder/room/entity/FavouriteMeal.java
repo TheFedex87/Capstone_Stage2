@@ -13,6 +13,7 @@ import java.util.List;
  * Created by federico.creti on 28/06/2018.
  */
 
+//Table which contains the favourites foods list
 @Entity(tableName = "favourite_meals", indices = {@Index(value = {"mealId"},
         unique = true)})
 public class FavouriteMeal implements Parcelable {

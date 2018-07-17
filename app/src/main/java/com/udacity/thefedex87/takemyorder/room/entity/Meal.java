@@ -10,7 +10,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 /**
  * Created by feder on 16/06/2018.
  */
-
+//Base class for Drink and Food
 @Entity(tableName = "current_order")
 public class Meal implements Parcelable {
     @PrimaryKey(autoGenerate = true)
@@ -88,7 +88,6 @@ public class Meal implements Parcelable {
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
     }
-
 
     @Override
     public int describeContents() {

@@ -8,27 +8,25 @@ import java.util.List;
  * Created by federico.creti on 11/06/2018.
  */
 
+//This class is used by Retrofit as model to map the response from Google Place: place details
 public class GooglePlaceDetailsModel {
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("place_id")
-    String placeId;
+    private String placeId;
 
     @SerializedName("rating")
-    double rating;
+    private double rating;
 
     @SerializedName("formatted_address")
-    String formattedAddress;
-
-//    @SerializedName("formatted_phone_number")
-//    String formattedPhoneNumber;
+    private String formattedAddress;
 
     @SerializedName("reviews")
-    List<RestaurantReviewModel> reviews;
+    private List<RestaurantReviewModel> reviews;
 
     @SerializedName("photos")
-    List<RestaurantPhotoModel> photos;
+    private List<RestaurantPhotoModel> photos;
 
     public String getName() {
         return name;
@@ -61,14 +59,6 @@ public class GooglePlaceDetailsModel {
     public void setFormattedAddress(String formattedAddress) {
         this.formattedAddress = formattedAddress;
     }
-
-//    public String getFormattedPhoneNumber() {
-//        return formattedPhoneNumber;
-//    }
-//
-//    public void setFormattedPhoneNumber(String formattedPhoneNumber) {
-//        this.formattedPhoneNumber = formattedPhoneNumber;
-//    }
 
     public List<RestaurantReviewModel> getReviews() {
         return reviews;

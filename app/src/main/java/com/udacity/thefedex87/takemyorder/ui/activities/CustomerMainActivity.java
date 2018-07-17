@@ -66,8 +66,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     public static final String TABLE_NUMBER_KEY = "TABLE_NUMBER_KEY";
 
     private FirebaseAuth firebaseAuth;
-    //private Customer customer;
-    private Restaurant restaurant;
+
     private String restaurantId;
     private String table;
 

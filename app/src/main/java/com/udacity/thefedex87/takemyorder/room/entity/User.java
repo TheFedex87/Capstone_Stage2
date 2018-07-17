@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 /**
  * Created by feder on 30/06/2018.
  */
-
+//Class which is a model for User entity
 @Entity
 public class User {
     @PrimaryKey(autoGenerate = true)

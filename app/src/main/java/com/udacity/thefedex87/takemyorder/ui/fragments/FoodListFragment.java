@@ -32,7 +32,6 @@ import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
-import com.udacity.thefedex87.takemyorder.models.Order;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
@@ -58,8 +57,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class FoodListFragment extends Fragment {
-    private Order order;
-
     @BindView(R.id.current_order_list)
     RecyclerView currentOrderList;
 
@@ -95,10 +92,6 @@ public class FoodListFragment extends Fragment {
         db = AppDatabase.getInstance(context);
 
         super.onAttach(context);
-    }
-
-    public void setOrder(Order order){
-        this.order = order;
     }
 
     public void setTableNumber(String tableNumber){

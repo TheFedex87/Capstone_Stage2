@@ -26,6 +26,15 @@ import java.util.Random;
  * Created by federico.creti on 07/06/2018.
  */
 
+//This is class is not used inside the app, it has been used to load some mocked data into the Firebase Relatime Database
+//Fonti piatti
+//https://food.ndtv.com/food-drinks/10-best-starter-recipes-781678
+//https://www.greatbritishchefs.com/recipes/lobster-thermidor-recipe
+//https://www.allrecipes.com
+//www.seriouseats.com
+//https://www.justataste.com
+//https://www.allrecipes.com
+
 public final class PostMockData {
     public static void postMockData(){
         final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -131,9 +140,6 @@ public final class PostMockData {
     }
 
     private static List<Food> getStarterDishMockedList(){
-        //https://food.ndtv.com/food-drinks/10-best-starter-recipes-781678
-        //https://www.greatbritishchefs.com/recipes/lobster-thermidor-recipe
-
         List<Food> foods = new ArrayList<>();
 
         Food food = new Food();
@@ -344,8 +350,6 @@ public final class PostMockData {
     }
 
     private static List<Food> getMainDishMockedList(){
-        //https://www.allrecipes.com
-
         List<Food> foods = new ArrayList<>();
 
         Food food = new Food();
@@ -609,10 +613,6 @@ public final class PostMockData {
     }
 
     private static List<Food> getSideDishMockedList(){
-        //https://www.allrecipes.com
-        //www.seriouseats.com
-        //https://www.justataste.com
-
         List<Food> foods = new ArrayList<>();
 
         Food food = new Food();

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by feder on 07/06/2018.
  */
-
+//Specific class which rapresent a Customer User
 public class Customer extends User implements Parcelable {
 
     @Override

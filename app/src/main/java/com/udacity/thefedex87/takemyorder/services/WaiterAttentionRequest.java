@@ -7,12 +7,10 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Vibrator;
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,19 +18,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.udacity.thefedex87.takemyorder.R;
-import com.udacity.thefedex87.takemyorder.models.Waiter;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.WaiterReadyOrder;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.WaiterMainActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by feder on 14/07/2018.
  */
-
+/*This is the class service user for Waiter. It is a service which is started when a waiter logs into the system. It observe for new call request and for new ready orders.
+When a new request attnetion (waiter call or ready order) arrives, this service send a notification to the device, and send a Broadcast message, which contains the new request.
+The message is capture by a Broadcast receiver which take care to fill the UI for waiter app section, with the received data
+*/
 public class WaiterAttentionRequest extends IntentService {
 
     private final String CALLS_ROOT = "waiters_calls";
@@ -63,17 +62,10 @@ public class WaiterAttentionRequest extends IntentService {
         WaiterAttentionRequest.isExecutingTask = isExecutingTask;
     }
 
-//    @Override
-//    public void onDestroy() {
-//        isExecutingTask = false;
-//        waiterCallReference.removeEventListener(callsEventListener);
-//        waiterReadyOrderReference.removeEventListener(readyOrdersEventListener);
-//        super.onDestroy();
-//    }
-
     @Override
     protected void onHandleIntent(@Nullable final Intent intent) {
-
+        //If the service has already been executed (and we are here again because for example a screen rotation is occurred), this means we do not create another valueEventListener (which already exists and is waiting to receive new request), we just send
+        //the previous data through a broadcast message
         if(isExecutingTask) {
             sendCallsBroadcast(currentCalls);
             sendReadyOrdersBroadcast(currentReadyOrders);
@@ -83,6 +75,7 @@ public class WaiterAttentionRequest extends IntentService {
 
         restaurantId = intent.getStringExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY);
 
+        //Select the correct reference for the restaurant where the waiter is logged
         waiterCallReference = db.getReference(CALLS_ROOT + "/" +restaurantId);
         waiterReadyOrderReference = db.getReference(READY_ORDERS + "/" +restaurantId);
 
@@ -101,8 +94,9 @@ public class WaiterAttentionRequest extends IntentService {
                     readyOrders.add(readyOrder);
                 }
 
+                //If this is not the first download after app is started and there is a new ready order request send the notification
                 if (!readyOrdersFirstDownload && readyOrders.size() > currentReadyOrders.size()) {
-                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_order_ready_black, R.drawable.ic_waiter_order_ready_black);
+                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_order_ready_black, R.drawable.ic_waiter_order_ready);
                 }
 
                 currentReadyOrders = readyOrders;
@@ -130,12 +124,12 @@ public class WaiterAttentionRequest extends IntentService {
                     waiterCalls.add(waiterCall);
                 }
 
+                //If this is not the first download after app is started and there is a new waiter call request send the notification
                 if (!callsFirstDownload && waiterCalls.size() > currentCalls.size()) {
                     createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_call_black, R.drawable.ic_waiter_call);
                 }
 
                 currentCalls = waiterCalls;
-
                 callsFirstDownload = false;
 
                 sendCallsBroadcast(waiterCalls);
@@ -171,9 +165,8 @@ public class WaiterAttentionRequest extends IntentService {
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), WaiterMainActivity.NOTIFICATION_CHANNEL_ID)
-                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        R.drawable.ic_waiter_call_black))
-                .setSmallIcon(R.drawable.ic_waiter_call)
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), imageResourceLarge))
+                .setSmallIcon(imageResourceSmall)
                 .setContentTitle(getString(R.string.waiter_new_waiter_call))
                 .setContentText(notificationText)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

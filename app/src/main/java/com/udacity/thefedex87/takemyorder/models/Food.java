@@ -12,6 +12,7 @@ import java.util.List;
  * Created by feder on 07/06/2018.
  */
 
+//This class is used to instanciates a Food Meal
 public class Food extends Meal {
 
     String description;

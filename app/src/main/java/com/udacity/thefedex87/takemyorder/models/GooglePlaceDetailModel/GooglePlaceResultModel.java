@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by federico.creti on 11/06/2018.
  */
 
+//This class is used by Retrofit as model to map the response from Google Place: root response
 public class GooglePlaceResultModel {
     @SerializedName("result")
     private GooglePlaceDetailsModel googlePlaceDetailsModel;

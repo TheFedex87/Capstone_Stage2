@@ -8,23 +8,8 @@ import com.udacity.thefedex87.takemyorder.room.entity.Meal;
  * Created by feder on 07/06/2018.
  */
 
+//This class is used to instanciate a Drink Meal
 public class Drink extends Meal {
-    public enum SIZES{
-        LITTLE,
-        MEDIUM,
-        BIG
-    }
-
-    SIZES size;
-
-    public SIZES getSize() {
-        return size;
-    }
-
-    public void setSize(SIZES size) {
-        this.size = size;
-    }
-
 
     @Override
     public int describeContents() {
@@ -34,7 +19,6 @@ public class Drink extends Meal {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(this.size == null ? -1 : this.size.ordinal());
     }
 
     public Drink() {
@@ -42,8 +26,6 @@ public class Drink extends Meal {
 
     protected Drink(Parcel in) {
         super(in);
-        int tmpSize = in.readInt();
-        this.size = tmpSize == -1 ? null : SIZES.values()[tmpSize];
     }
 
     public static final Creator<Drink> CREATOR = new Creator<Drink>() {

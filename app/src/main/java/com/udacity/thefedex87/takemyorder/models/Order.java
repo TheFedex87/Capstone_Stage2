@@ -9,12 +9,13 @@ import java.util.List;
  * Created by feder on 07/06/2018.
  */
 
+//This class is a model used to push an order into the Firebase Realtime Database
 public class Order {
-    String restaurantId;
-    String userId;
-    String tableId;
-    List<Meal> meals;
-    Date orderTime;
+    private String restaurantId;
+    private String userId;
+    private String tableId;
+    private List<Meal> meals;
+    private Date orderTime;
 
     public Order(String restaurantId, String userId, String tableId, List<Meal> meals, Date orderTime) {
         this.restaurantId = restaurantId;

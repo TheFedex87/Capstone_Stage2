@@ -15,14 +15,13 @@ import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.DishDetailsViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 
-import java.util.List;
-
 /**
  * Created by federico.creti on 29/06/2018.
  */
 
 public final class DBManager {
 
+    //This method save a favourites user food inside the DB
     public static void saveFavouritesIntoDB(final AppDatabase db, final ViewModel viewModel, final LifecycleOwner lifecycleOwner, final Food food, final String restaurantId, final long userId){
         final LiveData<FavouriteMeal> favouriteMealLiveData;
 
@@ -39,13 +38,14 @@ public final class DBManager {
             favouriteMealLiveData = null;
         }
 
-        //Check if the toolbar_bg_2 is already into the DB of favourites, if so I add only the join beetween userId and mealId, otherwise
+        //Check if the food is already into the DB of favourites, if so I add only the join beetween userId and mealId, otherwise
         //I add the meal into the DB of favourites
         favouriteMealLiveData.observe(lifecycleOwner, new Observer<FavouriteMeal>() {
             @Override
             public void onChanged(@Nullable final FavouriteMeal favouriteMeal) {
                 favouriteMealLiveData.removeObserver(this);
                 final long favouriteMealId;
+                //If null the food in not already inside the DB
                 if (favouriteMeal == null){
                     final FavouriteMeal newFavouriteMeal = new FavouriteMeal();
                     newFavouriteMeal.setFoodType(food.getFoodType());
@@ -83,7 +83,7 @@ public final class DBManager {
             }
         });
 
-
+        //Retrieve the list of ingredients for the new favourite meal and check if it is already inside the DB
         for(final Ingredient ingredient : food.getIngredients()){
             final LiveData<Ingredient> ingredientLiveData;
 
@@ -106,9 +106,11 @@ public final class DBManager {
 
                         ingredientLiveData.removeObserver(this);
 
+                        //If ingredient is already inside the table I take it
                         if (ingredientTmp != null) {
                             ingredientIntoDB = ingredientTmp;
                         } else {
+                            //If ingrediente is not already inside the ingredient table, I instanciate it and save it into the table
                             ingredientIntoDB = new com.udacity.thefedex87.takemyorder.room.entity.Ingredient();
 
                             ingredientIntoDB.setIngredientName(ingredient.getIngredientName());
@@ -121,6 +123,7 @@ public final class DBManager {
                             });
                         }
 
+                        //Create the new entry for many-to-many relation beetween meal and ingredient
                         final FavouriteMealIngredientJoin favouriteMealIngredientJoin = new FavouriteMealIngredientJoin(ingredientIntoDB.getIngredientName(),
                                 food.getMealId());
 
@@ -136,12 +139,13 @@ public final class DBManager {
         }
     }
 
+    //If a user remove a favourite from DB, I remove the many-to-many relation
     public static void removeFromFavourite(final AppDatabase db, final long favouriteMealFromDBId, final long userRoomId){
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                //db.favouriteMealsDao().deleteFavouriteMeal(favouriteMealFromDB);
-                db.favouriteMealsDao().deleteFavouriteMealUserJoin(userRoomId, favouriteMealFromDBId);
+                FavouriteMealUserJoin favouriteMealUserJoin = new FavouriteMealUserJoin(userRoomId, favouriteMealFromDBId);
+                db.favouriteMealsDao().deleteFavouriteMealUserJoin(favouriteMealUserJoin);
             }
         });
     }

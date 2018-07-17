@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by federico.creti on 07/06/2018.
  */
-
+//This class is a model for Restaurant entity
 public class Restaurant implements Parcelable {
     private String name;
     private double lat;

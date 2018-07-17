@@ -92,16 +92,6 @@ public class UserInterfaceModule {
         this.parentActivity = parentActivity;
     }
 
-//    public UserInterfaceModule(List<Ingredient> ingredients, int linearLayoutManagerOrientation){
-//        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
-//        this.ingredients = ingredients;
-//    }
-//
-//    public UserInterfaceModule(List<CurrentOrderGrouped> mealsGrouped, int linearLayoutManagerOrientation){
-//        this.mealsGrouped = mealsGrouped;
-//        this.linearLayoutManagerOrientation = linearLayoutManagerOrientation;
-//    }
-
     public UserInterfaceModule(List<?> list, int linearLayoutManagerOrientation){
         if (list == null || list.size() == 0){
             ingredients = new ArrayList<>();
@@ -114,23 +104,6 @@ public class UserInterfaceModule {
             }
         }
     }
-
-//    public UserInterfaceModule(List<?> list){
-//        if (list.size() == 0){
-//            photoUrls = new ArrayList<>();
-//            reviews = new ArrayList<>();
-//        } else {
-//            if (list.get(0) instanceof String){
-//                photoUrls = (List<String>)list;
-//            } else {
-//                reviews = (List<RestaurantReviewModel>)list;
-//            }
-//        }
-//    }
-
-//    public UserInterfaceModule(List<RestaurantReviewModel> reviews){
-//        this.reviews = reviews;
-//    }
 
     @Singleton
     @Provides

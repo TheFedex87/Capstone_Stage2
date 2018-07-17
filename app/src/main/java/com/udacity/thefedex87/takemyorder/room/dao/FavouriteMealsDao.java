@@ -24,6 +24,7 @@ import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 
 @Dao
 public interface FavouriteMealsDao {
+    //Get the list of favourites wihtout take care of the restaurants, this is used for widget, where are displayed all the favourites foods for the last logged user
     @Query("SELECT * FROM favourite_meals JOIN favouritemeal_user_join ON favourite_meals.id = favouritemeal_user_join.favouriteMealId " +
             "WHERE favouritemeal_user_join.userId = :userRoomId")
     LiveData<List<FavouriteMeal>> getAllFavouriteMealsOfUser(long userRoomId);
@@ -53,9 +54,8 @@ public interface FavouriteMealsDao {
             "WHERE favourite_meals.mealId = :favouriteMealId")
     LiveData<List<Ingredient>> ingredientsOfMeal(String favouriteMealId);
 
-
-    @Query("DELETE from favouritemeal_user_join WHERE userId = :userId AND favouriteMealId = :favouriteMealId")
-    int deleteFavouriteMealUserJoin(long userId, long favouriteMealId);
+    @Delete
+    int deleteFavouriteMealUserJoin(FavouriteMealUserJoin favouriteMealUserJoin);
 
     @Insert
     long insertFavouriteMeal(FavouriteMeal food);

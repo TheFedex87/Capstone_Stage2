@@ -9,6 +9,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 /**
  * Created by federico.creti on 29/06/2018.
  */
+//Tables which joins the many-to-many relation beetween favourite meal and ingredients
 @Entity(tableName = "favouritemeal_ingredient_join",
     primaryKeys = { "ingredientId", "mealId"},
     foreignKeys = {

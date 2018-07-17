@@ -8,7 +8,7 @@ import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
 /**
  * Created by federico.creti on 14/06/2018.
  */
-
+//This class converts a FoodTypes into String and a String into a FoodTypes
 public class FoodTypeConverter {
     @TypeConverter
     public static String toString(FoodTypes foodType){

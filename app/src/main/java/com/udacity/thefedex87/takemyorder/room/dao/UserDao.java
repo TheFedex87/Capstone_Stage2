@@ -14,14 +14,13 @@ import java.util.List;
  */
 @Dao
 public interface UserDao {
+    //Get all the users saved into the DB
     @Query("SELECT * FROM user")
     LiveData<List<User>> getUsers();
 
+    //Get the user by the firebaseUserId
     @Query("SELECT * FROM user WHERE userFirebaseId = :userFirebaseId")
     LiveData<User> getUserByUserFirebaseId(String userFirebaseId);
-
-    @Query("SELECT * FROM user WHERE userFirebaseId = :userFirebaseId")
-    User getUserByUserFirebaseIdWidget(String userFirebaseId);
 
     @Insert
     long insertUser(User user);

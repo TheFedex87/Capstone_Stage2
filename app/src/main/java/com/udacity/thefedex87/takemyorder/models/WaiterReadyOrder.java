@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by feder on 12/07/2018.
  */
-
+//Model used to rapresents a ready order sent to a waiter made by a customer, this model is used to push a new call into the Firebase Realtime Database
 public class WaiterReadyOrder implements Parcelable {
     private String tableId;
     private String id;

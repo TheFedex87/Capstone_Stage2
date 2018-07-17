@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 /**
  * Created by feder on 07/06/2018.
  */
+//Class which is a model for an ingredient
 @Entity
 public class Ingredient implements Parcelable {
     @PrimaryKey

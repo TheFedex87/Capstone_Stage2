@@ -20,7 +20,7 @@ import timber.log.Timber;
 /**
  * Created by federico.creti on 16/07/2018.
  */
-
+//This is the class service of Firebase used to manage the notifications received from Firebase Cloud Messages
 public class TakeMyOrderNotificationService extends FirebaseMessagingService {
     private static int NOTIFICATION_ID = 1;
 

@@ -3,7 +3,7 @@ package com.udacity.thefedex87.takemyorder.room.entity;
 /**
  * Created by feder on 21/06/2018.
  */
-
+//This is the model for the Current order table, grouped by mealId
 public class CurrentOrderGrouped {
     String name;
     String mealId;
