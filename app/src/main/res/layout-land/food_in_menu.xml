@@ -6,7 +6,8 @@
     android:id="@+id/food_in_menu_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/semiTransparent">
 
     <RelativeLayout
         android:layout_width="match_parent"

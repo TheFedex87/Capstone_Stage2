@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/transparent">
 
     <RelativeLayout
         android:id="@+id/dish_description_food_image_container"
@@ -19,7 +20,7 @@
             android:id="@+id/dish_description_meal_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dish_description_image_height"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/food_image_to_animate"
@@ -91,8 +92,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dish_description_tv" />
-
-
-
-
 </android.support.constraint.ConstraintLayout>

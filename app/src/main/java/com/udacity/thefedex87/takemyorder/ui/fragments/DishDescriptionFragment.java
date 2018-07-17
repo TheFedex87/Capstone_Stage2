@@ -23,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
@@ -43,6 +44,7 @@ import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.Ingredient;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
+import com.udacity.thefedex87.takemyorder.ui.activities.DishDescriptionActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.FavouritesFoodsActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.UserRoomContainer;
 import com.udacity.thefedex87.takemyorder.ui.adapters.DishIngredientsAdapter;
@@ -82,6 +84,10 @@ public class DishDescriptionFragment extends Fragment {
 
     @BindView(R.id.favourite_food)
     ImageView favouriteMealImage;
+
+    @Nullable
+    @BindView(R.id.dish_description_food_image_container)
+    RelativeLayout foodImageContainer;
 
     @Nullable
     @BindView(R.id.dish_description_meal_image)
@@ -216,31 +222,31 @@ public class DishDescriptionFragment extends Fragment {
             favouriteMealImage.setVisibility(View.GONE);
         }
 
-        if (meal instanceof Food) {
-
-        }
-
         if (foodImage != null){
-            dishDetailsProgressBar.setVisibility(View.VISIBLE);
-            Picasso picasso = DaggerNetworkComponent
-                    .builder()
-                    .applicationModule(applicationModule)
-                    .build().getPicasso();
+            if(!(getActivity() instanceof DishDescriptionActivity)) {
+                dishDetailsProgressBar.setVisibility(View.VISIBLE);
+                Picasso picasso = DaggerNetworkComponent
+                        .builder()
+                        .applicationModule(applicationModule)
+                        .build().getPicasso();
 
-            String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meal.getMealId() +  "?alt=media";
+                String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meal.getMealId() + "?alt=media";
 
-            picasso.load(imagePath).into(foodImage, new Callback() {
-                @Override
-                public void onSuccess() {
-                    dishDetailsProgressBar.setVisibility(View.GONE);
-                }
+                picasso.load(imagePath).into(foodImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        dishDetailsProgressBar.setVisibility(View.GONE);
+                    }
 
-                @Override
-                public void onError() {
-                    dishDetailsProgressBar.setVisibility(View.GONE);
-                }
-            });
-            picasso.load(imagePath).into(foodImageToAnimate);
+                    @Override
+                    public void onError() {
+                        dishDetailsProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                picasso.load(imagePath).into(foodImageToAnimate);
+            } else {
+                foodImageContainer.setVisibility(View.GONE);
+            }
         }
 
         foodPrice.setText(meal.getPrice() + " €");

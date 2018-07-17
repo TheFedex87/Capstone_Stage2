@@ -13,4 +13,7 @@
     <dimen name="food_in_menu_meal_in_order_counter_size">18dp</dimen>
     <dimen name="food_in_menu_meal_in_order_counter_text_size">12sp</dimen>
     <dimen name="food_in_menu_margin">5dp</dimen>
+
+    <!--Restaurant details-->
+    <dimen name="dish_description_image_height">300dp</dimen>
 </resources>
