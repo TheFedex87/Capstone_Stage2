@@ -224,7 +224,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     }
 
     private void setupViewModel(){
-        //Retrieve the restaurant using VIewModel
+        //Retrieve the restaurant using ViewModel
         CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))

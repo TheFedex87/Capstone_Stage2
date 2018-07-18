@@ -31,6 +31,7 @@ import com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static android.view.View.ALPHA;
 import static android.view.View.SCALE_X;
@@ -165,7 +166,18 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
                         }
                     }
                 });
+            } else {
+                if (bundle == null)
+                    Timber.e("Missing Bundle or requested keys");
+                else if(!bundle.containsKey(CustomerMainActivity.FOOD_DESCRIPTION_KEY))
+                    Timber.e("Missing FOOD_DESCRIPTION_KEY from bundle");
+                else
+                    Timber.e("Missing RESTAURANT_ID_KEY from bundle");
+                finish();
             }
+        } else {
+            Timber.e("No intent provided");
+            finish();
         }
     }
 
@@ -176,9 +188,8 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dishDescriptionMealImage.setTransitionName("foodTransition");
+            ActivityCompat.postponeEnterTransition(this);
         }
-
-        ActivityCompat.postponeEnterTransition(this);
 
         NetworkComponent networkComponent = DaggerNetworkComponent
                 .builder()
@@ -189,14 +200,20 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
         networkComponent.getPicasso().load(imagePath).into(dishDescriptionMealImage, new Callback() {
             @Override
             public void onSuccess() {
-                ActivityCompat.startPostponedEnterTransition(DishDescriptionActivity.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityCompat.startPostponedEnterTransition(DishDescriptionActivity.this);
+                }
             }
 
             @Override
             public void onError() {
-                ActivityCompat.startPostponedEnterTransition(DishDescriptionActivity.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityCompat.startPostponedEnterTransition(DishDescriptionActivity.this);
+                }
             }
         });
+
+        //Load the food image inside the CircleImageView used to create the animation
         networkComponent.getPicasso().load(imagePath).into(foodImageToAnimate);
     }
 

@@ -122,6 +122,15 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
 
             //This activity use the same fragment of the menu
             menuCompleteFragment = (MenuCompleteFragment)getSupportFragmentManager().findFragmentById(R.id.restaurant_menu);
+        } else {
+            if (intent == null)
+                Timber.e("Intent not provided");
+            else if(!intent.hasExtra(CustomerMainActivity.RESTAURANT_ID_KEY))
+                Timber.e("RESTAURANT_ID_KEY missing from intent");
+            else
+                Timber.e("USER_ID_KEY missing from intent");
+
+            finish();
         }
     }
 
@@ -130,6 +139,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     }
 
     private void setupViewModel() {
+        //Create the viewmodel of Favourites, it will be used to retrieve the favourite list and the current order (to increment the counters)
         FavouritesViewModelFactory favouritesViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
@@ -164,7 +174,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                 }
 
                 menuCompleteFragment.setMenu(favourites, restaurantId);
-                //if(currentOrder != null) menuCompleteFragment.setCurrentOrder(currentOrder);
 
                 //If we are in a two panels layout
                 if (addToOrderFab != null){
@@ -220,7 +229,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                         addingOrder = true;
                         final AppDatabase db = AppDatabase.getInstance(FavouritesFoodsActivity.this);
 
-                        //ButterKnife.bind(this, menuCompleteFragment.getCurrentTabFragment().getView());
                         View viewRoot = menuCompleteFragment.getCurrentTabFragment().getView();
                         dishDescriptionFoodImageContainer = viewRoot.findViewById(R.id.dish_description_food_image_container);
                         dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);

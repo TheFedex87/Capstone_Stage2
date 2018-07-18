@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -73,6 +74,8 @@ public class LoginMapsActivity extends AppCompatActivity {
     public static final int RC_PHOTO_SHOT = 3;
     public static final int RC_LIVE_BARCODE_SCAN = 4;
 
+    public static final boolean USE_FIREBASE_CLOUD_MESSAGE = false;
+
     @BindView(R.id.map)
     ImageView map;
 
@@ -81,9 +84,6 @@ public class LoginMapsActivity extends AppCompatActivity {
 
     @BindView(R.id.header)
     RelativeLayout header;
-
-//    @BindView(R.id.toolbar)
-//    Toolbar toolbar;
 
     @Inject
     Context context;
@@ -107,6 +107,7 @@ public class LoginMapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_maps);
 
+        //Timber setup
         Timber.plant(new Timber.DebugTree());
 
         TakeMyOrderApplication.appComponent().inject(this);
@@ -119,44 +120,12 @@ public class LoginMapsActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         restaurantsReference = firebaseDatabase.getReference("restaurants");
-
-        Bundle b;
-        if(getIntent() != null){
-            b = getIntent().getExtras();
-            if (b != null) {
-                String d = b.getString("key1");
-                int f = 55;
-            }
-        }
-
-        //PostMockData.postMockData();
-
-        //Intent intent = new Intent(this, RestaurantsMapActivity.class);
-        //startActivity(intent);
-
-        //PostMockData.postMockData();
-
-//        FirebaseDatabase db = FirebaseDatabase.getInstance();
-//        DatabaseReference ref = db.getReference("restaurants");
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                int f = 5;
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                int t = 6;
-//            }
-//        });
     }
 
     private void initUi(){
         ButterKnife.bind(this);
 
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        //Setup the map button, the button which will open the map with the restaurants who join to the Take My Order service
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,6 +151,7 @@ public class LoginMapsActivity extends AppCompatActivity {
             }
         });
 
+        //Setup the login button
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +160,7 @@ public class LoginMapsActivity extends AppCompatActivity {
 
                 logindRequest = true;
 
+                //Create a listener fot FirebaseAuth
                 authStateListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -197,63 +168,10 @@ public class LoginMapsActivity extends AppCompatActivity {
                         if (!logindRequest) return;
 
                         if (user != null){
-                            logindRequest = false;
-
-                            //Connect to Firebase, check if user is a Waiter
-                            String email = user.getEmail();
-                            usersReference = firebaseDatabase.getReference("waiters");
-                            usersReference
-                                    .orderByChild("email")
-                                    .equalTo(email)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            //If dataSnapshot.getValue() is equal to null, a customer is logging into the system
-                                            if (dataSnapshot.getValue() == null){
-                                                customer = new Customer();
-                                                customer.setEmail(user.getEmail());
-                                                customer.setUserName(user.getDisplayName());
-
-                                                Intent intent = new Intent(LoginMapsActivity.this, BarcodeScannerActivity.class);
-                                                startActivityForResult(intent, RC_LIVE_BARCODE_SCAN);
-                                            } else {
-                                                //Waiter login
-                                                //AuthUI.getInstance().signOut(LoginMapsActivity.this);
-
-
-                                                Waiter waiter = null;
-                                                for(DataSnapshot waiterSnapshot : dataSnapshot.getChildren()){
-                                                    waiter = waiterSnapshot.getValue(Waiter.class);
-                                                }
-
-//                                                FirebaseMessaging.getInstance().subscribeToTopic("orders_" + waiter.getRestaurantId());
-//                                                FirebaseMessaging.getInstance().subscribeToTopic("calls_" + waiter.getRestaurantId())
-//                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                            @Override
-//                                                            public void onComplete(@NonNull Task<Void> task) {
-//                                                                String msg;
-//                                                                if (task.isSuccessful())
-//                                                                    msg="Subscribed";
-//                                                                else
-//                                                                    msg="Subscribed error";
-//                                                                Timber.d(msg);
-//                                                            }
-//                                                        });
-
-
-
-                                                Intent intent = new Intent(LoginMapsActivity.this, WaiterMainActivity.class);
-                                                intent.putExtra(WAITER_RESTAURANT_KEY, waiter.getRestaurantId());
-                                                startActivity(intent);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
+                            login(user);
                         } else {
+                            //If no user is authenticaed run the FirebaseAUthUi to allow the user to log into the system. After the login this listener will be triggered again
+                            Timber.d("No logged user, requested FirebaseAuthUI");
                             startActivityForResult(
                                     AuthUI.getInstance()
                                             .createSignInIntentBuilder()
@@ -276,26 +194,67 @@ public class LoginMapsActivity extends AppCompatActivity {
 
     }
 
-    private void setupEntryAnimation(){
-//        float startAngle = -30;
-//        header.animate().rotation(startAngle).setDuration(0).start();
-//        header.animate().translationY(-140).setDuration(0).start();
-//
-////        AnimatorSet headerEntryAnimation = (AnimatorSet) AnimatorInflater
-////                .loadAnimator(this, R.animator.pendulum);
-////        headerEntryAnimation.setTarget(header);
-////        headerEntryAnimation.start();
-//
-//        ObjectAnimator translateAnimation = ObjectAnimator.ofFloat(header, TRANSLATION_Y, 0);
-//        translateAnimation.setInterpolator(AnimationUtils.loadInterpolator(LoginMapsActivity.this, android.R
-//                .interpolator.fast_out_slow_in));
-//        translateAnimation.setDuration(1500);
-//
-//        AnimatorSet headerEntryAnimation = new AnimatorSet();
-//        headerEntryAnimation.playSequentially(buildPendulumAnimations(startAngle, header));
-//        headerEntryAnimation.play(translateAnimation);
-//        headerEntryAnimation.start();
+    private void login(final FirebaseUser user){
+        logindRequest = false;
 
+        //Connect to Firebase, check if user is a Waiter or if he is a customer
+        String email = user.getEmail();
+        usersReference = firebaseDatabase.getReference("waiters");
+        usersReference
+            .orderByChild("email")
+            .equalTo(email)
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //If dataSnapshot.getValue() is equal to null, a customer is logging into the system
+                    if (dataSnapshot.getValue() == null){
+                        customer = new Customer();
+                        customer.setEmail(user.getEmail());
+                        customer.setUserName(user.getDisplayName());
+
+                        //Execute the intent which will run the activity to scan (or open) the qr-code
+                        Intent intent = new Intent(LoginMapsActivity.this, BarcodeScannerActivity.class);
+                        startActivityForResult(intent, RC_LIVE_BARCODE_SCAN);
+                    } else {
+                        //Waiter login
+                        Waiter waiter = null;
+                        for(DataSnapshot waiterSnapshot : dataSnapshot.getChildren()){
+                            waiter = waiterSnapshot.getValue(Waiter.class);
+                        }
+
+                        if(USE_FIREBASE_CLOUD_MESSAGE) {
+                            //Code used to subscribe into a Firebase Cloud Message topic if Firebase Cloud Message is used
+                            FirebaseMessaging.getInstance().subscribeToTopic("orders_" + waiter.getRestaurantId());
+                            FirebaseMessaging.getInstance().subscribeToTopic("calls_" + waiter.getRestaurantId())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            String msg;
+                                            if (task.isSuccessful())
+                                                msg = "Subscribed";
+                                            else
+                                                msg = "Subscribed error";
+                                            Timber.d(msg);
+                                        }
+                                    });
+                        }
+
+                        //Execute the intent which will run the main waiter activity
+                        Intent intent = new Intent(LoginMapsActivity.this, WaiterMainActivity.class);
+                        intent.putExtra(WAITER_RESTAURANT_KEY, waiter.getRestaurantId());
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+    }
+
+    private void setupEntryAnimation(){
+        //Setup the animation when this activity is executed
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
