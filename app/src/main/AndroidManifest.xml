@@ -26,8 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activities.LoginMapsActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.activities.LoginMapsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

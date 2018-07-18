@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import timber.log.Timber;
 
 import static com.google.android.gms.vision.barcode.Barcode.QR_CODE;
 
+//This class is used to have a live preview of camera, in order to scan the QR-Code
 public class BarcodeScannerActivity extends AppCompatActivity {
     private final int CAMERA_PERMISSION_REQUEST = 1;
 
@@ -51,8 +53,8 @@ public class BarcodeScannerActivity extends AppCompatActivity {
     @BindView(R.id.open_camera)
     ImageView openCamera;
 
-    @BindView(R.id.open_barcode_image)
-    Button openBarcodeImage;
+    @BindView(R.id.open_qrcode_fab)
+    FloatingActionButton openBarcodeImage;
 
     @Inject
     Context context;

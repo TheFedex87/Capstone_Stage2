@@ -81,6 +81,7 @@
         android:layout_height="@dimen/fab_height"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginStart="@dimen/fab_margin"
         android:elevation="@dimen/fab_elevation"
         android:contentDescription="@string/content_description_fab_add_order"
         android:src="@drawable/ic_add"

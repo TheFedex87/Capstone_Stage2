@@ -6,6 +6,7 @@
     <string name="content_description_map">Find all restaurants</string>
     <string name="content_description_login">Login</string>
     <string name="content_description_fab_add_order">Add new food or drink to your order</string>
+    <string name="content_description_fab_open_barcode">Open an archived QR-Code</string>
     <string name="content_description_call_waiter">Call a waiter</string>
     <string name="content_description_delete_order">Delete the current order</string>
     <string name="content_description_checkout_order">Procede to the checkout of your order</string>
@@ -35,6 +36,9 @@
     <string name="error_invalid_id_restaurant">Invalid ID restaurant</string>
     <string name="no_food_selected">No food selected</string>
 
+    <!--Scan QRCode activity-->
+    <string name="scan_barcode_description">Frame with your camera the QR-Code at your table or open an existing image</string>
+
     <!--Customer Main Activity-->
     <string name="order_something">Order something</string>
     <string name="delete_current_order">Delete current order</string>
@@ -46,6 +50,7 @@
     <string name="table_number">Table: %1$s</string>
     <string name="confirm_delete_title">Confirm delete</string>
     <string name="confirm_delete_text">Confirm delete of current order?</string>
+    <string name="confirm_delete_meal_text">Confirm to remove the selected meal?</string>
     <string name="confirm_call_waiter_title">Confirm call waiter</string>
     <string name="confirm_call_waiter_text">Confirm the call to a waiter?</string>
     <string name="call_to_waiter_submitted">Call to waiter submited, please be patient, a member of the stuff will be at your table as soon as possible</string>

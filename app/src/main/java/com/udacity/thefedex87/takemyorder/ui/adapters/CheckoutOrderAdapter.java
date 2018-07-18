@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 
 public class CheckoutOrderAdapter extends RecyclerView.Adapter<CheckoutOrderAdapter.OrderSummaryViewHolder> {
     private List<CurrentOrderGrouped> meals;
-    FoodTypes foodType;
 
     public CheckoutOrderAdapter(List<CurrentOrderGrouped> meals) {
         this.meals = meals;

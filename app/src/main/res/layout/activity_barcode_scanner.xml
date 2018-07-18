@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,16 +7,8 @@
     tools:context="com.udacity.thefedex87.takemyorder.ui.activities.BarcodeScannerActivity">
 
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/surface_view_margin"
-        android:layout_marginEnd="@dimen/surface_view_margin"
-        android:layout_marginStart="@dimen/surface_view_margin"
-        android:layout_marginTop="@dimen/surface_view_margin"
-        app:layout_constraintBottom_toTopOf="@+id/open_barcode_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/open_camera"
@@ -31,21 +23,27 @@
             android:layout_height="match_parent"
             android:visibility="gone"/>
 
-
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scan_barcode_description"
+            android:textSize="@dimen/scan_qrcode_description_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            android:textAlignment="center"
+            android:layout_margin="@dimen/scan_qrcode_description_margin"/>
     </FrameLayout>
 
-    <Button
-        android:id="@+id/open_barcode_image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/load_from_file_margin"
-        android:layout_marginBottom="@dimen/load_from_file_margin"
-        android:layout_marginEnd="@dimen/load_from_file_margin"
-        android:layout_marginStart="@dimen/load_from_file_margin"
-        android:background="@color/colorAccent"
-        android:text="@string/open_barcode_from_file"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/open_qrcode_fab"
+        android:layout_width="@dimen/fab_width"
+        android:layout_height="@dimen/fab_height"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:elevation="@dimen/fab_elevation"
+        android:contentDescription="@string/content_description_fab_add_order"
+        android:src="@drawable/ic_open"
+        android:layout_gravity="bottom|end"/>
+</FrameLayout>

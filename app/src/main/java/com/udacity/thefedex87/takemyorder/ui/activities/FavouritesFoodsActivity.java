@@ -57,7 +57,6 @@ import static android.view.View.TRANSLATION_Y;
 public class FavouritesFoodsActivity extends AppCompatActivity implements UserRoomContainer {
     private String restaurantId;
     private MenuCompleteFragment menuCompleteFragment;
-    private List<Meal> currentOrder;
     private long userRoomId;
     private boolean addingOrder;
 
@@ -131,8 +130,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
     }
 
     private void setupViewModel() {
-        //FavouritesViewModelFactory favouritesViewModelFactory = new FavouritesViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
-
         FavouritesViewModelFactory favouritesViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
@@ -163,16 +160,6 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                     food.setPrice(favouriteMeal.getPrice());
                     food.setDescription(favouriteMeal.getDescription());
 
-                    //Using the viewmodle, extract the list of the ingredient of this meal, and assign it the toolbar_bg_2 entity
-//                    favouritesViewModel.setMealId(favouriteMeal.getMealId());
-//                    final LiveData<List<Ingredient>> ingredientsLiveData = favouritesViewModel.getIngredientsOfMeal();
-//                    ingredientsLiveData.observe(FavouritesFoodsActivity.this, new Observer<List<Ingredient>>() {
-//                        @Override
-//                        public void onChanged(@Nullable List<Ingredient> ingredients) {
-//                            ingredientsLiveData.removeObserver(this);
-//                            food.setIngredients(ingredients);
-//                        }
-//                    });
                     favourites.get(favouriteMeal.getFoodType()).add(food);
                 }
 
@@ -190,9 +177,8 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
         favouritesViewModel.getCurrentOrderList().observe(this, new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
-                //if (menuCompleteFragment != null) menuCompleteFragment.setCurrentOrder(currentOrderEntries);
+
                 menuCompleteFragment.setCurrentOrder(currentOrderEntries);
-                currentOrder = currentOrderEntries;
                 if (currentOrderEntries.size() > 0) {
                     counterContainer.setVisibility(View.VISIBLE);
                 }

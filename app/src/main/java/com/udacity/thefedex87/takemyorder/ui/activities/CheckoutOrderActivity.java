@@ -121,12 +121,10 @@ public class CheckoutOrderActivity extends AppCompatActivity {
         userRoomId = intent.getLongExtra(CustomerMainActivity.USER_ID_KEY, 0);
 
         setupUi();
-
         setupViewModel();
     }
 
     private void setupViewModel() {
-        //CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = new CheckoutOrderViewModelFactory(AppDatabase.getInstance(context), userRoomId);
         CheckoutOrderViewModelFactory checkoutOrderViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
@@ -135,6 +133,8 @@ public class CheckoutOrderActivity extends AppCompatActivity {
                 .getCheckoutOrderViewModelFactory();
 
         CheckoutOrderViewModel checkoutOrderViewModel = ViewModelProviders.of(this, checkoutOrderViewModelFactory).get(CheckoutOrderViewModel.class);
+
+        //Extract the startes dishes from DB
         checkoutOrderViewModel.setFoodType(FoodTypes.STARTER);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
@@ -146,6 +146,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
+        //Extract the main dishes from DB
         checkoutOrderViewModel.setFoodType(FoodTypes.MAINDISH);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
@@ -157,6 +158,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
+        //Extract the side dishes from DB
         checkoutOrderViewModel.setFoodType(FoodTypes.SIDEDISH);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
@@ -168,6 +170,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
+        //Extract the desserts from DB
         checkoutOrderViewModel.setFoodType(FoodTypes.DESSERT);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override
@@ -179,6 +182,7 @@ public class CheckoutOrderActivity extends AppCompatActivity {
             }
         });
 
+        //Extract the drink from DB
         checkoutOrderViewModel.setFoodType(FoodTypes.DRINK);
         checkoutOrderViewModel.getCurrentOrderByFoodType().observe(this, new Observer<List<CurrentOrderGrouped>>() {
             @Override

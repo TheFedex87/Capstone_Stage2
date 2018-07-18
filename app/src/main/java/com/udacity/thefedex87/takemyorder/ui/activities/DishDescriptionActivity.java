@@ -86,14 +86,19 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
                 dishDescriptionFragment = (DishDescriptionFragment) getSupportFragmentManager().findFragmentById(R.id.dish_description);
                 dishDescriptionFragment.setData(food, restaurantId);
 
+                //Set the current meal into the current order, and creating of the animation
                 addToOrderFab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if(!addingOrder) {
+                            //Setting this variable a true, to indicate that there is insertion in course, this is used to avoid that
+                            //the add button is pressed again until the animation is not finished
                             addingOrder = true;
                             final AppDatabase db = AppDatabase.getInstance(DishDescriptionActivity.this);
 
                             dishDetailsContainer.getOverlay().add(foodImageToAnimate);
+
+                            //Takes the location on screen of the views involved into the animation
 
                             final int[] parentPos = new int[2];
                             dishDetailsContainer.getLocationOnScreen(parentPos);
@@ -171,7 +176,6 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dishDescriptionMealImage.setTransitionName("foodTransition");
-            //getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.curve));
         }
 
         ActivityCompat.postponeEnterTransition(this);
@@ -194,7 +198,6 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
             }
         });
         networkComponent.getPicasso().load(imagePath).into(foodImageToAnimate);
-
     }
 
     @Override

@@ -37,6 +37,10 @@
     <dimen name="map_toolbar_margin">8dp</dimen>
     <dimen name="map_my_location_button_margin">8dp</dimen>
 
+    <!--Scan QR-Code activity-->
+    <dimen name="scan_qrcode_description_text_size">18sp</dimen>
+    <dimen name="scan_qrcode_description_margin">8sp</dimen>
+
     <!--Customer main activity (order activity)-->
     <dimen name="fab_elevation">6dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
@@ -99,7 +103,7 @@
 
 
     <dimen name="counter_circle_size">18dp</dimen>
-    <dimen name="counter_circle_margin_end">8dp</dimen>
+    <dimen name="counter_circle_margin_start_end">8dp</dimen>
     <dimen name="counter_circle_margin_start">27dp</dimen>
     <dimen name="counter_circle_margin_top">0dp</dimen>
     <dimen name="counter_circle_text_size">12sp</dimen>

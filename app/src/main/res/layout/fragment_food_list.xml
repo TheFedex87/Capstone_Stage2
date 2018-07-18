@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:scaleType="fitXY"
             android:layout_margin="10dp"
-            android:src="@drawable/customer_bg_4"
+            android:src="@drawable/customer_bg_6"
             android:contentDescription="@string/content_description_notepad_background"/>
 
         <LinearLayout

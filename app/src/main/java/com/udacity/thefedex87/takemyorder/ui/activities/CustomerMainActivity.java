@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -23,30 +22,19 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
-import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerViewModelComponent;
-import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
-import com.udacity.thefedex87.takemyorder.dagger.NetworkModule;
 import com.udacity.thefedex87.takemyorder.dagger.ViewModelModule;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.Restaurant;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
-import com.udacity.thefedex87.takemyorder.room.entity.FavouriteMeal;
 import com.udacity.thefedex87.takemyorder.room.entity.User;
-import com.udacity.thefedex87.takemyorder.ui.fragments.FoodListFragment;
+import com.udacity.thefedex87.takemyorder.ui.fragments.CurrentOrderListFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.CustomerMainViewModelFactory;
-import com.udacity.thefedex87.takemyorder.ui.widgets.FavouritesDishesWidget;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -72,7 +60,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
     private long userRoomId;
 
-    private FoodListFragment foodListFragment;
+    private CurrentOrderListFragment currentOrderListFragment;
 
 
 
@@ -81,12 +69,6 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-//    @BindView(R.id.toolbar_container)
-//    CollapsingToolbarLayout collapsingToolbarLayout;
-//
-//    @BindView(R.id.order_container_nsv)
-//    NestedScrollView orderContainer;
 
     @Inject
     Context context;
@@ -117,17 +99,20 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
             //Setup view model (used in this activity to retrieve the restaurant from Firebase)
             setupViewModel();
 
-            //Retrieve the toolbar_bg_2 list fragment
-            foodListFragment = (FoodListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
+            //Retrieve the food list fragment
+            currentOrderListFragment = (CurrentOrderListFragment) getSupportFragmentManager().findFragmentById(R.id.current_order);
 
             //Assign the table to the fragment
-            foodListFragment.setTableNumber(table);
+            currentOrderListFragment.setTableNumber(table);
 
-            foodListFragment.setRestaurantId(restaurantId);
+            //Assign the restaurant to the fragment
+            currentOrderListFragment.setRestaurantId(restaurantId);
 
             addToOrderFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Timber.d("Request open of restaurant's menu");
+
                     //Launch the Restaurant menu activity passing the restaurantId
                     Intent intent = new Intent(CustomerMainActivity.this, RestaurantMenuActivity.class);
                     intent.putExtra(LoginMapsActivity.USER_RESTAURANT_KEY, restaurantId);
@@ -135,15 +120,6 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                     startActivity(intent);
                 }
             });
-
-//            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//            Display display = wm.getDefaultDisplay();
-//            DisplayMetrics metrics = new DisplayMetrics();
-//            display.getMetrics(metrics);
-//            int width = metrics.widthPixels;
-//            int height = metrics.heightPixels;
-//            orderContainer.getLayoutParams().height = height-100;
-//            orderContainer.requestLayout();
         } else{
             Timber.d("Some important key not passed to the activity");
             finish();
@@ -161,12 +137,14 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.favourites:
+                Timber.d("Request open of favourites user foods");
                 Intent intent = new Intent(this, FavouritesFoodsActivity.class);
                 intent.putExtra(RESTAURANT_ID_KEY, restaurantId);
                 intent.putExtra(USER_ID_KEY, userRoomId);
                 startActivity(intent);
                 return true;
             case R.id.delete_current_order:
+                Timber.d("Request current order delete");
                 AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
@@ -183,25 +161,31 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                                         AppDatabase.getInstance(CustomerMainActivity.this).currentOrderDao().deleteAllFoods(userRoomId);
                                     }
                                 });
+                                Timber.d("Current order deleted");
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                                Timber.d("Current order deleted aborted");
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
+
                 return true;
             case R.id.checkout_order:
+                Timber.d("Request order checkout");
+
                 Intent intentCheckoutOrder = new Intent(this, CheckoutOrderActivity.class);
-                intentCheckoutOrder.putExtra(ORDER_TOTAL_PRICE_KEY, foodListFragment.getTotalOrderList());
+                intentCheckoutOrder.putExtra(ORDER_TOTAL_PRICE_KEY, currentOrderListFragment.getTotalOrderList());
                 intentCheckoutOrder.putExtra(TABLE_NUMBER_KEY, table);
                 intentCheckoutOrder.putExtra(RESTAURANT_ID_KEY, restaurantId);
                 intentCheckoutOrder.putExtra(USER_ID_KEY, userRoomId);
                 startActivity(intentCheckoutOrder);
                 return true;
             case R.id.call_waiter:
+                Timber.d("Requested waiter call");
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
                 } else {
@@ -218,11 +202,12 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                                 waitersCallRef.push().setValue(waiterCall);
 
                                 Toast.makeText(context, getString(R.string.call_to_waiter_submitted), Toast.LENGTH_LONG).show();
+                                Timber.d("Waiter call confirmed");
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                                Timber.d("Waiter call aborted");
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -230,6 +215,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
                 return true;
             case R.id.log_out:
+                Timber.d("Request user sign-out");
                 signout();
                 finish();
                 return true;
@@ -239,8 +225,6 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
     private void setupViewModel(){
         //Retrieve the restaurant using VIewModel
-        //CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(this), restaurantId, FirebaseAuth.getInstance().getUid(), userRoomId);
-
         CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
@@ -257,8 +241,6 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                     Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    //collapsingToolbarLayout.setTitleEnabled(false);
-                    //collapsingToolbarLayout.setTitle(restaurant.getName());
                     toolbar.setTitle(restaurant.getName());
                 }
             }
@@ -279,14 +261,14 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
                         @Override
                         public void run() {
                             userRoomId = AppDatabase.getInstance(context).userDao().insertUser(newUser);
-                            foodListFragment.userLoaded();
+                            currentOrderListFragment.userLoaded();
                         }
                     });
 
 
                 } else {
                     userRoomId = user.getId();
-                    foodListFragment.userLoaded();
+                    currentOrderListFragment.userLoaded();
                 }
             }
         });

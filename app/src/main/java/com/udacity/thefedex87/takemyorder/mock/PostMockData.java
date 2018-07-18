@@ -413,7 +413,7 @@ public final class PostMockData {
         food.setName("Spinach Enchiladas");
         food.setPrice(8);
         food.setImageName("spinach_enchiladas");
-        food.setDescription("If you like spinach and Mexican toolbar_bg_2, you'll love these easy vegetarian enchiladas made with ricotta cheese and spinach.");
+        food.setDescription("If you like spinach and Mexican food, you'll love these easy vegetarian enchiladas made with ricotta cheese and spinach.");
         ingredients = new ArrayList<>();
         ingredient = new Ingredient();
         ingredient.setIngredientName("Butter");
@@ -907,7 +907,7 @@ public final class PostMockData {
         ingredient.setIngredientName("Eggs");
         ingredients.add(ingredient);
         ingredient = new Ingredient();
-        ingredient.setIngredientName("Red toolbar_bg_2 colouring");
+        ingredient.setIngredientName("Red food colouring");
         ingredients.add(ingredient);
         ingredient = new Ingredient();
         ingredient.setIngredientName("Best quality cocoa");

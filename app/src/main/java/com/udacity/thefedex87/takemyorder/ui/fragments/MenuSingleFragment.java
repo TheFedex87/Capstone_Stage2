@@ -155,7 +155,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
         if(isTwoPanelsMode)
             detailsContainer.setVisibility(View.GONE);
 
-        //Setup the recylcer view of this toolbar_bg_2 category
+        //Setup the recylcer view of this food category
         foodInMenuAdapter = userInterfaceComponent.getFoodInMenuAdapter();
         foodInMenuContainer.setAdapter(foodInMenuAdapter);
         foodInMenuContainer.setLayoutManager(userInterfaceComponent.getGridLayoutManager());

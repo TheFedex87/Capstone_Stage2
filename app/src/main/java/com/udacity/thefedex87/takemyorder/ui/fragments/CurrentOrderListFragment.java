@@ -3,12 +3,15 @@ package com.udacity.thefedex87.takemyorder.ui.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -49,6 +52,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,7 +60,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by federico.creti on 14/06/2018.
  */
 
-public class FoodListFragment extends Fragment {
+public class CurrentOrderListFragment extends Fragment {
     @BindView(R.id.current_order_list)
     RecyclerView currentOrderList;
 
@@ -82,7 +86,7 @@ public class FoodListFragment extends Fragment {
 
     private NetworkComponent networkComponent;
 
-    public FoodListFragment(){
+    public CurrentOrderListFragment(){
         adapter = new FoodInOrderAdapter();
     }
 
@@ -134,17 +138,45 @@ public class FoodListFragment extends Fragment {
                 return false;
             }
 
-            // Called when a user swipes left or right on a ViewHolder
+            // Called when a user swipes left or right on a ViewHolder to remove a meal from current order
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        int position = viewHolder.getAdapterPosition();
-                        List<Meal> foods = adapter.getCurrentOrderEntryList();
-                        db.currentOrderDao().deleteFood(foods.get(position));
-                    }
-                });
+                Timber.d("Request remove of a meal from current order");
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getActivity());
+                }
+                builder.setTitle(getString(R.string.confirm_delete_title))
+                        .setMessage(getString(R.string.confirm_delete_meal_text))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                int position = viewHolder.getAdapterPosition();
+                                                List<Meal> foods = adapter.getCurrentOrderEntryList();
+                                                db.currentOrderDao().deleteFood(foods.get(position));
+                                                Timber.d("Meal removed from current order");
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+                                Timber.d("Meal not removed from current order");
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
             }
         }).attachToRecyclerView(currentOrderList);
 
@@ -153,8 +185,7 @@ public class FoodListFragment extends Fragment {
     }
 
     public void setupViewModel(){
-        //Setup the CustomerMainViewModel in order to observe the current order
-        //CustomerMainViewModelFactory customerMainViewModelFactory = new CustomerMainViewModelFactory(AppDatabase.getInstance(getContext()), null, null, ((UserRoomContainer)getActivity()).getUserRoomId());
+        //Setup the CustomerMainViewModel
         CustomerMainViewModelFactory customerMainViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(applicationContext))
@@ -163,6 +194,8 @@ public class FoodListFragment extends Fragment {
                 .getCustomerMainViewModelFactory();
 
         CustomerMainViewModel customerMainViewModel = ViewModelProviders.of(this, customerMainViewModelFactory).get(CustomerMainViewModel.class);
+
+        //Observe for current order
         customerMainViewModel.getCurrentOrderList().observe(getActivity(), new Observer<List<Meal>>() {
             @Override
             public void onChanged(@Nullable List<Meal> currentOrderEntries) {
@@ -182,6 +215,7 @@ public class FoodListFragment extends Fragment {
             }
         });
 
+        //Observe for favourite meal of user in order to store the favourite into SharedPreference to be loaded into the widget
         customerMainViewModel.getAllFavouriteMealOfUser().observe(this, new Observer<List<FavouriteMeal>>() {
             @Override
             public void onChanged(@Nullable List<FavouriteMeal> favouriteMeals) {
