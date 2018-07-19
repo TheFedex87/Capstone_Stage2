@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +19,6 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,6 +76,9 @@ public class LoginMapsActivity extends AppCompatActivity {
     public static final int RC_LIVE_BARCODE_SCAN = 4;
 
     public static final boolean USE_FIREBASE_CLOUD_MESSAGE = false;
+
+    @BindView(R.id.root_container)
+    ConstraintLayout rootContainer;
 
     @BindView(R.id.map)
     ImageView map;
@@ -366,7 +370,7 @@ public class LoginMapsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
             Timber.e("Errore creating JSON object " + e.getMessage());
-            Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+            Snackbar.make(rootContainer, getString(R.string.error_loading_bitmap), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -392,7 +396,7 @@ public class LoginMapsActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Timber.w(getString(R.string.error_no_valid_information_from_barcode));
-            Toast.makeText(this, getString(R.string.error_no_valid_information_from_barcode), Toast.LENGTH_LONG).show();
+            Snackbar.make(rootContainer, getString(R.string.error_no_valid_information_from_barcode), Snackbar.LENGTH_LONG).show();
         }
     }
 

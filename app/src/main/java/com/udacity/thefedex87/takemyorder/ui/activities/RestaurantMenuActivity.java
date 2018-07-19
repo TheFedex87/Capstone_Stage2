@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -58,7 +58,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
     private boolean addingOrder;
 
     @BindView(R.id.root_container)
-    CoordinatorLayout restaurantMenuContainer;
+    CoordinatorLayout rootContainer;
 
     @BindView(R.id.menu_icon_container)
     FrameLayout menuIconContainer;
@@ -223,10 +223,10 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
                         dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);
                         foodImageToAnimate = viewRoot.findViewById(R.id.food_image_to_animate);
 
-                        restaurantMenuContainer.getOverlay().add(foodImageToAnimate);
+                        rootContainer.getOverlay().add(foodImageToAnimate);
 
                         final int[] parentPos = new int[2];
-                        restaurantMenuContainer.getLocationOnScreen(parentPos);
+                        rootContainer.getLocationOnScreen(parentPos);
 
                         final int[] fabPos = new int[2];
                         addToOrderFab.getLocationOnScreen(fabPos);
@@ -261,7 +261,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
                                 animation.removeListener(this);
 
-                                restaurantMenuContainer.getOverlay().remove(foodImageToAnimate);
+                                rootContainer.getOverlay().remove(foodImageToAnimate);
                                 dishDescriptionFoodImageContainer.addView(foodImageToAnimate);
 
                                 foodImageToAnimate.animate().translationX(0).setDuration(0);
@@ -292,7 +292,7 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
                         });
                     } else {
                         Timber.w(getString(R.string.no_food_selected));
-                        Toast.makeText(RestaurantMenuActivity.this, getString(R.string.no_food_selected), Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootContainer, getString(R.string.no_food_selected), Snackbar.LENGTH_LONG).show();
                     }
                 }
             }

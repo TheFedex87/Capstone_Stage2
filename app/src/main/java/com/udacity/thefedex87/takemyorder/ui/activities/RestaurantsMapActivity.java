@@ -9,13 +9,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,6 +49,9 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
     private static final float MIN_DISTANCE = 1000;
 
     private View mapView;
+
+    @BindView(R.id.root_container)
+    ConstraintLayout rootContainer;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -96,7 +100,7 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
             mMap.setOnMarkerClickListener(this);
         else {
             Timber.e(getString(R.string.error_places_api_key_not_provided));
-            Toast.makeText(this, getString(R.string.error_places_api_key_not_provided), Toast.LENGTH_LONG).show();
+            Snackbar.make(rootContainer, getString(R.string.error_places_api_key_not_provided), Snackbar.LENGTH_LONG).show();
         }
 
 

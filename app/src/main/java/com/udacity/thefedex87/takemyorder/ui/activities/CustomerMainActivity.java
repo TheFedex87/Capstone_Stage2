@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +63,8 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
     private CurrentOrderListFragment currentOrderListFragment;
 
-
+    @BindView(R.id.root_container)
+    CoordinatorLayout rootContainer;
 
     @BindView(R.id.add_to_order_fab)
     FloatingActionButton addToOrderFab;
@@ -201,7 +203,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
 
                                 waitersCallRef.push().setValue(waiterCall);
 
-                                Toast.makeText(context, getString(R.string.call_to_waiter_submitted), Toast.LENGTH_LONG).show();
+                                Snackbar.make(rootContainer, getString(R.string.call_to_waiter_submitted), Snackbar.LENGTH_LONG).show();
                                 Timber.d("Waiter call confirmed");
                             }
                         })
@@ -238,7 +240,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
             public void onChanged(@Nullable Restaurant restaurant) {
                 if (restaurant == null){
                     Timber.e("Invalid ID restaurant");
-                    Toast.makeText(CustomerMainActivity.this, getString(R.string.error_invalid_id_restaurant), Toast.LENGTH_LONG).show();
+                    Snackbar.make(rootContainer, getString(R.string.error_invalid_id_restaurant), Snackbar.LENGTH_LONG).show();
                     finish();
                 } else {
                     toolbar.setTitle(restaurant.getName());

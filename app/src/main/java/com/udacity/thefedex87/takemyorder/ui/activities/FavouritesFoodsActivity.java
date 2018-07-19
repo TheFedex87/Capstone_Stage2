@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
@@ -300,7 +300,7 @@ public class FavouritesFoodsActivity extends AppCompatActivity implements UserRo
                         });
                     } else {
                         Timber.w(getString(R.string.no_food_selected));
-                        Toast.makeText(FavouritesFoodsActivity.this, getString(R.string.no_food_selected), Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootContainer, getString(R.string.no_food_selected), Snackbar.LENGTH_LONG).show();
                     }
                 }
             }

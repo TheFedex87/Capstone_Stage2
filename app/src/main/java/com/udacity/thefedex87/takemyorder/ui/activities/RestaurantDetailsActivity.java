@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.application.TakeMyOrderApplication;
@@ -45,6 +46,9 @@ import timber.log.Timber;
 public class RestaurantDetailsActivity extends AppCompatActivity implements RestaurantPhotoAdapter.ImageLoadingState {
     private String GOOGLE_PLACES_API_KEY = "";
     private final int MAX_PHOTO_TO_LOAD = 15;
+
+    @BindView(R.id.root_container)
+    CoordinatorLayout rootContainer;
 
     @BindView(R.id.photo_pager)
     ViewPager photoPager;
@@ -192,7 +196,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                                     ////////////////////////////////////
                                 }else{
                                     Timber.e("Error retrieving restaurant details: " + response.body().getStatus());
-                                    Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details) + ". " + response.body().getStatus(), Toast.LENGTH_LONG).show();
+                                    Snackbar.make(rootContainer, getString(R.string.error_retrieving_restaurant_details) + ". " + response.body().getStatus(), Snackbar.LENGTH_LONG).show();
                                     finish();
                                 }
                             }
@@ -200,7 +204,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                             @Override
                             public void onFailure(Call<GooglePlaceResultModel> call, Throwable t) {
                                 Timber.e("Error retrieving restaurant detials: " + t.getMessage());
-                                Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details), Toast.LENGTH_LONG).show();
+                                Snackbar.make(rootContainer, getString(R.string.error_retrieving_restaurant_details), Snackbar.LENGTH_LONG).show();
                                 finish();
                             }
                         });

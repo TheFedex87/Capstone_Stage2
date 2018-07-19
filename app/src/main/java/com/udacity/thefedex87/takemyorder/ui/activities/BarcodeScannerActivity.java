@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.CameraSource;
@@ -190,7 +189,7 @@ public class BarcodeScannerActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 Timber.e("Error parsing Bitmap " + e.getMessage());
-                Toast.makeText(this, getString(R.string.error_loading_bitmap), Toast.LENGTH_LONG).show();
+                Snackbar.make(rootContainer, getString(R.string.error_loading_bitmap), Snackbar.LENGTH_LONG).show();
                 return;
             }
 
@@ -200,7 +199,6 @@ public class BarcodeScannerActivity extends AppCompatActivity {
             if (barcodes.size() == 0){
                 //Barcode not found on picture
                 Timber.w(getString(R.string.error_no_barcode_found));
-                //Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
                 Snackbar.make(rootContainer, getString(R.string.error_no_barcode_found), Snackbar.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent();
