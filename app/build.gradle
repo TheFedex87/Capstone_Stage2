@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'takemyorder'
+            keyPassword 'TakeMyOrder87!!'
+            storeFile file("$rootDir/app/keystore.jks")
+            storePassword 'TakeMyOrder87!!'
+        }
+    }
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.udacity.thefedex87.takemyorder"
@@ -16,42 +24,35 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.android.support.test:runner:1.0.2'
-
-    implementation "com.android.support:design:27.1.1"
-
+    implementation 'com.android.support:design:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
-
     //Espresso
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     //Retrofit and gson dependecies
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-
     //Dagger dependecies
     implementation 'com.google.dagger:dagger-android:2.11'
     implementation 'com.google.dagger:dagger-android-support:2.11'
     // if you use the support libraries
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-
     //ButterKnife dependencies
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
@@ -59,20 +60,15 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
-
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.1'
-
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
     //Room
-    implementation "android.arch.persistence.room:runtime:1.1.0"
+    implementation 'android.arch.persistence.room:runtime:1.1.0'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.0"
-
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
