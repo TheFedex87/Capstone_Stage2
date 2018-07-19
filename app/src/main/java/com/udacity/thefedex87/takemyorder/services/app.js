@@ -83,7 +83,7 @@
 	});
 	
 	
-	function sendNotificationToUser(restaurantId, message, onSuccess) {
+	/*function sendNotificationToUser(restaurantId, message, onSuccess) {
 	  request({
 		url: 'https://fcm.googleapis.com/fcm/send',
 		method: 'POST',
@@ -107,7 +107,7 @@
 		  console.log('SENT');
 		}
 	  });
-	}
+	}*/
 
 	
 }());
