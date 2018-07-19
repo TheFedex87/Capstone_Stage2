@@ -79,9 +79,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
     @BindView(R.id.reviews_container)
     RecyclerView reviewsContainer;
 
-//    @BindView(R.id.progress_bar)
-//    ProgressBar progressBar;
-
     @Inject
     Context context;
 
@@ -122,11 +119,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                         googlePlacesApiInterface.placeDetails(placeId, GOOGLE_PLACES_API_KEY).enqueue(new Callback<GooglePlaceResultModel>() {
                             @Override
                             public void onResponse(Call<GooglePlaceResultModel> call, Response<GooglePlaceResultModel> response) {
+                                //If the response is OK
                                 if (response.body().getStatus().equals("OK")) {
 
                                     if (!titleSet)
                                         collapsingToolbarLayout.setTitle(response.body().getGooglePlaceDetailsModel().getName());
 
+                                    //Extract photo urls from response
                                     List<String> photos = new ArrayList<>();
                                     for (RestaurantPhotoModel photoReference : response.body().getGooglePlaceDetailsModel().getPhotos()) {
                                         String photoUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photoreference=" + photoReference.getPhotoReference() + "&key=" + GOOGLE_PLACES_API_KEY;
@@ -192,7 +191,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
 
                                     ////////////////////////////////////
                                 }else{
-                                    Timber.e("Error retrieving restaurant detials: " + response.body().getStatus());
+                                    Timber.e("Error retrieving restaurant details: " + response.body().getStatus());
                                     Toast.makeText(RestaurantDetailsActivity.this, getString(R.string.error_retrieving_restaurant_details) + ". " + response.body().getStatus(), Toast.LENGTH_LONG).show();
                                     finish();
                                 }
@@ -211,6 +210,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Rest
                 }.execute();
             }
         } else{
+            if (intent == null)
+                Timber.e("Intent not provided");
+            else if(!intent.hasExtra(RestaurantsMapActivity.PLACE_ID_KEY))
+                Timber.e("PLACE_ID_KEY not provided");
             finish();
         }
     }

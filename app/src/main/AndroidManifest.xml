@@ -114,7 +114,7 @@
         </activity>
 
         <service
-            android:name=".services.WaiterAttentionRequest"
+            android:name=".services.WaiterAttentionRequestService"
             android:exported="false" />
 
         <service android:name=".ui.widgets.ListViewWidgetService"

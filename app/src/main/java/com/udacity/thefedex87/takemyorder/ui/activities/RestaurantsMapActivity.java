@@ -1,6 +1,7 @@
 package com.udacity.thefedex87.takemyorder.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -127,6 +128,7 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void setCurrentUserLocation(){
         mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -134,7 +136,8 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
 
         View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-        // position on right bottom
+
+        //Position My Location button on bottom right
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         rlp.setMargins(0, 0, (int)getResources().getDimension(R.dimen.map_my_location_button_margin), (int)getResources().getDimension(R.dimen.map_my_location_button_margin));
@@ -144,6 +147,7 @@ public class RestaurantsMapActivity extends AppCompatActivity implements OnMapRe
     public boolean onMarkerClick(Marker marker) {
         if(marker.getTag() == null || marker.getTag().toString() == "") return false;
 
+        //Run restaurant details activity when click on a marker
         Intent intent = new Intent(this, RestaurantDetailsActivity.class);
         intent.putExtra(PLACE_ID_KEY, marker.getTag().toString());
         intent.putExtra(RESTAURANT_NAME_KEY, marker.getTitle());

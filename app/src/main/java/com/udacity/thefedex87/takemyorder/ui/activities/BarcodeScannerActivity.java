@@ -9,7 +9,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -46,6 +50,9 @@ public class BarcodeScannerActivity extends AppCompatActivity {
     private final int CAMERA_PERMISSION_REQUEST = 1;
 
     public static final int RC_PHOTO_PICKER = 2;
+
+    @BindView(R.id.root_container)
+    CoordinatorLayout rootContainer;
 
     @BindView(R.id.camera_preview)
     SurfaceView cameraPreview;
@@ -193,7 +200,8 @@ public class BarcodeScannerActivity extends AppCompatActivity {
             if (barcodes.size() == 0){
                 //Barcode not found on picture
                 Timber.w(getString(R.string.error_no_barcode_found));
-                Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, getString(R.string.error_no_barcode_found), Toast.LENGTH_LONG).show();
+                Snackbar.make(rootContainer, getString(R.string.error_no_barcode_found), Snackbar.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("barcode", barcodes.valueAt(0));

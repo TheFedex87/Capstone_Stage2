@@ -26,6 +26,7 @@ import com.udacity.thefedex87.takemyorder.dagger.NetworkComponent;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.models.Food;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
+import com.udacity.thefedex87.takemyorder.ui.adapters.FoodInMenuAdapter;
 import com.udacity.thefedex87.takemyorder.ui.fragments.DishDescriptionFragment;
 
 import butterknife.BindView;
@@ -187,7 +188,7 @@ public class DishDescriptionActivity extends AppCompatActivity implements UserRo
         collapsingToolbarLayout.setTitle(food.getName());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dishDescriptionMealImage.setTransitionName("foodTransition");
+            dishDescriptionMealImage.setTransitionName(FoodInMenuAdapter.IMAGE_TRANSITION_NAME);
             ActivityCompat.postponeEnterTransition(this);
         }
 

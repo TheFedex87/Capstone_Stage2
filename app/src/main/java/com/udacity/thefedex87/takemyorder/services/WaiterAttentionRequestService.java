@@ -32,7 +32,7 @@ import java.util.ArrayList;
 When a new request attnetion (waiter call or ready order) arrives, this service send a notification to the device, and send a Broadcast message, which contains the new request.
 The message is capture by a Broadcast receiver which take care to fill the UI for waiter app section, with the received data
 */
-public class WaiterAttentionRequest extends IntentService {
+public class WaiterAttentionRequestService extends IntentService {
 
     private final String CALLS_ROOT = "waiters_calls";
     private final String READY_ORDERS = "orders";
@@ -51,15 +51,15 @@ public class WaiterAttentionRequest extends IntentService {
     private DatabaseReference waiterCallReference;
     private DatabaseReference waiterReadyOrderReference;
 
-    public WaiterAttentionRequest() {
-        super(WaiterAttentionRequest.class.getSimpleName());
+    public WaiterAttentionRequestService() {
+        super(WaiterAttentionRequestService.class.getSimpleName());
 
         db = FirebaseDatabase.getInstance();
 
     }
 
     public static void setIsExecutingTask(boolean isExecutingTask){
-        WaiterAttentionRequest.isExecutingTask = isExecutingTask;
+        WaiterAttentionRequestService.isExecutingTask = isExecutingTask;
     }
 
     @Override
@@ -143,6 +143,7 @@ public class WaiterAttentionRequest extends IntentService {
     };
 
     private void sendCallsBroadcast(ArrayList<WaiterCall> waiterCalls){
+        //Send the broadcast message with the waiter calls list
         Intent callsIntent = new Intent();
         callsIntent.setAction(WaiterMainActivity.ACTION_WAITER_CALLS);
         callsIntent.putParcelableArrayListExtra(WaiterMainActivity.WAITER_CALLS_LIST, waiterCalls);
@@ -150,6 +151,7 @@ public class WaiterAttentionRequest extends IntentService {
     }
 
     private void sendReadyOrdersBroadcast(ArrayList<WaiterReadyOrder> readyOrders){
+        //Send the broadcast message with the ready orders list
         Intent readyOrdersIntent = new Intent();
         readyOrdersIntent.setAction(WaiterMainActivity.ACTION_WAITER_READY_ORDERS);
         readyOrdersIntent.putParcelableArrayListExtra(WaiterMainActivity.WAITER_READY_ORDERS_LIST, readyOrders);

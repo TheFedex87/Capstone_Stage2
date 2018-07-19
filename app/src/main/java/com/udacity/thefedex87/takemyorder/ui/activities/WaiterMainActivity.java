@@ -10,8 +10,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +26,7 @@ import com.udacity.thefedex87.takemyorder.dagger.DaggerUserInterfaceComponent;
 import com.udacity.thefedex87.takemyorder.dagger.UserInterfaceModule;
 import com.udacity.thefedex87.takemyorder.models.WaiterCall;
 import com.udacity.thefedex87.takemyorder.models.WaiterReadyOrder;
-import com.udacity.thefedex87.takemyorder.services.WaiterAttentionRequest;
+import com.udacity.thefedex87.takemyorder.services.WaiterAttentionRequestService;
 import com.udacity.thefedex87.takemyorder.ui.adapters.WaiterPagerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterCallsFragment;
 import com.udacity.thefedex87.takemyorder.ui.fragments.WaiterReadyOrderFragment;
@@ -52,7 +50,6 @@ public class WaiterMainActivity extends AppCompatActivity {
     public static final String WAITER_READY_ORDERS_LIST = "WAITER_READY_ORDERS_LIST";
 
     private String restaurantId;
-//    private WaiterViewModelFactory waiterViewModelFactory;
     private FirebaseAuth firebaseAuth;
 
     private WaiterPagerAdapter waiterPagerAdapter;
@@ -94,25 +91,32 @@ public class WaiterMainActivity extends AppCompatActivity {
 
             startWaiterService();
         }
+        else{
+            if (intent == null)
+                Timber.e("Intent not provided");
+            else if(!intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY))
+                Timber.e("WAITER_RESTAURANT_KEY not provided");
+            else
+                Timber.e("WAITER_RESTAURANT_KEY not provided");
 
-
-
-
+            finish();
+        }
     }
 
     private void startWaiterService(){
-        Intent intentService = new Intent(context, WaiterAttentionRequest.class);
+        //Enable the service which listen for new Waiter's request (customer call or ready order from kitchen)
+        Intent intentService = new Intent(context, WaiterAttentionRequestService.class);
         intentService.putExtra(LoginMapsActivity.RESTAURANTS_INFO_KEY, restaurantId);
         context.startService(intentService);
     }
 
     private void registerReceiver(){
-        //attentionRequestReceiver = new AttentionRequestReceiver();
+        //Register the broadcast receiver which came from WaiterAttentionRequestService
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_WAITER_CALLS);
         filter.addAction(ACTION_WAITER_READY_ORDERS);
         AttentionRequestReceiver attentionRequestReceiver = new AttentionRequestReceiver();
-        //LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+
         registerReceiver(attentionRequestReceiver, filter);
     }
 
@@ -147,6 +151,7 @@ public class WaiterMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (waiterTabs != null){
+            //If this is a single panel layout (portrait)
             waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_calls)));
             waiterTabs.addTab(waiterTabs.newTab().setText(getString(R.string.waiter_ready_orders)));
 
@@ -181,6 +186,7 @@ public class WaiterMainActivity extends AppCompatActivity {
 
 
         } else {
+            //If we are in a master-details layout (landscape)
             ((WaiterCallsFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_calls)).setRestaurantId(restaurantId);
             ((WaiterReadyOrderFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_ready_orders)).setRestaurantId(restaurantId);
         }
@@ -209,18 +215,12 @@ public class WaiterMainActivity extends AppCompatActivity {
         firebaseAuth.signOut();
         Timber.d("User signed out");
 
-        WaiterAttentionRequest.setIsExecutingTask(false);
+        WaiterAttentionRequestService.setIsExecutingTask(false);
         finish();
     }
 
-
+    //Receiver which listens for waiters call and ready orders and fill the UI
     public class AttentionRequestReceiver extends BroadcastReceiver{
-//        private WaiterPagerAdapter waiterPagerAdapter;
-//
-//        public Receiver(WaiterPagerAdapter waiterPagerAdapter) {
-//            this.waiterPagerAdapter = waiterPagerAdapter;
-//        }
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ACTION_WAITER_CALLS)){

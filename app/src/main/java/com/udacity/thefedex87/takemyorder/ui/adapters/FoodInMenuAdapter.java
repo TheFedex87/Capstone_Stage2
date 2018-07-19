@@ -51,12 +51,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.FoodInMenuViewHolder> {
+    public static final String IMAGE_TRANSITION_NAME = "FOOD_TRANSITION";
+
     private List<Meal> meals;
     private Context context;
 
     private AppCompatActivity parentActivity;
-
-    private FirebaseStorage firebaseStorage;
 
     private NetworkComponent networkInterfaceComponent;
 
@@ -74,7 +74,6 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     public FoodInMenuAdapter(Context context, FoodInMenuActionClick foodInMenuActionClick, AppCompatActivity parentActivity){
         this.parentActivity = parentActivity;
         this.context = context;
-        firebaseStorage = FirebaseStorage.getInstance();
 
         networkInterfaceComponent = DaggerNetworkComponent
                 .builder()
@@ -117,7 +116,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
     public void onBindViewHolder(@NonNull final FoodInMenuViewHolder holder, final int position) {
 
         if (!isTwoPanelsMode) {
-            //If this meal is a drink, hide the add to favourite icon and the detials icon
+            //If this meal is a drink, hide the add to favourite icon and the details icon
             if (meals.get(position) instanceof Drink) {
                 holder.favouriteFood.setVisibility(View.GONE);
                 holder.showDishDetails.setVisibility(View.GONE);
@@ -138,7 +137,6 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
         }
 
-        //restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(parentActivity), restaurantId, ((UserRoomContainer)parentActivity).getUserRoomId());
         restaurantMenuViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(context))
@@ -222,10 +220,11 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ViewCompat.setTransitionName(holder.foodImage, "foodTransition");
+                ViewCompat.setTransitionName(holder.foodImage, IMAGE_TRANSITION_NAME);
             }
         }
 
+        //If we are in a master-details layout, select the first dish into the list if none is selected
         if (isTwoPanelsMode && selectedIndex < 0){
             selectedIndex = 0;
             foodInMenuActionClick.showDishDetails(meals.get(selectedIndex), holder.foodImage);

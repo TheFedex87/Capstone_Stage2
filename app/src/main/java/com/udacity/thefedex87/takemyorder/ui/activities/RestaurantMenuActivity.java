@@ -90,8 +90,6 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_menu);
 
-        //getMenu = new HashMap<FoodTypes, List<Meal>>();
-
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY)){
             ButterKnife.bind(this);
@@ -113,14 +111,15 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
             });
 
         } else {
-            Timber.d("No intent provided, or missing key");
+            if (intent == null)
+                Timber.e("No intent provided");
+            else if(!intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY))
+                Timber.e("USER_RESTAURANT_KEY not provided");
         }
     }
 
     private void setupViewModel(final String restaurantId){
-        //Retreive the ViewModel for this activity
-        //RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = new RestaurantMenuViewModelFactory(AppDatabase.getInstance(this), restaurantId, userRoomId);
-
+        //Retrieve the ViewModel for this activity
         RestaurantMenuViewModelFactory restaurantMenuViewModelFactory = DaggerViewModelComponent
                 .builder()
                 .applicationModule(new ApplicationModule(getApplicationContext()))
@@ -178,8 +177,6 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
 //                AnimatorSet counterAnimation = new AnimatorSet();
 //                counterAnimation.playSequentially(counterAnimationIncrease, counterAnimationDecrease);
-
-
             }
         });
 
@@ -221,7 +218,6 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
 
                         final AppDatabase db = AppDatabase.getInstance(RestaurantMenuActivity.this);
 
-                        //ButterKnife.bind(this, menuCompleteFragment.getCurrentTabFragment().getView());
                         View viewRoot = menuCompleteFragment.getCurrentTabFragment().getView();
                         dishDescriptionFoodImageContainer = viewRoot.findViewById(R.id.dish_description_food_image_container);
                         dishDescriptionMealImage = viewRoot.findViewById(R.id.dish_description_meal_image);
