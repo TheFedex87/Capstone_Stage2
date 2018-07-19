@@ -60,6 +60,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by federico.creti on 14/06/2018.
  */
 
+//Fragment where is loaded the list of food inside current order
 public class CurrentOrderListFragment extends Fragment {
     @BindView(R.id.current_order_list)
     RecyclerView currentOrderList;
@@ -113,6 +114,7 @@ public class CurrentOrderListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created CurrentOrderListFragment");
         View rootView = inflater.inflate(R.layout.fragment_food_list, container, false);
 
         ButterKnife.bind(this, rootView);
@@ -132,6 +134,7 @@ public class CurrentOrderListFragment extends Fragment {
 
         currentOrderList.setAdapter(adapter);
         currentOrderList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+        //Item touch helper used to swipe the element inside the recycler view in order to delte them from current order
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -152,6 +155,7 @@ public class CurrentOrderListFragment extends Fragment {
                         .setMessage(getString(R.string.confirm_delete_meal_text))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                //Delete confirmed use Room to remove the food from current order
                                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                                     @Override
                                     public void run() {
@@ -170,6 +174,7 @@ public class CurrentOrderListFragment extends Fragment {
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                //Delete aborted, reverse the swipe animation
                                 adapter.notifyItemChanged(viewHolder.getAdapterPosition());
                                 Timber.d("Meal not removed from current order");
                             }

@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
  * Created by feder on 12/07/2018.
  */
 
+//Adapter used to display the list of Waiter calls inside waiter activity
 public class WaiterCallsAdapter extends RecyclerView.Adapter<WaiterCallsAdapter.WaiterCallsViewHolder> {
     private List<WaiterCall> calls;
     private Context context;

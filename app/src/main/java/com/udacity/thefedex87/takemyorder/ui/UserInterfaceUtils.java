@@ -1,4 +1,4 @@
-package com.udacity.thefedex87.takemyorder.utils;
+package com.udacity.thefedex87.takemyorder.ui;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

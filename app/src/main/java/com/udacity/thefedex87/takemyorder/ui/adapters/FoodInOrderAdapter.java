@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
  * Created by federico.creti on 14/06/2018.
  */
 
+//Adapter for the list of food inside the current order
 public class FoodInOrderAdapter extends RecyclerView.Adapter<FoodInOrderAdapter.FoodInOrderViewHolder> {
     private List<Meal> currentOrderEntryList;
 

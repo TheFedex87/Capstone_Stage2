@@ -30,11 +30,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by feder on 12/07/2018.
  */
 
+//Fragment used to load and show the waiter calls
 public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.WaiterCallsAdapterClick {
 
     private static int NOTIFICATION_ID = 1;
@@ -64,9 +66,6 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
     public void setRestaurantId(String restaurantId){
         this.restaurantId = restaurantId;
         dataSet = true;
-//        if (viewAttached)
-//            setupViewModel(restaurantId);
-
     }
 
     public void setCalls(List<WaiterCall> calls){
@@ -88,6 +87,7 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created WaiterCallsFragment");
         View rootView = inflater.inflate(R.layout.waiter_calls_fragment, container, false);
 
 
@@ -106,14 +106,12 @@ public class WaiterCallsFragment extends Fragment implements WaiterCallsAdapter.
 
         viewAttached = true;
 
-//        if(dataSet)
-//            setupViewModel(restaurantId);
-
         return rootView;
     }
 
     @Override
     public void takeCallClick(WaiterCall call) {
+        //When the waiter click on "Take request" button, I delete from firebase the waiter call
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference callsReference = db.getReference("waiters_calls/" + restaurantId + "/" + call.getId());
         callsReference.addListenerForSingleValueEvent(new ValueEventListener() {

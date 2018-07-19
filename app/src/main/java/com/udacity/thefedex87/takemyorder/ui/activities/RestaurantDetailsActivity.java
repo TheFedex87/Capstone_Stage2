@@ -29,7 +29,7 @@ import com.udacity.thefedex87.takemyorder.retrofit.GooglePlacesApiInterface;
 import com.udacity.thefedex87.takemyorder.ui.adapters.PhotoIndicatorContainerAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantPhotoAdapter;
 import com.udacity.thefedex87.takemyorder.ui.adapters.RestaurantReviewsAdapter;
-import com.udacity.thefedex87.takemyorder.utils.UserInterfaceUtils;
+import com.udacity.thefedex87.takemyorder.ui.UserInterfaceUtils;
 
 import java.util.ArrayList;
 import java.util.List;

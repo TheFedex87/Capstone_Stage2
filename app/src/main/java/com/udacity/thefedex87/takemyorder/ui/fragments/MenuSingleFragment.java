@@ -49,6 +49,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 import static android.view.View.ALPHA;
 import static android.view.View.SCALE_X;
@@ -60,6 +61,7 @@ import static android.view.View.TRANSLATION_Y;
  * Created by feder on 16/06/2018.
  */
 
+//Fragment which contains a single food category, it is the fragment used by FoodTypePagerAdapter
 public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.FoodInMenuActionClick {
     private List<Meal> meals;
     private String restaurantId;
@@ -146,6 +148,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created MenuSingleFragment");
         View viewRoot = inflater.inflate(R.layout.menu_single_fragment, container, false);
 
         ButterKnife.bind(this, viewRoot);
@@ -194,6 +197,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
                     .getParent().getParent().getParent();
         }
 
+        //Extract the position of controls involved into the animation
         parentViewGroup.getOverlay().add(imageView);
         final int[] parentPos = new int[2];
         parentViewGroup.getLocationOnScreen(parentPos);
@@ -268,6 +272,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
                         final AppDatabase db = AppDatabase.getInstance(getActivity());
 
+                        //Add the selected order into the current food list
                         selectedMeal.setRestaurantId(restaurantId);
                         AppExecutors.getInstance().diskIO().execute(new Runnable() {
                             @Override
@@ -302,6 +307,7 @@ public class MenuSingleFragment extends Fragment implements FoodInMenuAdapter.Fo
 
     @Override
     public void subtractFood(final Meal selectedMeal) {
+        //Subtract one unit from this food from current order
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

@@ -14,12 +14,8 @@ import com.udacity.thefedex87.takemyorder.R;
 import com.udacity.thefedex87.takemyorder.dagger.ApplicationModule;
 import com.udacity.thefedex87.takemyorder.dagger.DaggerNetworkComponent;
 import com.udacity.thefedex87.takemyorder.models.GooglePlaceDetailModel.RestaurantReviewModel;
-import com.udacity.thefedex87.takemyorder.utils.UserInterfaceUtils;
+import com.udacity.thefedex87.takemyorder.ui.UserInterfaceUtils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by federico.creti on 11/06/2018.
  */
 
+//Adapter used to display the restaurant reviews
 public class RestaurantReviewsAdapter extends RecyclerView.Adapter<RestaurantReviewsAdapter.RestaurantReviewsViewHolder> {
     private List<RestaurantReviewModel> reviews;
     private Context context;
@@ -55,16 +52,6 @@ public class RestaurantReviewsAdapter extends RecyclerView.Adapter<RestaurantRev
         UserInterfaceUtils.SetAverageDots(reviews.get(position).getRating(),
                 holder.average1, holder.average2, holder.average3, holder.average4, holder.average5, context);
 
-        //Setup review date
-//        Date reviewDate = new Date(reviews.get(position).getTime() * 1000);
-//        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//        try {
-//            Date dateWithoutTime = formatter.parse(formatter.format(reviewDate));
-//            holder.reviewDate.setText(new SimpleDateFormat("MM/dd/yyyy").format(dateWithoutTime));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            holder.reviewDate.setText("--/--/----");
-//        }
         holder.reviewDate.setText(reviews.get(position).getRelativeTimeDescription());
 
         Picasso picasso = DaggerNetworkComponent.builder().applicationModule(new ApplicationModule(context)).build().getPicasso();

@@ -50,6 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by feder on 17/06/2018.
  */
 
+//Adapter used to display the list of dishes inside the restaurant menu
 public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.FoodInMenuViewHolder> {
     public static final String IMAGE_TRANSITION_NAME = "FOOD_TRANSITION";
 
@@ -85,11 +86,13 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
 
     }
 
+    //Set the meals inside the list
     public void setMeals(List<Meal> meals){
         this.meals = meals;
         notifyDataSetChanged();
     }
 
+    //Get the selected meal, it used inside two panels layout to show the details of selected meal
     public Meal getSelectedMeal(){
         if (selectedIndex < 0) return null;
         return meals.get(selectedIndex);
@@ -130,6 +133,7 @@ public class FoodInMenuAdapter extends RecyclerView.Adapter<FoodInMenuAdapter.Fo
         }
 
         if(isTwoPanelsMode){
+            //In two panels layout higglights the background of selected food
             if (selectedIndex == position){
                 holder.foodInMenuContainer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
             } else {

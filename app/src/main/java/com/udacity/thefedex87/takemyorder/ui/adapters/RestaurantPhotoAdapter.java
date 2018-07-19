@@ -27,6 +27,7 @@ import timber.log.Timber;
  * Created by federico.creti on 11/06/2018.
  */
 
+//Adapter used to swipe beetween the restaurant images
 public class RestaurantPhotoAdapter extends PagerAdapter {
     private List<String> photoUrls;
     private Context context;

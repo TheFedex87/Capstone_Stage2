@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by feder on 03/07/2018.
  */
 
+//Adapter used to display the list of food inside ther checkout activity
 public class CheckoutOrderAdapter extends RecyclerView.Adapter<CheckoutOrderAdapter.OrderSummaryViewHolder> {
     private List<CurrentOrderGrouped> meals;
 

@@ -20,6 +20,7 @@ import java.util.List;
  * Created by feder on 16/06/2018.
  */
 
+//Adapter for PagerAdapter used for menu of the restaurant, every fragment is a food type (starter dishes, main dishes,...)
 public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     private LinkedHashMap<FoodTypes, List<Meal>> meals;
     private Context context;
@@ -35,7 +36,7 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
         fragments = new MenuSingleFragment[meals.size()];
     }
 
-    //Set the current order to the adatper, which will setup the current order to every fragmnent it contains
+    //Set the current order to the adatper, which will setup the current order to every fragment it contains
     public void setCurrentOrder(List<Meal> currentOrder){
         this.currentOrder = currentOrder;
         for(MenuSingleFragment menuSingleFragment : fragments){
@@ -81,6 +82,8 @@ public class FoodTypePagerAdapter extends FragmentPagerAdapter {
     }
 
     private void setCurrentOrderToFragment(List<Meal> currentOrder, MenuSingleFragment fragment){
+        //Set the current order into the passed fragment, the current order is used to display the counter of every food (how many food are already added into the current order for
+        //a specific food
         if (fragment != null && currentOrder != null)
             fragment.setCurrentOrder(currentOrder);
     }

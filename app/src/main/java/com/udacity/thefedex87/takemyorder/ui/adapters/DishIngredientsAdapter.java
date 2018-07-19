@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by feder on 25/06/2018.
  */
 
+//Adapter used to display the ingredients list inside dish details
 public class DishIngredientsAdapter extends RecyclerView.Adapter<DishIngredientsAdapter.DishIngredientViewHolder> {
     private List<Ingredient> ingredients;
 

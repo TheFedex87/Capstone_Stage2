@@ -29,11 +29,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by feder on 16/06/2018.
  */
 
+//Fragment used to load the full view of menu, included the tablayout (every tab is a food category) and ViewPager
 public class MenuCompleteFragment extends Fragment {
     private FoodTypePagerAdapter foodTypePagerAdapter;
 
@@ -116,6 +118,7 @@ public class MenuCompleteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created MenuCompleteFragment");
         View viewRoot = inflater.inflate(R.layout.menu_full_fragment, container, false);
 
         ButterKnife.bind(this, viewRoot);

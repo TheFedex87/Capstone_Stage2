@@ -32,11 +32,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by feder on 12/07/2018.
  */
 
+//Fragment used to load and show the list of ready orders
 public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrdersAdapter.WaiterReadyOrderAdapterClick {
     private List<WaiterReadyOrder> readyOrders;
     private String restaurantId;
@@ -78,6 +80,7 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created WaiterReadyOrderFragment");
         View rootView = inflater.inflate(R.layout.waiter_ready_orders_fragment, container, false);
 
 
@@ -99,6 +102,7 @@ public class WaiterReadyOrderFragment extends Fragment implements WaiterReadyOrd
 
     @Override
     public void takeReadyOrderClick(WaiterReadyOrder readyOrder) {
+        //When the waiter click on "Take request" button, I delete from firebase the ready order request
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference callsReference = db.getReference("orders/" + restaurantId + "/" + readyOrder.getId());
         callsReference.addListenerForSingleValueEvent(new ValueEventListener() {

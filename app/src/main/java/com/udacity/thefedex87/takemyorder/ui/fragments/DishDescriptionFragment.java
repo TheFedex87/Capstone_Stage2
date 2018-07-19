@@ -59,6 +59,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static android.view.View.ROTATION_Y;
 
@@ -66,6 +67,7 @@ import static android.view.View.ROTATION_Y;
  * Created by feder on 24/06/2018.
  */
 
+//Fragment used to show the dish details
 public class DishDescriptionFragment extends Fragment {
     private Meal meal;
     private String restaurantId;
@@ -141,6 +143,7 @@ public class DishDescriptionFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Timber.d("Created DishDescriptionFragment");
         View rootView = inflater.inflate(R.layout.dish_description_fragment, container, false);
 
         ButterKnife.bind(this, rootView);
@@ -184,6 +187,7 @@ public class DishDescriptionFragment extends Fragment {
             //Check if ingredients are set into meal, otherwise this mean we are in this activity from favourites activity or from
             //widget, and we have to load the ingredients from DB
             if(((Food) meal).getIngredients() == null || ((Food) meal).getIngredients().size() == 0){
+                //Ingredients have to be loaded from DB
                 dishDetailsViewModel.setMealId(meal.getMealId());
                 final LiveData<List<Ingredient>> ingredientsLiveData = dishDetailsViewModel.getIngredientsOfMeal();
                 ingredientsLiveData.observe(getActivity(), new Observer<List<Ingredient>>() {
@@ -192,37 +196,18 @@ public class DishDescriptionFragment extends Fragment {
                         ingredientsLiveData.removeObserver(this);
                         ((Food)meal).setIngredients(ingredients);
 
-                        userInterfaceComponent = DaggerUserInterfaceComponent
-                                .builder()
-                                .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
-                                .applicationModule(applicationModule)
-                                .build();
-
-                        mealDescription.setText(((Food) meal).getDescription());
-
-                        ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
-                        DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
-                        ingredientsList.setAdapter(dishIngredientsAdapter);
+                        loadDataIntoUI(applicationModule);
                     }
                 });
             } else {
-                userInterfaceComponent = DaggerUserInterfaceComponent
-                        .builder()
-                        .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
-                        .applicationModule(applicationModule)
-                        .build();
-
-                mealDescription.setText(((Food) meal).getDescription());
-
-                ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
-                DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
-                ingredientsList.setAdapter(dishIngredientsAdapter);
+                loadDataIntoUI(applicationModule);
             }
         } else {
             favouriteMealImage.setVisibility(View.GONE);
         }
 
         if (foodImage != null){
+            //If the parent of the activity is not DishDescriptionActivity, this mean we are in a two panels layout and we have to load the image inside the ImageView
             if(!(getActivity() instanceof DishDescriptionActivity)) {
                 dishDetailsProgressBar.setVisibility(View.VISIBLE);
                 Picasso picasso = DaggerNetworkComponent
@@ -230,6 +215,7 @@ public class DishDescriptionFragment extends Fragment {
                         .applicationModule(applicationModule)
                         .build().getPicasso();
 
+                //Set the HTTP path of firebase storage UI
                 String imagePath = "https://firebasestorage.googleapis.com/v0/b/takemyorder-8a08a.appspot.com/o/meals_images%2F" + meal.getMealId() + "?alt=media";
 
                 picasso.load(imagePath).into(foodImage, new Callback() {
@@ -245,6 +231,7 @@ public class DishDescriptionFragment extends Fragment {
                 });
                 picasso.load(imagePath).into(foodImageToAnimate);
             } else {
+                //We are in a single panel layout so hide the image container, since in this layout the image is contained in the collapsingtoollayout
                 foodImageContainer.setVisibility(View.GONE);
             }
         }
@@ -293,5 +280,19 @@ public class DishDescriptionFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void loadDataIntoUI(ApplicationModule applicationModule){
+        userInterfaceComponent = DaggerUserInterfaceComponent
+                .builder()
+                .userInterfaceModule(new UserInterfaceModule(((Food) meal).getIngredients(), LinearLayoutManager.VERTICAL))
+                .applicationModule(applicationModule)
+                .build();
+
+        mealDescription.setText(((Food) meal).getDescription());
+
+        ingredientsList.setLayoutManager(userInterfaceComponent.getLinearLayoutManager());
+        DishIngredientsAdapter dishIngredientsAdapter = userInterfaceComponent.getDishIngredientsAdapter();
+        ingredientsList.setAdapter(dishIngredientsAdapter);
     }
 }

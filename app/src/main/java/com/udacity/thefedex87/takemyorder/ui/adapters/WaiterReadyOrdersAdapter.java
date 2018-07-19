@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
  * Created by feder on 12/07/2018.
  */
 
+//Adapter used to display the list of Ready orders inside waiter activity
 public class WaiterReadyOrdersAdapter extends RecyclerView.Adapter<WaiterReadyOrdersAdapter.WaiterReadyOrdersViewHolder> {
     private List<WaiterReadyOrder> readyOrders;
     private Context context;

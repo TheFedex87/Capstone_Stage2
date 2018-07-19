@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
  * Created by federico.creti on 11/06/2018.
  */
 
+//Adapter used for the circle used inside the restaurant details fragment to show the selected restaurant image, a selected image has fill circle, otherwise a empty circle
 public class PhotoIndicatorContainerAdapter extends RecyclerView.Adapter<PhotoIndicatorContainerAdapter.PhotoIndicatorContainerViewHolder> {
     private int numberOfPhoto;
     private Context context;

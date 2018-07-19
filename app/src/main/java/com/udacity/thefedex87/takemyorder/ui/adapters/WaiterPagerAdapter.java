@@ -23,6 +23,7 @@ import javax.inject.Inject;
  * Created by feder on 12/07/2018.
  */
 
+//Adapter used inside waiter activity in portrait layout to swipe beetween Waiter Calls and Ready Orders
 public class WaiterPagerAdapter extends FragmentPagerAdapter {
     private String restaurantId;
     private WaiterCallsFragment waiterCallsFragment;
@@ -65,11 +66,9 @@ public class WaiterPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 WaiterCallsFragment waiterCallsFragment = (WaiterCallsFragment) Fragment.instantiate(context, WaiterCallsFragment.class.getName());
-                //waiterCallsFragment.setRestaurantId(restaurantId);
                 return waiterCallsFragment;
             case 1:
                 WaiterReadyOrderFragment waiterReadyOrderFragment = (WaiterReadyOrderFragment)Fragment.instantiate(context, WaiterReadyOrderFragment.class.getName());
-                //waiterReadyOrderFragment.setRestaurantId(restaurantId);
                 return waiterReadyOrderFragment;
             default:
                 return null;
