@@ -213,7 +213,7 @@ public class WaiterMainActivity extends AppCompatActivity {
     private void signout(){
         //Signout from Firebase
         firebaseAuth.signOut();
-        Timber.d("User signed out");
+        Timber.d("UserBase signed out");
 
         WaiterAttentionRequestService.setIsExecutingTask(false);
         finish();

@@ -9,11 +9,15 @@ import android.animation.PropertyValuesHolder;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +36,7 @@ import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.entity.Meal;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
 import com.udacity.thefedex87.takemyorder.room.entity.FoodTypes;
+import com.udacity.thefedex87.takemyorder.ui.activities.IdlingResource.SimpleIdlingResource;
 import com.udacity.thefedex87.takemyorder.ui.fragments.MenuCompleteFragment;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModel;
 import com.udacity.thefedex87.takemyorder.ui.viewmodels.RestaurantMenuViewModelFactory;
@@ -85,6 +90,9 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
     @BindView(R.id.add_to_order_fab)
     FloatingActionButton addToOrderFab;
 
+    @Nullable
+    private SimpleIdlingResource simpleIdlingResource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +124,35 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
             else if(!intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY))
                 Timber.e("USER_RESTAURANT_KEY not provided");
         }
+
+        getIdlingResource();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        setSimpleIdlingResourceState(false);
+    }
+
+    @NonNull
+    public void setSimpleIdlingResourceState(boolean state){
+        if (simpleIdlingResource != null) {
+            simpleIdlingResource.setIdleState(state);
+            if (state){
+                SystemClock.sleep(500);
+            }
+        }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource(){
+        if (simpleIdlingResource == null){
+            simpleIdlingResource = new SimpleIdlingResource();
+        }
+
+        return simpleIdlingResource;
     }
 
     private void setupViewModel(final String restaurantId){
@@ -193,6 +230,8 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
                 if (addToOrderFab != null){
                     setupFab();
                 }
+
+                setSimpleIdlingResourceState(true);
             }
         });
     }

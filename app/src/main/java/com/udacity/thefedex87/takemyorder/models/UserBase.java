@@ -4,8 +4,8 @@ package com.udacity.thefedex87.takemyorder.models;
  * Created by feder on 07/06/2018.
  */
 
-//This is the base class for generic User (Waiter, Customer)
-public abstract class User {
+//This is the base class for generic UserBase (Waiter, Customer)
+public abstract class UserBase {
     protected String firstName;
     protected String lastName;
     protected String userName;

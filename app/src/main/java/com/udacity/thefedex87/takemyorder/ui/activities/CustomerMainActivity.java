@@ -280,7 +280,7 @@ public class CustomerMainActivity extends AppCompatActivity implements UserRoomC
     private void signout(){
         //Signout from Firebase
         firebaseAuth.signOut();
-        Timber.d("User signed out");
+        Timber.d("UserBase signed out");
         finish();
     }
 
