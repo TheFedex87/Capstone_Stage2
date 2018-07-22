@@ -3,7 +3,12 @@ The app is structured in the following way:
 	- Login activity is composed by 2 icons
 		- Map icon allow a user to show a map, where are shown the restaurant which join to the TakeMyOrder service. Clicling on a marker will be opened an activity where are shown the restaurat's details, with some 
 		restaurant's images, restaurant's info and restaurant's reviews.
-		- Login icon, allow a user to login into the system. A email and password has to be inserted in order to login.
+			- In order to use the map, in necessary provide two Google API key, an API Key for Google Maps and an API Key for Google Places. They have to be written inside the file gradle.properties:
+				- GOOGLE_MAPS_API_KEY="<API_KEY>"
+				- GOOGLE_PLACES_API_KEY="<API_KEY>"
+
+		
+		- Login icon, allow a user to login into the system. A email and password has to be inserted in order to login. If the inserted user email is not found will be requested to create a new user.
 		
 	- When a login occurs, app automatically check if the logged user is a customer or is a waiter.
 		- Customer login
@@ -36,3 +41,9 @@ The app is structured in the following way:
 				- Clicking on LogOut order menu the user will be logged out from system and the Login activity will be shown.
 				
 				- Swiping to left or right a food will be possible to delete this food from current order.
+				
+		- Waiter login
+			- When a waiter is logged into the system are shown two lists, one for the user calls and one for ready orders. A logged waiter see the calls and ready orders only for the restaurant where he is associated. 
+			This means that if a customer send a waiter call or an order from restaurant A (restaurant is token from the QR-Code) only if the customer is of restaurant A can see the requests.
+			- A waiter can take a request (call or read order) clicking on the green icon on the right side of every request, when he takes the request, it disappear from the system and is automatically removed from the other waiter devices
+			(As explained visible only for waiter of the same restaurant).
