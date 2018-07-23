@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "553847180557",
+    "firebase_url": "https://takemyorder-8a08a.firebaseio.com",
+    "project_id": "takemyorder-8a08a",
+    "storage_bucket": "takemyorder-8a08a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553847180557:android:c6cb84ab7a2b862d",
+        "android_client_info": {
+          "package_name": "com.udacity.thefedex87.takemyorder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553847180557-cmvq65vhhr7vs2ut4f7r7lh2tkc5jrhk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.udacity.thefedex87.takemyorder",
+            "certificate_hash": "ba2b51db470cf3fec513bcca6639206cfa017d4e"
+          }
+        },
+        {
+          "client_id": "553847180557-llp37418dutmcigh7a5c1b0romsjgs17.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "553847180557-llp37418dutmcigh7a5c1b0romsjgs17.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOJIrZkEQupCavgoOLptZlqvVR_5ejqH4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553847180557-llp37418dutmcigh7a5c1b0romsjgs17.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
