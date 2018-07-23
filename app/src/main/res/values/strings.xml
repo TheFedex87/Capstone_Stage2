@@ -97,6 +97,7 @@
     <string name="waiter_notification_channel_description">Required attention for waiter when there is a call or a order is ready to be token from kitchen</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="waiter_not_logged">No waiter logged in, please log in.</string>
 
     <!--Widget-->
     <string name="no_favourites">No favourites selected for current user</string>

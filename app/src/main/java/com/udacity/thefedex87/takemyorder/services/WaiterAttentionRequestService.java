@@ -96,7 +96,11 @@ public class WaiterAttentionRequestService extends IntentService {
 
                 //If this is not the first download after app is started and there is a new ready order request send the notification
                 if (!readyOrdersFirstDownload && readyOrders.size() > currentReadyOrders.size()) {
-                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_order_ready_black, R.drawable.ic_waiter_order_ready);
+                    createNotification(getApplicationContext().getString(R.string.waiter_order_ready_text, readyOrders.get(readyOrders.size() - 1).getTableId()),
+                            getApplicationContext().getString(R.string.waiter_new_order_ready),
+                            restaurantId,
+                            R.drawable.ic_waiter_order_ready_black,
+                            R.drawable.ic_waiter_order_ready);
                 }
 
                 currentReadyOrders = readyOrders;
@@ -126,7 +130,11 @@ public class WaiterAttentionRequestService extends IntentService {
 
                 //If this is not the first download after app is started and there is a new waiter call request send the notification
                 if (!callsFirstDownload && waiterCalls.size() > currentCalls.size()) {
-                    createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()), restaurantId, R.drawable.ic_waiter_call_black, R.drawable.ic_waiter_call);
+                    createNotification(getApplicationContext().getString(R.string.waiter_call_text, waiterCalls.get(waiterCalls.size() - 1).getTableId()),
+                            getApplicationContext().getString(R.string.waiter_new_waiter_call),
+                            restaurantId,
+                            R.drawable.ic_waiter_call_black,
+                            R.drawable.ic_waiter_call);
                 }
 
                 currentCalls = waiterCalls;
@@ -158,7 +166,7 @@ public class WaiterAttentionRequestService extends IntentService {
         sendBroadcast(readyOrdersIntent);
     }
 
-    private void createNotification(String notificationText, String restaurantId, int imageResourceSmall, int imageResourceLarge){
+    private void createNotification(String notificationText, String notificationTitle, String restaurantId, int imageResourceSmall, int imageResourceLarge){
         Intent intent = new Intent(getApplicationContext(), WaiterMainActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY, restaurantId);
@@ -169,7 +177,7 @@ public class WaiterAttentionRequestService extends IntentService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), WaiterMainActivity.NOTIFICATION_CHANNEL_ID)
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), imageResourceLarge))
                 .setSmallIcon(imageResourceSmall)
-                .setContentTitle(getString(R.string.waiter_new_waiter_call))
+                .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)

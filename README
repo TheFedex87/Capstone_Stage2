@@ -13,7 +13,8 @@ The app is structured in the following way:
 			- When a login occurs, app automatically check if the logged user is a customer or is a waiter.
 				- Customer login
 					- An activity with a live camera view is shown
-						- User have to scan the QR-Code at the table in order to load the restaurant and table where he is sat
+						- User have to scan the QR-Code at the table in order to load the restaurant and table where he is sat (the content of QR-Code is a simple text in a JSON format. Example of QR-Code: {"restaurantId":"-LGAeRxG-WCAN-eNu7Ey","table":"8"}
+							Inside main app root there is a folder labeled: QRCodes, this folder contains the QRCode to test the application (README)
 						- Clicking on fab button is possible to load an image with a QR-Code
 					
 					- After a valid QR-Code has been scanned or loaded the main customer activity is shown

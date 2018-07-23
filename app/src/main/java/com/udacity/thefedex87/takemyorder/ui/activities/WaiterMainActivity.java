@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +56,9 @@ public class WaiterMainActivity extends AppCompatActivity {
 
     private WaiterPagerAdapter waiterPagerAdapter;
 
+    @BindView(R.id.root_container)
+    CoordinatorLayout rootLayout;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -79,27 +84,34 @@ public class WaiterMainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        TakeMyOrderApplication.appComponent().inject(this);
-
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)) {
-            restaurantId = intent.getStringExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY);
-
-            setupUi();
-
-            registerReceiver();
-
-            startWaiterService();
-        }
-        else{
-            if (intent == null)
-                Timber.e("Intent not provided");
-            else if(!intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY))
-                Timber.e("WAITER_RESTAURANT_KEY not provided");
-            else
-                Timber.e("WAITER_RESTAURANT_KEY not provided");
-
+        if (firebaseAuth.getCurrentUser() == null)
+        {
+            Snackbar.make(rootLayout, R.string.waiter_not_logged, Snackbar.LENGTH_LONG).show();
+            Timber.e(getString(R.string.waiter_not_logged));
             finish();
+        } else {
+
+            TakeMyOrderApplication.appComponent().inject(this);
+
+            Intent intent = getIntent();
+            if (intent != null && intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY)) {
+                restaurantId = intent.getStringExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY);
+
+                setupUi();
+
+                registerReceiver();
+
+                startWaiterService();
+            } else {
+                if (intent == null)
+                    Timber.e("Intent not provided");
+                else if (!intent.hasExtra(LoginMapsActivity.WAITER_RESTAURANT_KEY))
+                    Timber.e("WAITER_RESTAURANT_KEY not provided");
+                else
+                    Timber.e("WAITER_RESTAURANT_KEY not provided");
+
+                finish();
+            }
         }
     }
 
@@ -118,6 +130,10 @@ public class WaiterMainActivity extends AppCompatActivity {
         AttentionRequestReceiver attentionRequestReceiver = new AttentionRequestReceiver();
 
         registerReceiver(attentionRequestReceiver, filter);
+    }
+
+    private void unregisterActivity(){
+
     }
 
     @Override
