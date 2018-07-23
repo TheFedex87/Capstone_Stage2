@@ -13,6 +13,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +32,8 @@ import com.udacity.thefedex87.takemyorder.ui.activities.CustomerMainActivity;
 import com.udacity.thefedex87.takemyorder.ui.activities.LoginMapsActivity;
 
 import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,11 +60,13 @@ public class CustomerMainActivityTest {
     private final static String RESTAURANT_KEY = "-LGAeRwxB26hjSpQCeuX";
     private final static String TABLE_KEY = "3";
     private final static String USER_EMAIL_FOR_TESTS = "user@testuser.com";
+    private final static String USER_PASSWORD_FOR_TESTS = "usertest";
 
     private final static long MAX_WAIT_OBSERVER_COMPLETED = 5000;
     private final static long WAIT_OBSERVER_COMPLETED_SLEEP = 100;
 
     private User user;
+
 
     private List<Meal> mealList;
 
@@ -74,6 +81,16 @@ public class CustomerMainActivityTest {
         protected Intent getActivityIntent() {
             Context targetContext = getInstrumentation()
                     .getTargetContext();
+
+
+            //Check if we are logged with the test user, if not I log him
+            if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getEmail() != USER_EMAIL_FOR_TESTS)
+                FirebaseAuth.getInstance().signOut();
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                loginTestUser();
+            }
+
+
 
             Room.inMemoryDatabaseBuilder(targetContext, AppDatabase.class);
 
@@ -149,6 +166,11 @@ public class CustomerMainActivityTest {
         removeLastWaiterCall();
     }
 
+    @AfterClass
+    public static void tearDown(){
+        FirebaseAuth.getInstance().signOut();
+    }
+
     private void removeLastWaiterCall(){
         FirebaseDatabase.getInstance().getReference("waiters_calls/" + RESTAURANT_KEY + "/" + lastWaiterCallKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -183,6 +205,30 @@ public class CustomerMainActivityTest {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        int cycle = 0;
+        while(true){
+            if (cycle * WAIT_OBSERVER_COMPLETED_SLEEP >= MAX_WAIT_OBSERVER_COMPLETED) break;
+
+            if (isOperationCompleted) break;
+            try {
+                Thread.sleep(WAIT_OBSERVER_COMPLETED_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cycle++;
+        }
+    }
+
+    private void loginTestUser(){
+        isOperationCompleted = false;
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(USER_EMAIL_FOR_TESTS, USER_PASSWORD_FOR_TESTS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) isOperationCompleted = true;
+                if(!task.isSuccessful()) fail("Can't login wit test user");
             }
         });
 
@@ -258,7 +304,7 @@ public class CustomerMainActivityTest {
         }
 
         if(!user.getEmail().equals(USER_EMAIL_FOR_TESTS))
-            fail("Please login into the system with the user: " + USER_EMAIL_FOR_TESTS + " with password: usertest");
+            fail("Please run the app and loginTestUser into the system with the user: " + USER_EMAIL_FOR_TESTS + " with password: " + USER_PASSWORD_FOR_TESTS);
     }
 
 

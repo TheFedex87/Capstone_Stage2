@@ -17,6 +17,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.udacity.thefedex87.takemyorder.executors.AppExecutors;
 import com.udacity.thefedex87.takemyorder.room.AppDatabase;
@@ -30,12 +33,16 @@ import com.udacity.thefedex87.takemyorder.ui.activities.RestaurantMenuActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.Console;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -56,7 +63,6 @@ import static org.junit.Assert.fail;
 @RunWith(AndroidJUnit4.class)
 public class RestaurantMenuActivityTest {
     private final static String RESTAURANT_KEY = "-LGAeRwxB26hjSpQCeuX";
-    private final static long USER_ID_VALUE = 2;
     private final static String USER_EMAIL_FOR_TESTS = "user@testuser.com";
     private final static String USER_PASSWORD_FOR_TESTS = "usertest";
     private final int DISH_POSITION = 0;
@@ -67,6 +73,7 @@ public class RestaurantMenuActivityTest {
     private final static long WAIT_OBSERVER_COMPLETED_SLEEP = 100;
 
     private User user;
+    private long userRoomId;
 
     private IdlingResource idlingResource;
 
@@ -83,9 +90,20 @@ public class RestaurantMenuActivityTest {
             Context targetContext = getInstrumentation()
                     .getTargetContext();
 
+            //Check if we are logged with the test user, if not I log him
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getEmail() != USER_EMAIL_FOR_TESTS)
+                FirebaseAuth.getInstance().signOut();
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                loginTestUser();
+            }
+
+            //Retrieve the ID for logged user
+            testUserRoomId(targetContext);
+
             Intent intent = new Intent(targetContext, RestaurantMenuActivity.class);
             intent.putExtra(LoginMapsActivity.USER_RESTAURANT_KEY, RESTAURANT_KEY);
-            intent.putExtra(CustomerMainActivity.USER_ID_KEY, USER_ID_VALUE);
+            intent.putExtra(CustomerMainActivity.USER_ID_KEY, userRoomId);
 
             return intent;
         }
@@ -99,6 +117,7 @@ public class RestaurantMenuActivityTest {
 
     @Test
     public void checkIfRestaurantMenuIsDownloadAndShowed(){
+        onView(allOf(withId(R.id.foods_in_menu_container), isDisplayed())).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(allOf(withId(R.id.foods_in_menu_container), isDisplayed())).check(matches(atPosition(DISH_POSITION, hasDescendant(withText(DISH_NAME)))));
     }
 
@@ -163,8 +182,69 @@ public class RestaurantMenuActivityTest {
         }
     }
 
+    @AfterClass
+    public static void tearDown(){
+        FirebaseAuth.getInstance().signOut();
+    }
+
     private void clickAddRemoveFavouriteMeal(){
         onView(allOf(withId(R.id.foods_in_menu_container), isDisplayed())).perform(RecyclerViewActions.actionOnItemAtPosition(DISH_POSITION, clickOnRecyclerAtViewWithId(R.id.favourite_food)));
+    }
+
+    private void loginTestUser(){
+        isOperationCompleted = false;
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(USER_EMAIL_FOR_TESTS, USER_PASSWORD_FOR_TESTS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) isOperationCompleted = true;
+                if(!task.isSuccessful()) fail("Can't login wit test user");
+            }
+        });
+
+        int cycle = 0;
+        while(true){
+            if (cycle * WAIT_OBSERVER_COMPLETED_SLEEP >= MAX_WAIT_OBSERVER_COMPLETED) break;
+
+            if (isOperationCompleted) break;
+            try {
+                Thread.sleep(WAIT_OBSERVER_COMPLETED_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cycle++;
+        }
+    }
+
+    private void testUserRoomId(final Context context){
+        isOperationCompleted = false;
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                User user = AppDatabase.getInstance(context).userDao().getUserByUserFirebaseIdForTests(FirebaseAuth.getInstance().getUid());
+                if (user == null){
+                    user = new User();
+                    user.setEmail(USER_EMAIL_FOR_TESTS);
+                    user.setUserFirebaseId(FirebaseAuth.getInstance().getUid());
+                    userRoomId = AppDatabase.getInstance(context).userDao().insertUser(user);
+                } else {
+                    userRoomId = user.getId();
+                }
+                isOperationCompleted = true;
+            }
+        });
+
+        int cycle = 0;
+        while(true){
+            if (cycle * WAIT_OBSERVER_COMPLETED_SLEEP >= MAX_WAIT_OBSERVER_COMPLETED) break;
+
+            if (isOperationCompleted) break;
+            try {
+                Thread.sleep(WAIT_OBSERVER_COMPLETED_SLEEP);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cycle++;
+        }
     }
 
     private void addOrderFood(boolean removeAddedFood){
@@ -263,11 +343,7 @@ public class RestaurantMenuActivityTest {
         }
 
         if(user == null || !user.getEmail().equals(USER_EMAIL_FOR_TESTS)){
-            fail("Login into the system with the user: " + USER_EMAIL_FOR_TESTS + " with password: usertest");
-        }
-
-        if(USER_ID_VALUE != user.getId()){
-            fail("Set the constant USER_ID_VALUE to " + user.getId());
+            fail("Please run the app and login into the system with the user: " + USER_EMAIL_FOR_TESTS + " with password: " + USER_PASSWORD_FOR_TESTS);
         }
     }
 

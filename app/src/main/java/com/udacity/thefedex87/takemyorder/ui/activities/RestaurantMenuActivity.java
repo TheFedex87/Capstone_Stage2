@@ -98,6 +98,9 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_menu);
 
+        getIdlingResource();
+        setSimpleIdlingResourceState(false);
+
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY)){
             ButterKnife.bind(this);
@@ -124,24 +127,17 @@ public class RestaurantMenuActivity extends AppCompatActivity implements UserRoo
             else if(!intent.hasExtra(LoginMapsActivity.USER_RESTAURANT_KEY))
                 Timber.e("USER_RESTAURANT_KEY not provided");
         }
-
-        getIdlingResource();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        setSimpleIdlingResourceState(false);
     }
 
     @NonNull
     public void setSimpleIdlingResourceState(boolean state){
         if (simpleIdlingResource != null) {
             simpleIdlingResource.setIdleState(state);
-            if (state){
-                SystemClock.sleep(500);
-            }
         }
     }
 

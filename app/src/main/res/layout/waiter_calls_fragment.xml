@@ -14,6 +14,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="@dimen/waiter_no_request_text_size"
         android:text="@string/waiter_calls_not_present"/>
 
 </FrameLayout>

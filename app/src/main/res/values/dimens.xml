@@ -164,6 +164,7 @@
     <dimen name="take_request_icon_margin_bottom">8dp</dimen>
     <dimen name="waiter_header_text_size">20sp</dimen>
     <dimen name="waiter_header_margin_top">8dp</dimen>
+    <dimen name="waiter_no_request_text_size">20sp</dimen>
 
 
     <dimen name="app_bar_elevation">4dp</dimen>

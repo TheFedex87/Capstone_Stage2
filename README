@@ -1,6 +1,6 @@
 The system allow a customer to take an order directly from the app without the help of a waiter.
 The app is structured in the following way:
-	- Login activity is composed by 2 icons
+	- Login activity, it contains 2 icons
 		- Map icon allow a user to show a map, where are shown the restaurant which join to the TakeMyOrder service. Clicling on a marker will be opened an activity where are shown the restaurat's details, with some 
 		restaurant's images, restaurant's info and restaurant's reviews.
 			- In order to use the map, in necessary provide two Google API key, an API Key for Google Maps and an API Key for Google Places. They have to be written inside the file gradle.properties:
@@ -10,40 +10,43 @@ The app is structured in the following way:
 		
 		- Login icon, allow a user to login into the system. A email and password has to be inserted in order to login. If the inserted user email is not found will be requested to create a new user.
 		
-	- When a login occurs, app automatically check if the logged user is a customer or is a waiter.
-		- Customer login
-			- An activity with a live camera view is shown
-				- User have to scan the QR-Code at the table in order to load the restaurant and table where he is sat
-				- Clicking on fab button is possible to load an image with a QR-Code
-			
-			- After a valid QR-Code has been scanned or loaded the main customer activity is shown
-				- Clicking on fab button is possibile to acces to the restaurant menu.
-					- From restaurant menu activity the user can:
-						- Add a food into the current order
-						- Show the food details
-							- From the dish details activity is possible to insert a food into the current order clicking on the fab button
-							- Add/Remove a dish from user favourites
-						- Remove one 1 of an inserted dish from the current order
-						- Add/Remove a dish from user favourites
-						- Back to main customer activity clicking back button or clicking menu icon from AppBar
-				
-				- Clicking on Favourites menu the user favourites activity is shown. This activity uses the same fragment used by restaurant menu activity, so the same operations of that activity are valid.
-				
-				- Clicking on Call Waiter menu, a new waiter call is sent to the Firebase database, with the restaurant id and table id.
-				
-				- Clicking on Delete current order menu, will be possible to delete the whole current order (after a user confirm)
-				
-				- Clicking on Checkout order menu the checkout order activity will be shown
-					- From this activity user has a resume of the order
-					- Clicking on pay icon from the menu, the order is sent to the firebase database, with the restaurant id, user id and food list. Here the order should be sent to the kitchen and just after it is
-					ready a notification should be sent to the waiter. Since the app for kitchen will be a web app, for now the order will be directly sent to the waiter, which will receive the new it.
-				
-				- Clicking on LogOut order menu the user will be logged out from system and the Login activity will be shown.
-				
-				- Swiping to left or right a food will be possible to delete this food from current order.
-				
-		- Waiter login
-			- When a waiter is logged into the system are shown two lists, one for the user calls and one for ready orders. A logged waiter see the calls and ready orders only for the restaurant where he is associated. 
-			This means that if a customer send a waiter call or an order from restaurant A (restaurant is token from the QR-Code) only if the customer is of restaurant A can see the requests.
-			- A waiter can take a request (call or read order) clicking on the green icon on the right side of every request, when he takes the request, it disappear from the system and is automatically removed from the other waiter devices
-			(As explained visible only for waiter of the same restaurant).
+			- When a login occurs, app automatically check if the logged user is a customer or is a waiter.
+				- Customer login
+					- An activity with a live camera view is shown
+						- User have to scan the QR-Code at the table in order to load the restaurant and table where he is sat
+						- Clicking on fab button is possible to load an image with a QR-Code
+					
+					- After a valid QR-Code has been scanned or loaded the main customer activity is shown
+						- Clicking on fab button is possibile to acces to the restaurant menu.
+							- From restaurant menu activity the user can:
+								- Add a food into the current order
+								- Show the food details
+									- From the dish details activity is possible to insert a food into the current order clicking on the fab button
+									- Add/Remove a dish from user favourites
+								- Remove one one unit of an inserted dish from the current order
+								- Add/Remove a dish from user favourites
+								- Back to main customer activity clicking back button or clicking menu icon from AppBar
+						
+						- Clicking on Favourites menu the user favourites activity is shown. This activity uses the same fragments used by restaurant menu activity, so the same operations of that activity are valid.
+						
+						- Clicking on Call Waiter menu, a new waiter call is sent to the Firebase database, with the restaurant id and table id.
+						
+						- Clicking on Delete current order menu, will be possible to delete the whole current order (after a user confirm)
+						
+						- Clicking on Checkout order menu the checkout order activity will be shown
+							- From this activity user has a resume of the order
+							- Clicking on pay icon from the menu, the order is sent to the firebase database, with the restaurant id, user id and food list. Here the order should be sent to the kitchen and just after it is
+							ready a notification should be sent to the waiter. Since the app for kitchen will be a web app, for now the order will be directly sent to the waiter, which will receive the new it.
+						
+						- Clicking on LogOut order menu the user will be logged out from system and the Login activity will be shown.
+						
+						- Swiping to left or right a food will be possible to delete this food from current order.
+						
+				- Waiter login
+					- When a waiter is logged into the system are shown two lists, one for the user calls and one for ready orders. A logged waiter see the calls and ready orders only for the restaurant where he is associated. 
+					This means that if a customer send a waiter call or an order from restaurant A (restaurant is token from the QR-Code) only if the waiter is of restaurant A can see the requests.
+					- A waiter can take a request (call or read order) clicking on the green icon on the right side of every request, when he takes the request, it disappear from the system and is automatically removed 
+					from the other waiter devices (as explained visible only for waiter of the same restaurant).
+					
+About waiter notification, of course the best way should be use a service like FCM, I tryied to implement it, and it works, however for the project I used a service intent, since to write a completed web app I need more time
+(there in an example of web app inside app.js inside the package com.udacity.thefedex87.takemyorder.services, where there is also the service class which extends from FirebaseMessagingService).
